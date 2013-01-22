@@ -12,6 +12,7 @@ object build extends Build {
   ).settings(
     Seq(
       libraryDependencies ++= Seq(
+        "net.java.dev.jna" % "jna" % "3.5.+"
         ),
       version := "0.0.1-SNAPSHOT"
     ): _*
