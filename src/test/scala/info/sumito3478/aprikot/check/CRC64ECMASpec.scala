@@ -15,49 +15,13 @@
  */
 
 package info.sumito3478.aprikot.check
-import info.sumito3478.aprikot.unsafe.{ ArrayOfByteW, Memory, benchmark, LongW }
 
-import org.scalatest.FunSpec
+class CRC64ECMASpec extends CRC64Spec {
+  def crc64 = CRC64ECMA
 
-class CRC64ECMASpec extends FunSpec {
-  val test1 = "hello world".getBytes("UTF-8")
+  def name = "CRC64ECMA"
 
-  val test1ret = 0x53037ecdef2352daL
+  def test1ret = 0x53037ecdef2352daL
 
-  val test1buffer = {
-    val ret = Memory(test1.length + 8)
-    test1.memcpy(ret.pointer)
-    (ret.pointer + test1.length).long = (~test1ret).toLE
-    ret
-  }
-
-  val test2 =
-    "Mis, Mis, Mister, Drill, Driller, I'll do my best, I cant lose!".
-      getBytes("UTF-8")
-
-  val test2ret = 0x49dd4f8aa704fb69L
-
-  val test2buffer = {
-    val ret = Memory(test2.length + 8)
-    test2.memcpy(ret.pointer)
-    (ret.pointer + test2.length).long = (~test2ret).toLE
-    ret
-  }
-
-  describe("CRC64ECMA.apply(Pointer, Long, Long)") {
-    it("should calculate the CRC64ECMA value of test1.") {
-      assert(CRC64ECMA(test1buffer.pointer, test1.length, 0) === test1ret)
-    }
-
-    it("should return 0 if the CRC64ECMA of the test1 is appended to that.") {
-      assert((~CRC64ECMA(test1buffer.pointer, test1.length + 8, 0)) === 0)
-    }
-    it("should calculate the CRC64ECMA value of test2.") {
-      assert(CRC64ECMA(test2buffer.pointer, test2.length, 0) === test2ret)
-    }
-
-    it("should return 0 if the CRC64ECMA of test2 is appended to that.") {
-      assert((~CRC64ECMA(test2buffer.pointer, test2.length + 8, 0)) === 0)
-    }
-  }
+  def test2ret = 0x49dd4f8aa704fb69L
 }
