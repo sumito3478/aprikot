@@ -136,7 +136,3 @@ trait CRC32 {
     ~crc
   }
 }
-
-object CRC32 extends CRC32 {
-  def poly = 0x04c11db7
-}

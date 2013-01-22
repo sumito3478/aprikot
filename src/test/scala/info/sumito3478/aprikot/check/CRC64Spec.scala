@@ -19,24 +19,24 @@ package info.sumito3478.aprikot.check
 import org.scalatest.FunSpec
 
 import info.sumito3478.aprikot.unsafe.ArrayOfByteW
-import info.sumito3478.aprikot.unsafe.IntW
+import info.sumito3478.aprikot.unsafe.LongW
 import info.sumito3478.aprikot.unsafe.Memory
 
-trait CRC32Spec extends FunSpec {
-  def crc32: CRC32
+trait CRC64Spec extends FunSpec {
+  def crc64: CRC64
 
   def name: String
 
-  def test1ret: Int
+  def test1ret: Long
 
-  def test2ret: Int
+  def test2ret: Long
 
   val test1 = "hello world".getBytes("UTF-8")
 
   val test1buffer = {
-    val ret = Memory(test1.length + 4)
+    val ret = Memory(test1.length + 8)
     test1.memcpy(ret.pointer)
-    (ret.pointer + test1.length).int = (~test1ret).toLE
+    (ret.pointer + test1.length).long = (~test1ret).toLE
     ret
   }
 
@@ -45,26 +45,26 @@ trait CRC32Spec extends FunSpec {
       getBytes("UTF-8")
 
   val test2buffer = {
-    val ret = Memory(test2.length + 4)
+    val ret = Memory(test2.length + 8)
     test2.memcpy(ret.pointer)
-    (ret.pointer + test2.length).int = (~test2ret).toLE
+    (ret.pointer + test2.length).long = (~test2ret).toLE
     ret
   }
 
-  describe(f"${name}.apply(Pointer, Long, Int)") {
+  describe(f"${name}.apply(Pointer, Long, Long)") {
     it(f"should calculate the ${name} value of test1.") {
-      assert(crc32(test1buffer.pointer, test1.length, 0) === test1ret)
+      assert(crc64(test1buffer.pointer, test1.length, 0) === test1ret)
     }
 
     it(f"should return 0 if the ${name} of the test1 is appended to that.") {
-      assert((~crc32(test1buffer.pointer, test1.length + 4, 0)) === 0)
+      assert((~crc64(test1buffer.pointer, test1.length + 8, 0)) === 0)
     }
     it(f"should calculate the ${name} value of test2.") {
-      assert(crc32(test2buffer.pointer, test2.length, 0) === test2ret)
+      assert(crc64(test2buffer.pointer, test2.length, 0) === test2ret)
     }
 
     it(f"should return 0 if the ${name} of test2 is appended to that.") {
-      assert((~crc32(test2buffer.pointer, test2.length + 4, 0)) === 0)
+      assert((~crc64(test2buffer.pointer, test2.length + 8, 0)) === 0)
     }
   }
 }

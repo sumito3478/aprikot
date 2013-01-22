@@ -16,12 +16,12 @@
 
 package info.sumito3478.aprikot.check
 
-class CRC64ISOSpec extends CRC64Spec {
-  def crc64 = CRC64ISO
+class CRC32KSpec extends CRC32Spec {
+  def crc32 = CRC32K
 
-  def name = "CRC64ISO"
+  def name = "CRC32K"
 
-  def test1ret = 0xb9cf3f572ad9ac3eL
+  def test1ret = 0xdf373d3c
 
-  def test2ret = 0x5880199a537a151eL
+  def test2ret = 0x7de3cee4
 }

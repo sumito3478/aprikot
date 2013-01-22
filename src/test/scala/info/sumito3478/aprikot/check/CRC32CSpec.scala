@@ -16,50 +16,12 @@
 
 package info.sumito3478.aprikot.check
 
-import info.sumito3478.aprikot.unsafe.{ ArrayOfByteW, Memory, IntW }
-import org.scalatest.FunSpec
-import info.sumito3478.aprikot.check.CRC32C
-import scala.Array.canBuildFrom
+class CRC32CSpec extends CRC32Spec {
+  def crc32 = CRC32C
 
-class CRC32CSpec extends FunSpec {
-  val test1 = "hello world".getBytes("UTF-8")
+  def name = "CRC32C"
 
-  val test1ret = 0xc99465aa
+  def test1ret = 0xc99465aa
 
-  val test1buffer = {
-    val ret = Memory(test1.length + 4)
-    test1.memcpy(ret.pointer)
-    (ret.pointer + test1.length).int = (~test1ret).toLE
-    ret
-  }
-
-  val test2 =
-    "Mis, Mis, Mister, Drill, Driller, I'll do my best, I cant lose!".
-      getBytes("UTF-8")
-
-  val test2ret = 0xffc0796d
-
-  val test2buffer = {
-    val ret = Memory(test2.length + 4)
-    test2.memcpy(ret.pointer)
-    (ret.pointer + test2.length).int = (~test2ret).toLE
-    ret
-  }
-
-  describe("CRC32C.apply(Pointer, Long, Int)") {
-    it("should calculate the CRC32C value of test1.") {
-      assert(CRC32C(test1buffer.pointer, test1.length, 0) === test1ret)
-    }
-
-    it("should return 0 if the CRC32C of the test1 is appended to that.") {
-      assert((~CRC32C(test1buffer.pointer, test1.length + 4, 0)) === 0)
-    }
-    it("should calculate the CRC32C value of test2.") {
-      assert(CRC32C(test2buffer.pointer, test2.length, 0) === test2ret)
-    }
-
-    it("should return 0 if the CRC32C of test2 is appended to that.") {
-      assert((~CRC32C(test2buffer.pointer, test2.length + 4, 0)) === 0)
-    }
-  }
+  def test2ret = 0xffc0796d
 }
