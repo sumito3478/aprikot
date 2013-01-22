@@ -114,7 +114,7 @@ trait CRC32 {
         size -= 1
       }
       // Calculate the position where to stop.
-      val limit = p + (size & ~7)
+      val limit = buf + (size & ~7)
       // Calculate how many bytes must be calculated separately before returning
       // the result.
       size &= 7
