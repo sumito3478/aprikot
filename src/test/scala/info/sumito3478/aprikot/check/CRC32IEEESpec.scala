@@ -20,7 +20,7 @@ import org.scalatest.FunSpec
 import java.util.zip.{ CRC32 => JCRC32 }
 import scala.Array.canBuildFrom
 
-class CRC32Spec extends FunSpec {
+class CRC32IEEESpec extends FunSpec {
   describe("benchmark") {
     it("benchmark") {
       val num = 0xffff
@@ -41,9 +41,10 @@ class CRC32Spec extends FunSpec {
       println(f"java.util.zip.CRC32: ${ret1.toDouble / 1000000} sec")
       System.gc()
       val ret2 = benchmark {
-        val r = CRC32C(mem.pointer, num, 0)
+        val r = CRC32IEEE(mem.pointer, num, 0)
       }
-      println(f"info.sumito3478.aprikot.math.CRC32: ${ret2.toDouble / 1000000} sec")
+      println(
+        f"info.sumito3478.aprikot.math.CRC32IEEE: ${ret2.toDouble / 1000000} sec")
     }
   }
 
@@ -71,20 +72,20 @@ class CRC32Spec extends FunSpec {
     ret
   }
 
-  describe("CRC32.apply(Pointer, Long, Int)") {
-    it("should calculate the CRC32 value of test1.") {
-      assert(CRC32(test1buffer.pointer, test1.length, 0) === test1ret)
+  describe("CRC32IEEE.apply(Pointer, Long, Int)") {
+    it("should calculate the CRC32IEEE value of test1.") {
+      assert(CRC32IEEE(test1buffer.pointer, test1.length, 0) === test1ret)
     }
 
-    it("should return 0 if the CRC32 of the test1 is appended to that.") {
-      assert((~CRC32(test1buffer.pointer, test1.length + 4, 0)) === 0)
+    it("should return 0 if the CRC32IEEE of the test1 is appended to that.") {
+      assert((~CRC32IEEE(test1buffer.pointer, test1.length + 4, 0)) === 0)
     }
-    it("should calculate the CRC32 value of test2.") {
-      assert(CRC32(test2buffer.pointer, test2.length, 0) === test2ret)
+    it("should calculate the CRC32IEEE value of test2.") {
+      assert(CRC32IEEE(test2buffer.pointer, test2.length, 0) === test2ret)
     }
 
-    it("should return 0 if the CRC32 of test2 is appended to that.") {
-      assert((~CRC32(test2buffer.pointer, test2.length + 4, 0)) === 0)
+    it("should return 0 if the CRC32IEEE of test2 is appended to that.") {
+      assert((~CRC32IEEE(test2buffer.pointer, test2.length + 4, 0)) === 0)
     }
   }
 }
