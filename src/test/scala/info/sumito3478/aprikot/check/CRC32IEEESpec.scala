@@ -51,10 +51,16 @@ class CRC32IEEESpec extends CRC32Spec {
       println(f"java.util.zip.CRC32: ${ret1.toDouble / 1000000} sec")
       System.gc()
       val ret2 = benchmark {
-        val r = CRC32IEEE(mem.pointer, num, 0)
+        val r = CRC32IEEE(mem.pointer, num)
       }
       println(
         f"info.sumito3478.aprikot.math.CRC32IEEE: ${ret2.toDouble / 1000000} sec")
+      System.gc()
+      val ret3 = benchmark {
+        val r = CRC32IEEE(data)
+      }
+      println(
+        f"info.sumito3478.aprikot.math.CRC32IEEE(given Array[Byte]): ${ret3.toDouble / 1000000} sec")
     }
   }
 }
