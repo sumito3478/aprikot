@@ -1,6 +1,6 @@
-# aprikot-boilerplate
+# aprikot
 
-This software is a boilerplate project for sbt.
+This software is yet another  general-purpose Scala library.
 
 This software is in early development and not well documented, but has some
 documentation comments in the source and with sbt doc, you can generate
