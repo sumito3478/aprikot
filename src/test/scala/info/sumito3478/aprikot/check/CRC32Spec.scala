@@ -14,11 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.math
-
-import info.sumito3478.aprikot.unsafe.{ ArrayOfByteW, ArrayOfIntW, Memory, benchmark }
-
+package info.sumito3478.aprikot.check
+import info.sumito3478.aprikot.unsafe.{ ArrayOfByteW, Memory, benchmark }
 import org.scalatest.FunSpec
+import java.util.zip.{ CRC32 => JCRC32 }
+import scala.Array.canBuildFrom
 
 class CRC32Spec extends FunSpec {
   val testData: Array[Byte] = {
