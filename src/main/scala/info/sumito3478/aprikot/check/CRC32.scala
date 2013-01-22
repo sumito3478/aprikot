@@ -31,8 +31,9 @@
 package info.sumito3478.aprikot.check
 
 import java.lang.{ Integer => JInteger }
-import info.sumito3478.aprikot.unsafe.{ Memory, Pointer, ByteOrder, bswap }
+import info.sumito3478.aprikot.unsafe.{ Memory, Pointer, ByteOrder, bswap, ArrayOfByteW }
 import java.lang.{ Integer => JInteger }
+import info.sumito3478.aprikot.unsafe.using
 
 trait CRC32 {
   def poly: Int
@@ -134,5 +135,24 @@ trait CRC32 {
     }
     crc = if (be) bswap(crc) else crc
     ~crc
+  }
+
+  def apply(p: Pointer, len: Long): Int = apply(p, len, 0)
+
+  def apply(data: Array[Byte], start: Int, len: Int): Int = {
+    using(Memory(len)) {
+      memory =>
+        val p = memory.pointer
+        data.memcpy(p, start, len)
+        apply(p, len, 0)
+    }
+  }
+
+  def apply(data: Array[Byte], start: Int): Int = {
+    apply(data, start, data.length - start)
+  }
+
+  def apply(data: Array[Byte]): Int = {
+    apply(data, 0, data.length)
   }
 }

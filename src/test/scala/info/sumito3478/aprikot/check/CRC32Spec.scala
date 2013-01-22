@@ -51,20 +51,30 @@ trait CRC32Spec extends FunSpec {
     ret
   }
 
-  describe(f"${name}.apply(Pointer, Long, Int)") {
+  describe(f"${name}.apply(Pointer, Long)") {
     it(f"should calculate the ${name} value of test1.") {
-      assert(crc32(test1buffer.pointer, test1.length, 0) === test1ret)
+      assert(crc32(test1buffer.pointer, test1.length) === test1ret)
     }
 
     it(f"should return 0 if the ${name} of the test1 is appended to that.") {
-      assert((~crc32(test1buffer.pointer, test1.length + 4, 0)) === 0)
+      assert((~crc32(test1buffer.pointer, test1.length + 4)) === 0)
     }
     it(f"should calculate the ${name} value of test2.") {
-      assert(crc32(test2buffer.pointer, test2.length, 0) === test2ret)
+      assert(crc32(test2buffer.pointer, test2.length) === test2ret)
     }
 
     it(f"should return 0 if the ${name} of test2 is appended to that.") {
-      assert((~crc32(test2buffer.pointer, test2.length + 4, 0)) === 0)
+      assert((~crc32(test2buffer.pointer, test2.length + 4)) === 0)
+    }
+  }
+
+  describe(f"${name}.apply(Array[Byte])") {
+    it(f"should calculate the ${name} value of test1.") {
+      assert(crc32(test1) === test1ret)
+    }
+
+    it(f"should calculate the ${name} value of test2.") {
+      assert(crc32(test2) === test2ret)
     }
   }
 }
