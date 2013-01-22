@@ -28,11 +28,11 @@
  * The author of C implementation is Lasse Collin. Thanks a lot!
  */
 
-package info.sumito3478.aprikot.math
+package info.sumito3478.aprikot.check
 
 import java.lang.{ Integer => JInteger }
-
 import info.sumito3478.aprikot.unsafe.{ Memory, Pointer, ByteOrder, bswap }
+import java.lang.{ Integer => JInteger }
 
 trait CRC32 {
   def poly: Int
