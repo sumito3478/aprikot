@@ -15,47 +15,12 @@
  */
 
 package info.sumito3478.aprikot.check
-import info.sumito3478.aprikot.unsafe.{ ArrayOfByteW, Memory, benchmark }
+import info.sumito3478.aprikot.unsafe.{ ArrayOfByteW, Memory, benchmark, IntW }
 import org.scalatest.FunSpec
 import java.util.zip.{ CRC32 => JCRC32 }
 import scala.Array.canBuildFrom
 
 class CRC32Spec extends FunSpec {
-  val testData: Array[Byte] = {
-    Array[Int](
-      // Data.
-      0x01, 0xC0, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      0x01, 0xFE, 0x60, 0xAC,
-      0x00, 0x00, 0x00, 0x08,
-      0x00, 0x00, 0x00, 0x04,
-      0x00, 0x00, 0x00, 0x09,
-      0x25, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      // `~CRC32(above Data)`. This makes `~CRC32(testData)` result to 0.
-      0x99, 0x5e, 0x68, 0x37).map(_.toByte)
-  }
-
-  val testBuffer: Memory = {
-    val ret = Memory(52)
-    testData.memcpy(ret.pointer)
-    ret
-  }
-
-  describe("CRC32.apply(Pointer, Long, Int)") {
-    it("should calculate the CRC32 value.") {
-      assert(CRC32(testBuffer.pointer, 48, 0) === 0xc897a166)
-    }
-
-    it("should return 0 if the CRC32 of the input is appended to that.") {
-      assert((~CRC32(testBuffer.pointer, 52, 0)) === 0)
-    }
-  }
-
   describe("benchmark") {
     it("benchmark") {
       val num = 0xffff
@@ -79,6 +44,47 @@ class CRC32Spec extends FunSpec {
         val r = CRC32C(mem.pointer, num, 0)
       }
       println(f"info.sumito3478.aprikot.math.CRC32: ${ret2.toDouble / 1000000} sec")
+    }
+  }
+
+  val test1 = "hello world".getBytes("UTF-8")
+
+  val test1ret = 0x0d4a1185
+
+  val test1buffer = {
+    val ret = Memory(test1.length + 4)
+    test1.memcpy(ret.pointer)
+    (ret.pointer + test1.length).int = (~test1ret).toLE
+    ret
+  }
+
+  val test2 =
+    "Mis, Mis, Mister, Drill, Driller, I'll do my best, I cant lose!".
+      getBytes("UTF-8")
+
+  val test2ret = 0x2c78b2f6
+
+  val test2buffer = {
+    val ret = Memory(test2.length + 4)
+    test2.memcpy(ret.pointer)
+    (ret.pointer + test2.length).int = (~test2ret).toLE
+    ret
+  }
+
+  describe("CRC32.apply(Pointer, Long, Int)") {
+    it("should calculate the CRC32 value of test1.") {
+      assert(CRC32(test1buffer.pointer, test1.length, 0) === test1ret)
+    }
+
+    it("should return 0 if the CRC32 of the test1 is appended to that.") {
+      assert((~CRC32(test1buffer.pointer, test1.length + 4, 0)) === 0)
+    }
+    it("should calculate the CRC32 value of test2.") {
+      assert(CRC32(test2buffer.pointer, test2.length, 0) === test2ret)
+    }
+
+    it("should return 0 if the CRC32 of test2 is appended to that.") {
+      assert((~CRC32(test2buffer.pointer, test2.length + 4, 0)) === 0)
     }
   }
 }
