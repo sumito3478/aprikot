@@ -57,6 +57,10 @@ object Memory {
    * @note Current implementation allocates the memory with
    *   [[com.sun.jna.Native.malloc]] and deallocates it with
    *   [[com.sun.jna.Native.free]].
+   *
+   *   The instance that this method returns has a finalizer that deallocate
+   *   the unmanaged memory. This is necessary for the thread local unmanaged
+   *   memory.
    */
   def apply(size: Long): Memory = {
     val ptr = Native.malloc(size)
