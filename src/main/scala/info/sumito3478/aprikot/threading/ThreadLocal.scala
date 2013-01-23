@@ -18,6 +18,8 @@ package info.sumito3478.aprikot.threading
 
 import java.lang.{ ThreadLocal => JThreadLocal }
 
+import info.sumito3478.aprikot.unsafe.Memory
+
 /**
  * A trait that represents a thread local storage.
  *
@@ -43,4 +45,17 @@ object ThreadLocal {
       }
     }
   }
+
+  /**
+   * Creates a thread local unmanaged buffer with the given size.
+   */
+  def buffer(size: Long): ThreadLocal[Memory] = ThreadLocal[Memory] {
+    Memory(size)
+  }
+
+  /**
+   * Creates a thread local unmanaged buffer with the default size (currently
+   * 4K bytes).
+   */
+  def buffer: ThreadLocal[Memory] = buffer(0x1000)
 }

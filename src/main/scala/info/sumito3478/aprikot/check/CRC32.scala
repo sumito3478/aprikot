@@ -34,8 +34,11 @@ import java.lang.{ Integer => JInteger }
 import info.sumito3478.aprikot.unsafe.{ Memory, Pointer, ByteOrder, bswap, ArrayOfByteW }
 import java.lang.{ Integer => JInteger }
 import info.sumito3478.aprikot.unsafe.using
+import info.sumito3478.aprikot.threading.ThreadLocal
 
 trait CRC32 {
+  import CRC32._
+
   def poly: Int
 
   private[this] val rp = JInteger.reverse(poly)
@@ -140,12 +143,22 @@ trait CRC32 {
   def apply(p: Pointer, len: Long): Int = apply(p, len, 0)
 
   def apply(data: Array[Byte], start: Int, len: Int): Int = {
-    using(Memory(len)) {
-      memory =>
-        val p = memory.pointer
-        data.memcpy(p, start, len)
-        apply(p, len, 0)
+    val buf = buffer().pointer
+    var i = start
+    var size = len
+    var crc = 0
+    if (len > 0x1000) {
+      var limit = i + (size & ~0xfff)
+      size &= 0xfff
+      while (i < limit) {
+        data.memcpy(buf, i, 0x1000)
+        i += 0x1000
+        crc = apply(buf, 0x1000, crc)
+      }
     }
+    data.memcpy(buf, i, size)
+    crc = apply(buf, size, crc)
+    crc
   }
 
   def apply(data: Array[Byte], start: Int): Int = {
@@ -155,4 +168,8 @@ trait CRC32 {
   def apply(data: Array[Byte]): Int = {
     apply(data, 0, data.length)
   }
+}
+
+private object CRC32 {
+  private val buffer: ThreadLocal[Memory] = ThreadLocal.buffer
 }

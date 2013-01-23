@@ -67,4 +67,14 @@ trait CRC64Spec extends FunSpec {
       assert((~crc64(test2buffer.pointer, test2.length + 8, 0)) === 0)
     }
   }
+
+  describe(f"${name}.apply(Array[Byte])") {
+    it(f"should calculate the ${name} value of test1.") {
+      assert(crc64(test1) === test1ret)
+    }
+
+    it(f"should calculate the ${name} value of test2.") {
+      assert(crc64(test2) === test2ret)
+    }
+  }
 }

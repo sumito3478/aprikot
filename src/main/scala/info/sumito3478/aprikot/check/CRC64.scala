@@ -31,10 +31,13 @@
 package info.sumito3478.aprikot.check
 
 import java.lang.{ Long => JLong }
-import info.sumito3478.aprikot.unsafe.{ Memory, Pointer, ByteOrder, bswap }
+import info.sumito3478.aprikot.unsafe.{ Memory, Pointer, ByteOrder, bswap, ArrayOfByteW }
 import java.lang.{ Integer => JInteger }
+import info.sumito3478.aprikot.threading.ThreadLocal
 
 trait CRC64 {
+  import CRC64._
+
   def poly: Long
 
   private[this] val rp = JLong.reverse(poly)
@@ -128,4 +131,35 @@ trait CRC64 {
     crc = if (be) bswap(crc) else crc
     ~crc
   }
+
+  def apply(data: Array[Byte], start: Int, len: Int): Long = {
+    val buf = buffer().pointer
+    var i = start
+    var size = len
+    var crc = 0L
+    if (len > 0x1000) {
+      var limit = i + (size & ~0xfff)
+      size &= 0xfff
+      while (i < limit) {
+        data.memcpy(buf, i, 0x1000)
+        i += 0x1000
+        crc = apply(buf, 0x1000, crc)
+      }
+    }
+    data.memcpy(buf, i, size)
+    crc = apply(buf, size, crc)
+    crc
+  }
+
+  def apply(data: Array[Byte], start: Int): Long = {
+    apply(data, start, data.length - start)
+  }
+
+  def apply(data: Array[Byte]): Long = {
+    apply(data, 0, data.length)
+  }
+}
+
+private object CRC64 {
+  private val buffer: ThreadLocal[Memory] = ThreadLocal.buffer
 }
