@@ -24,6 +24,18 @@ import info.sumito3478.aprikot.unsafe.Memory
  * A trait that represents a thread local storage.
  *
  * Use ThreadLocal.apply to create an instance of this trait.
+ *
+ * Example Usage:
+ * {{
+ * import info.sumito3478.aprikot.threading.ThreadLocal
+ *
+ * val local = ThreadLocal {
+ *   new SomeThing(some, args)
+ * }
+ *
+ * // ...
+ *
+ * val l = local() // l is specific to the current thread!
  */
 trait ThreadLocal[A] {
   def apply(): A

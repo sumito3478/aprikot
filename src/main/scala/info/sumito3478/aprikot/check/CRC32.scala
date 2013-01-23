@@ -36,6 +36,40 @@ import java.lang.{ Integer => JInteger }
 import info.sumito3478.aprikot.unsafe.using
 import info.sumito3478.aprikot.threading.ThreadLocal
 
+/**
+ * A base trait for CRC32 implementations.
+ *
+ * To create a new implementation of CRC32,
+ * implement `def poly`, which returns 32bit integer value
+ * that each bits represents the coefficient value of
+ * the polynominal of CRC, except for the maximum one
+ * (e.g.  0x04c11db7, which equals to 0b00000100110000010001110110110111,
+ * for x^32^ + x^26^ + x^23^ + x^22^ + x^16^ + x^12^ + x^11^ + x^10^ +
+ * x^8^ + x^7^ + x^5^ + x^4^ + x^2^ + x + 1).
+ *
+ * Example Usage:
+ * {{{
+ * import info.sumito3478.aprikot.check.CRC32
+ *
+ * object crc32 extends CRC32 {
+ *   def poly: Int = 0x04c11db7
+ * }
+ *
+ * val testData =
+ *   "Mis, Mis, Mister, Drill, Driller, I'll do my best, I cant lose!".
+ *     getBytes("UTF-8")
+ *
+ * val crc32OfTestData = crc32(testData)
+ *
+ * // crc32OfTestData == 0x2c78b2f6
+ * }}}
+ *
+ * @note
+ *   Current implementation is based on the slice-by-8 algorithm,
+ *   with the table and input data in unmanaged memory.
+ *   If the input data is a managed array, it is copied to the thread local
+ *   unmanaged memory.
+ */
 trait CRC32 {
   import CRC32._
 

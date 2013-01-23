@@ -16,6 +16,9 @@
 
 package info.sumito3478.aprikot.check
 
+/**
+ * CRC32-K(Koopman) implementation.
+ */
 object CRC32K extends CRC32 {
   def poly = 0x741B8CD7
 }

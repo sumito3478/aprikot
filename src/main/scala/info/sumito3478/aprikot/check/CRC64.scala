@@ -35,6 +35,39 @@ import info.sumito3478.aprikot.unsafe.{ Memory, Pointer, ByteOrder, bswap, Array
 import java.lang.{ Integer => JInteger }
 import info.sumito3478.aprikot.threading.ThreadLocal
 
+/**
+ * A base trait for CRC64 implementations.
+ *
+ * To create a new implementation of CRC64,
+ * implement `def poly`, which returns 64bit integer value
+ * that each bits represents the coefficient value of
+ * the polynominal of CRC, except for the maximum one
+ * (e.g.  0x1bL, which equals to 0b1101L,
+ * for x^64^ + x^4^ + x^3^ + x + 1).
+ *
+ * Example Usage:
+ * {{{
+ * import info.sumito3478.aprikot.check.CRC64
+ *
+ * object crc32 extends CRC32 {
+ *   def poly: Int = 0x1bL
+ * }
+ *
+ * val testData =
+ *   "Mis, Mis, Mister, Drill, Driller, I'll do my best, I cant lose!".
+ *     getBytes("UTF-8")
+ *
+ * val crc64OfTestData = crc64(testData)
+ *
+ * // crc64OfTestData == 0x5880199a537a151eL
+ * }}}
+ *
+ * @note
+ *   Current implementation is based on the slice-by-4 algorithm,
+ *   with the table and input data in unmanaged memory.
+ *   If the input data is a managed array, it is copied to the thread local
+ *   unmanaged memory.
+ */
 trait CRC64 {
   import CRC64._
 

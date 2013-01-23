@@ -16,6 +16,9 @@
 
 package info.sumito3478.aprikot.check
 
+/**
+ * CRC32-C(Castagnoli) implementation.
+ */
 object CRC32C extends CRC32 {
   def poly = 0x1edc6f41
 }

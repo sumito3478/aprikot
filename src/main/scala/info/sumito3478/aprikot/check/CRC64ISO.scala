@@ -15,6 +15,9 @@
  */
 package info.sumito3478.aprikot.check
 
+/**
+ * CRC64-ISO3309 implementation.
+ */
 object CRC64ISO extends CRC64 {
   def poly: Long = 0x1b
 }

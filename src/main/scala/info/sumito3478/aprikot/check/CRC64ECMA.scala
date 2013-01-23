@@ -15,6 +15,9 @@
  */
 package info.sumito3478.aprikot.check
 
+/**
+ * CRC64-ECMA182 implementation.
+ */
 object CRC64ECMA extends CRC64 {
   def poly: Long = 0x42F0E1EBA9EA3693L
 }
