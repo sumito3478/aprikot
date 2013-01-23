@@ -146,14 +146,7 @@ package object unsafe {
 
   implicit class ArrayOfByteW(val underlined: Array[Byte]) extends AnyVal {
     def memcpy(dest: Pointer, start: Int, len: Int): Unit = {
-      var i = start
-      val end = start + len
-      var cp = dest.p
-      while (i < end) {
-        _unsafe.putByte(cp, underlined(i))
-        i += 1
-        cp += 1
-      }
+      dest.jna.write(0, underlined, start, len)
     }
 
     def memcpy(dest: Pointer, start: Int): Unit = {
@@ -167,14 +160,7 @@ package object unsafe {
 
   implicit class ArrayOfShortW(val underlined: Array[Short]) extends AnyVal {
     def memcpy(dest: Pointer, start: Int, len: Int): Unit = {
-      var i = start
-      val end = start + len
-      var cp = dest.p
-      while (i < end) {
-        _unsafe.putShort(cp, underlined(i))
-        i += 1
-        cp += 2
-      }
+      dest.jna.write(0, underlined, start, len)
     }
 
     def memcpy(dest: Pointer, start: Int): Unit = {
@@ -188,14 +174,7 @@ package object unsafe {
 
   implicit class ArrayOfIntW(val underlined: Array[Int]) extends AnyVal {
     def memcpy(dest: Pointer, start: Int, len: Int): Unit = {
-      var i = start
-      val end = start + len
-      var cp = dest.p
-      while (i < end) {
-        _unsafe.putInt(cp, underlined(i))
-        i += 1
-        cp += 4
-      }
+      dest.jna.write(0, underlined, start, len)
     }
 
     def memcpy(dest: Pointer, start: Int): Unit = {
@@ -209,14 +188,7 @@ package object unsafe {
 
   implicit class ArrayOfLongW(val underlined: Array[Long]) extends AnyVal {
     def memcpy(dest: Pointer, start: Int, len: Int): Unit = {
-      var i = start
-      val end = start + len
-      var cp = dest.p
-      while (i < end) {
-        _unsafe.putLong(cp, underlined(i))
-        i += 1
-        cp += 8
-      }
+      dest.jna.write(0, underlined, start, len)
     }
 
     def memcpy(dest: Pointer, start: Int): Unit = {
