@@ -14,47 +14,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.math
+package info.sumito3478.aprikot.check
 
-import info.sumito3478.aprikot.unsafe.{ ArrayOfByteW, ArrayOfIntW, Memory, benchmark }
+import java.util.zip.{ CRC32 => JCRC32 }
 
-import org.scalatest.FunSpec
+import info.sumito3478.aprikot.unsafe.ArrayOfByteW
+import info.sumito3478.aprikot.unsafe.Memory
+import info.sumito3478.aprikot.unsafe.benchmark
 
-class CRC32Spec extends FunSpec {
-  val testData: Array[Byte] = {
-    Array[Int](
-      // Data.
-      0x01, 0xC0, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      0x01, 0xFE, 0x60, 0xAC,
-      0x00, 0x00, 0x00, 0x08,
-      0x00, 0x00, 0x00, 0x04,
-      0x00, 0x00, 0x00, 0x09,
-      0x25, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00,
-      // `~CRC32(above Data)`. This makes `~CRC32(testData)` result to 0.
-      0x99, 0x5e, 0x68, 0x37).map(_.toByte)
-  }
+class CRC32IEEESpec extends CRC32Spec {
+  def crc32: CRC32 = CRC32IEEE
 
-  val testBuffer: Memory = {
-    val ret = Memory(52)
-    testData.memcpy(ret.pointer)
-    ret
-  }
+  def name: String = "CRC32IEEE"
 
-  describe("CRC32.apply(Pointer, Long, Int)") {
-    it("should calculate the CRC32 value.") {
-      assert(CRC32(testBuffer.pointer, 48, 0) === 0xc897a166)
-    }
+  def test1ret: Int = 0x0d4a1185
 
-    it("should return 0 if the CRC32 of the input is appended to that.") {
-      assert((~CRC32(testBuffer.pointer, 52, 0)) === 0)
-    }
-  }
+  def test2ret: Int = 0x2c78b2f6
 
   describe("benchmark") {
     it("benchmark") {
@@ -76,9 +51,16 @@ class CRC32Spec extends FunSpec {
       println(f"java.util.zip.CRC32: ${ret1.toDouble / 1000000} sec")
       System.gc()
       val ret2 = benchmark {
-        val r = CRC32C(mem.pointer, num, 0)
+        val r = CRC32IEEE(mem.pointer, num)
       }
-      println(f"info.sumito3478.aprikot.math.CRC32: ${ret2.toDouble / 1000000} sec")
+      println(
+        f"info.sumito3478.aprikot.math.CRC32IEEE: ${ret2.toDouble / 1000000} sec")
+      System.gc()
+      val ret3 = benchmark {
+        val r = CRC32IEEE(data)
+      }
+      println(
+        f"info.sumito3478.aprikot.math.CRC32IEEE(given Array[Byte]): ${ret3.toDouble / 1000000} sec")
     }
   }
 }
