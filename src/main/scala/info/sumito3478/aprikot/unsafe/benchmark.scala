@@ -16,6 +16,7 @@
 
 package info.sumito3478.aprikot.unsafe
 
+import java.lang.System.gc
 import java.lang.System.nanoTime
 
 /**
@@ -50,6 +51,7 @@ object benchmark {
     }
     var i = 0
     val limit = n * 10000
+    gc()
     val start = nanoTime
     while (i < limit) {
       op
