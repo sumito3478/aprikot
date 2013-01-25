@@ -173,6 +173,20 @@ package object math {
       require(restored == underlined, f"checked cast from 0x${underlined}%x: Int to Double failed.")
       ret
     }
+
+    /**
+     * Floor-division operator.
+     */
+    def /->(x: Int) = {
+      if (underlined >= 0) underlined / x else ((underlined + 1) / x) - 1
+    }
+
+    /**
+     * Positive-modulus operator.
+     */
+    def %->(x: Int) = {
+      (underlined % x + x) % x
+    }
   }
 
   implicit class LongW(val underlined: Long) extends AnyVal {
@@ -229,6 +243,20 @@ package object math {
       val restored = ret.toLong
       require(restored == underlined, f"checked cast from 0x${underlined}%x: Long to Double failed.")
       ret
+    }
+
+    /**
+     * Floor-division operator.
+     */
+    def /->(x: Long) = {
+      if (underlined >= 0) underlined / x else ((underlined + 1) / x) - 1
+    }
+
+    /**
+     * Positive-modulus operator.
+     */
+    def %->(x: Long) = {
+      (underlined % x + x) % x
     }
   }
 
