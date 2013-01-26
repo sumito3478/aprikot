@@ -24,7 +24,7 @@ class BufferedIteratorWSpec extends FunSpec {
     it("should takeWhile with look ahead") {
       val ret = List(1, 2, 3, 4, 5).iterator.buffered.takeWhile {
         (next: Int, head: Option[Int]) =>
-          head.map(_ == 4).getOrElse(false)
+          head.map(_ != 5).getOrElse(false)
       }.toList
       assert(ret === List(1, 2, 3))
     }
