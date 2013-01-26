@@ -51,7 +51,7 @@ object benchmark {
     }
     var i = 0
     val limit = n * 10000
-    gc()
+    gc
     val start = nanoTime
     while (i < limit) {
       op
