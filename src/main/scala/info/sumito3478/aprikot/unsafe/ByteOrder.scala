@@ -18,28 +18,62 @@ package info.sumito3478.aprikot.unsafe
 
 import java.lang.{ Double => JDouble }
 
+/**
+ * The base trait for endian tag objects.
+ */
 sealed trait ByteOrder
 
+/**
+ * The tag object for little endian.
+ */
 case object LittleEndian extends ByteOrder
 
+/**
+ * The tag object for big endian.
+ */
 case object BigEndian extends ByteOrder
 
+/**
+ * The tag object for little endian of ARM.
+ *
+ * In the little endian in ARM, the byte order of
+ * double precision floating pooint value is different to
+ * other hosts.
+ *
+ * @note Handling ARM-little-endian is not implemented well yet.
+ */
 case object ArmLittleEndian extends ByteOrder
 
 object ByteOrder {
+  /**
+   * Detects if the host is a little-endian system, including ARM.
+   */
   val isLE: Boolean = {
     (0xcafebabe >>> 16) == 0xcafe
   }
 
+  /**
+   * Detects if the host is a big-endian system.
+   */
   val isBE: Boolean = {
     !isLE
   }
 
+  /**
+   * Detects if the host is a little-enmdian ARM system.
+   * Not implemented well yet.
+   */
   val isArmLE: Boolean = {
     // TODO: I'm not sure this is really correct...
     JDouble.doubleToLongBits(1.0) == 0x3ff00000L
   }
 
+  /**
+   * Returns an instance of ByteOrder that represents endianness of
+   * current host.
+   *
+   * @note ARM is not supported well yet.
+   */
   val native: ByteOrder = {
     if (isArmLE) {
       ArmLittleEndian

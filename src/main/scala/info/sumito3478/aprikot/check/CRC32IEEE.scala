@@ -16,6 +16,9 @@
 
 package info.sumito3478.aprikot.check
 
+/**
+ * CRC32-IEEE implementation.
+ */
 object CRC32IEEE extends CRC32 {
   def poly = 0x04c11db7
 }

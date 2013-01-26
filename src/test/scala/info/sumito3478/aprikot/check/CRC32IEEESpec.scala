@@ -41,7 +41,6 @@ class CRC32IEEESpec extends CRC32Spec {
       }
       val mem = Memory(num)
       data.memcpy(mem.pointer)
-      System.gc()
       import java.util.zip.{ CRC32 => JCRC32 }
       val ret1 = benchmark {
         val j = new JCRC32()
@@ -49,13 +48,11 @@ class CRC32IEEESpec extends CRC32Spec {
         val r = j.getValue
       }
       println(f"java.util.zip.CRC32: ${ret1.toDouble / 1000000} sec")
-      System.gc()
       val ret2 = benchmark {
         val r = CRC32IEEE(mem.pointer, num)
       }
       println(
         f"info.sumito3478.aprikot.math.CRC32IEEE: ${ret2.toDouble / 1000000} sec")
-      System.gc()
       val ret3 = benchmark {
         val r = CRC32IEEE(data)
       }

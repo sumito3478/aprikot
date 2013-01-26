@@ -23,7 +23,7 @@ import scala.concurrent.util.Unsafe.{ instance => _unsafe }
 import com.sun.jna.{ Pointer => JPointer }
 
 /**
- * An implementation of [[Pointer]] underlined with [[com.sun.jna.Pointer]].
+ * A class that represents a pointer of unmanaged memory.
  */
 class Pointer(val p: Long) extends AnyVal {
   def +(n: Long): Pointer = {

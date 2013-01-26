@@ -13,12 +13,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package info.sumito3478.aprikot.net
 
-package info.sumito3478.aprikot.check
+import info.sumito3478.aprikot.text.ByteString
 
-/**
- * CRC32-C(Castagnoli) implementation.
- */
-object CRC32C extends CRC32 {
-  def poly = 0x1edc6f41
+trait HttpHeaderParser {
+  val extracter = """(?:\r?\n)*(.*)\r?\n\r?\n([\S\s]*)""".r
+
+  def extract(buffer: Vector[Byte]): Vector[Byte] = {
+    val start = buffer.iterator.takeWhile(b => b == '\r' || b == '\n').length
+    buffer.indexOfSlice("\r\n\r\n", start)
+    var end = 0
+    buffer.slice(start, end)
+  }
 }

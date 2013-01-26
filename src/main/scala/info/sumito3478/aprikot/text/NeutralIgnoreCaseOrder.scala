@@ -13,12 +13,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package info.sumito3478.aprikot.check
+package info.sumito3478.aprikot.text
 
 /**
- * CRC32-C(Castagnoli) implementation.
+ * A [[scala.math.Ordering]] instance that represent a *locale-unaware*
+ * ignore-case ordering.
  */
-object CRC32C extends CRC32 {
-  def poly = 0x1edc6f41
+object NeutralIgnoreCaseOrder extends Ordering[String] {
+  /**
+   * Compares two strings lexicographically, ignoring case differences, in
+   * a locale-unaware manner.
+   *
+   * @return
+   *   - negative integer if a < b
+   *   - positive integer if b < a
+   *   - zero if a == b
+   */
+  def compare(a: String, b: String) = a.compareToIgnoreCase(b)
 }

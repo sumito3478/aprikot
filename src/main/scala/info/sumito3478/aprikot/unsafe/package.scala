@@ -22,9 +22,6 @@ import java.lang.{ Integer => JInt }
 import java.lang.{ Long => JLong }
 import java.lang.{ Short => JShort }
 
-/**
- * An implementation of [[Pointer]] underlined with [[com.sun.jna.Pointer]].
- */
 package object unsafe {
   private[this] val le = (0xcafebabe >>> 16) == 0xcafe
 

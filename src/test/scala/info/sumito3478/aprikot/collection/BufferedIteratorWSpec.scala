@@ -14,11 +14,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.check
+package info.sumito3478.aprikot.collection
 
-/**
- * CRC32-C(Castagnoli) implementation.
- */
-object CRC32C extends CRC32 {
-  def poly = 0x1edc6f41
+import org.scalatest
+import scalatest.FunSpec
+
+class BufferedIteratorWSpec extends FunSpec {
+  describe("BufferedIteratorW#takeWhile") {
+    it("should takeWhile with look ahead") {
+      val ret = List(1, 2, 3, 4, 5).iterator.buffered.takeWhile {
+        (next: Int, head: Option[Int]) =>
+          head.map(_ != 5).getOrElse(false)
+      }.toList
+      assert(ret === List(1, 2, 3))
+    }
+  }
 }
