@@ -15,15 +15,40 @@
  */
 package info.sumito3478.aprikot.net
 
-import info.sumito3478.aprikot.text.ByteString
+import scala.util.parsing.combinator.Parsers
 
-trait HttpHeaderParser {
-  val extracter = """(?:\r?\n)*(.*)\r?\n\r?\n([\S\s]*)""".r
-
-  def extract(buffer: Vector[Byte]): Vector[Byte] = {
-    val start = buffer.iterator.takeWhile(b => b == '\r' || b == '\n').length
-    buffer.indexOfSlice("\r\n\r\n", start)
-    var end = 0
-    buffer.slice(start, end)
-  }
+object HttpHeaderParser extends Parsers {
+  type Elem = Byte
+  
+  val any = elem("any", _ => true)
+  
+  val OCTET = elem("OCTET", _ => true)
+  
+  val SP = elem("SP", _ == ' ')
+    
+  val HT = elem("HT", _ == '\t')
+  
+  val LWS = lineBreak.? ~ (SP | HT).*
+  
+  val FIELD_NAME_CHAR = elem("FIELD_NAME_CHAR", _ != ':')
+  
+  val fieldName = FIELD_NAME_CHAR.+
+  
+  val fieldContent = OCTET.+
+  
+  val fieldValue = (LWS | fieldContent).*
+  
+  val messageHeader = fieldName ~ elem("COLON", _ == ':') ~ fieldValue.?
+  
+  val CR = elem("CR", _ == '\r')
+  
+  val LF = elem("LF", _ == '\n')
+  
+  val lineBreak = CR.? ~ LF
+  
+  val startLine = OCTET.+
+  
+  val httpMessage = (lineBreak.* ~ startLine ~ lineBreak ~ lineBreak.?
+      ~ (messageHeader ~ lineBreak).* ~ lineBreak ~ lineBreak)
+      
 }
