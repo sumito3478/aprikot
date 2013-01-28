@@ -15,40 +15,79 @@
  */
 package info.sumito3478.aprikot.net
 
-import scala.util.parsing.combinator.Parsers
+import scala.util.parsing.combinator.PackratParsers
+import scala.collection.immutable.WrappedString
 
-object HttpHeaderParser extends Parsers {
+object HttpHeaderParser extends PackratParsers {
   type Elem = Byte
-  
-  val any = elem("any", _ => true)
-  
-  val OCTET = elem("OCTET", _ => true)
-  
-  val SP = elem("SP", _ == ' ')
-    
-  val HT = elem("HT", _ == '\t')
-  
-  val LWS = lineBreak.? ~ (SP | HT).*
-  
-  val FIELD_NAME_CHAR = elem("FIELD_NAME_CHAR", _ != ':')
-  
-  val fieldName = FIELD_NAME_CHAR.+
-  
-  val fieldContent = OCTET.+
-  
-  val fieldValue = (LWS | fieldContent).*
-  
-  val messageHeader = fieldName ~ elem("COLON", _ == ':') ~ fieldValue.?
-  
-  val CR = elem("CR", _ == '\r')
-  
-  val LF = elem("LF", _ == '\n')
-  
-  val lineBreak = CR.? ~ LF
-  
-  val startLine = OCTET.+
-  
-  val httpMessage = (lineBreak.* ~ startLine ~ lineBreak ~ lineBreak.?
-      ~ (messageHeader ~ lineBreak).* ~ lineBreak ~ lineBreak)
-      
+
+  def isCTL(b: Byte) = b <= 31 || b == 127
+
+  val NON_CTL = elem("NON_CTL", !isCTL(_))
+
+  def isDIGIT(b: Byte) = '0' <= b && b <= '9'
+
+  val DIGIT = elem("DIGIT", isDIGIT(_))
+
+  val NON_DIGIT = elem("NON_DIGIT", b => !isCTL(b) || !isDIGIT(b))
+
+  val CRLF = elem('\r') ~ elem('\n')
+
+  val SP = elem(' ')
+
+  val HT = elem('\t')
+
+  val LWS: Parser[Byte] = CRLF.? ~ (SP | HT).+ ^^ (_ => ' '.toByte)
+
+  val FIELD_NAME_CHAR = elem("FIELD_NAME_CHAR", b => !isCTL(b) && b != ':')
+
+  val fieldName: Parser[String] =
+    FIELD_NAME_CHAR.+ ^^ (xs => new String(xs.toArray, "UTF-8"))
+
+  val fieldValue: Parser[String] =
+    (NON_CTL | LWS).+ ^^ (xs => new String(xs.toArray, "UTF-8"))
+
+  val messageHeader: Parser[(String, String)] =
+    fieldName ~ elem(':') ~ fieldValue.? ~ CRLF ^^ {
+      case n ~ _ ~ v ~ _ => (n, v.getOrElse(""))
+    }
+
+  val HttpSlash = elem('H') ~ elem('T') ~ elem('T') ~ elem('P') ~ elem('/')
+
+  val HttpVersion = HttpSlash ~
+    DIGIT.+ ~ elem('.') ~ DIGIT.+ ^^ {
+      case _ ~ major ~ _ ~ minor =>
+        s"HTTP/${major.map(_.toChar.asDigit).mkString}.${minor.map(_.toChar.asDigit).mkString}"
+    }
+
+  val RequestURI = NON_CTL.+
+
+  val Method = NON_DIGIT ~ NON_CTL.*
+
+  val RequestLine = Method ~ SP ~ RequestURI ~ SP ~ HttpVersion ~ CRLF
+
+  val StatusCode = DIGIT ~ DIGIT ~ DIGIT ^^ {
+    case a ~ b ~ c => a.toChar.asDigit * 100 + b.toChar.asDigit * 10 +
+      c.toChar.asDigit
+  }
+
+  val ReasonPhrase = NON_CTL.* ^^ {
+    xs => new String(xs.toArray, "UTF-8")
+  }
+
+  val StatusLine = HttpVersion ~ SP ~ StatusCode ~ SP ~ ReasonPhrase ~ CRLF ^^ {
+    case v ~ _ ~ c ~ _ ~ r ~ _ => s"$v $c $r"
+  }
+
+  //val startLine = RequestLine | StatusLine
+  //
+  //  val startLine: Parser[String] = NON_CTL.+ ~ CRLF ^^ {
+  //    case s ~ _ => new String(s.toArray, "UTF-8")
+  //  }
+
+  val startLine = StatusLine | RequestLine
+
+  val genericMessage = startLine ~ messageHeader.+ ~ CRLF ^^ {
+    _.toString
+  }
 }
