@@ -17,6 +17,7 @@ package info.sumito3478.aprikot.net
 
 import scala.util.parsing.combinator.PackratParsers
 import scala.collection.immutable.WrappedString
+import java.net.URI
 
 object HttpHeaderParser extends PackratParsers {
   type Elem = Byte
@@ -24,6 +25,8 @@ object HttpHeaderParser extends PackratParsers {
   def isCTL(b: Byte) = b <= 31 || b == 127
 
   val NON_CTL = elem("NON_CTL", !isCTL(_))
+
+  val NON_WS = elem("NON_WS", b => !isCTL(b) && b != ' ' && b != '\t')
 
   def isDIGIT(b: Byte) = '0' <= b && b <= '9'
 
@@ -60,18 +63,24 @@ object HttpHeaderParser extends PackratParsers {
         s"HTTP/${major.map(_.toChar.asDigit).mkString}.${minor.map(_.toChar.asDigit).mkString}"
     }
 
-  val RequestURI = NON_CTL.+
+  val RequestURI = NON_WS.+ ^^ {
+    xs =>
+      val uri = new String(xs.toArray, "UTF-8")
+      new URI(uri)
+  }
 
-  val Method = NON_DIGIT ~ NON_CTL.*
+  val Method = NON_WS.+
 
-  val RequestLine = Method ~ SP ~ RequestURI ~ SP ~ HttpVersion ~ CRLF
+  val RequestLine = Method ~ SP ~ RequestURI ~ SP ~ HttpVersion ~ CRLF ^^ {
+    case m ~ _ ~ uri ~ _ ~ v ~ _ => s"$m ${uri} $v"
+  }
 
   val StatusCode = DIGIT ~ DIGIT ~ DIGIT ^^ {
     case a ~ b ~ c => a.toChar.asDigit * 100 + b.toChar.asDigit * 10 +
       c.toChar.asDigit
   }
 
-  val ReasonPhrase = NON_CTL.* ^^ {
+  val ReasonPhrase = NON_WS.* ^^ {
     xs => new String(xs.toArray, "UTF-8")
   }
 
