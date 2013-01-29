@@ -13,10 +13,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.net
+package info.sumito3478.aprikot.net.http
 
 import scala.util.parsing.combinator.PackratParsers
-import scala.collection.immutable.WrappedString
 import java.net.URI
 
 object HttpHeaderParser extends PackratParsers {
@@ -40,15 +39,22 @@ object HttpHeaderParser extends PackratParsers {
 
   val HT = elem('\t')
 
-  val LWS: Parser[Byte] = CRLF.? ~ (SP | HT).+ ^^ (_ => ' '.toByte)
+  val LWS = CRLF.? ~ (SP | HT).+ ^^ (_ => " ")
 
   val FIELD_NAME_CHAR = elem("FIELD_NAME_CHAR", b => !isCTL(b) && b != ':')
 
   val fieldName: Parser[String] =
     FIELD_NAME_CHAR.+ ^^ (xs => new String(xs.toArray, "UTF-8"))
 
+  val fieldContent: Parser[String] = NON_WS.+ ^^ {
+    xs => new String(xs.toArray, "UTF-8")
+  }
+
   val fieldValue: Parser[String] =
-    (NON_CTL | LWS).+ ^^ (xs => new String(xs.toArray, "UTF-8"))
+    (fieldContent | LWS).* ^^ {
+      case xs =>
+        xs.filter(_ != " ").mkString(" ")
+    }
 
   val messageHeader: Parser[(String, String)] =
     fieldName ~ elem(':') ~ fieldValue.? ~ CRLF ^^ {

@@ -14,11 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.net
-
-import org.scalatest
-import scalatest.FunSpec
-
+package info.sumito3478.aprikot.net.http
+import org.scalatest.FunSpec
 import info.sumito3478.aprikot.parsing.IndexedSeqReader
 
 class HttpHeaderParserSpec extends FunSpec {
