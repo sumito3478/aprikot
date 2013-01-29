@@ -17,6 +17,7 @@ package info.sumito3478.aprikot.net.http
 
 import scala.util.parsing.combinator.PackratParsers
 import java.net.URI
+import scala.collection.mutable.ArrayBuilder
 
 object HttpHeaderParser extends PackratParsers {
   type Elem = Byte
@@ -39,34 +40,52 @@ object HttpHeaderParser extends PackratParsers {
 
   val HT = elem('\t')
 
-  val LWS = CRLF.? ~ (SP | HT).+ ^^ (_ => " ")
+  val LWS: Parser[Option[Array[Byte]]] = CRLF.? ~ (SP | HT).+ ^^ (_ => None)
 
   val FIELD_NAME_CHAR = elem("FIELD_NAME_CHAR", b => !isCTL(b) && b != ':')
 
   val fieldName: Parser[String] =
     FIELD_NAME_CHAR.+ ^^ (xs => new String(xs.toArray, "UTF-8"))
 
-  val fieldContent: Parser[String] = NON_WS.+ ^^ {
-    xs => new String(xs.toArray, "UTF-8")
+  val fieldContent: Parser[Option[Array[Byte]]] = NON_WS.+ ^^ {
+    xs => Some(xs.toArray)
   }
 
-  val fieldValue: Parser[String] =
+  val fieldValue: Parser[Array[Byte]] =
     (fieldContent | LWS).* ^^ {
       case xs =>
-        xs.filter(_ != " ").mkString(" ")
+        val builder = new ArrayBuilder.ofByte
+        var first = true
+        xs foreach {
+          x =>
+            if (x.isDefined) {
+              val a = x.get
+              if (first) {
+                builder ++= a
+                first = false
+              } else {
+                builder += ' '
+                builder ++= a
+              }
+            }
+        }
+        builder.result
     }
 
-  val messageHeader: Parser[(String, String)] =
+  val messageHeader: Parser[MessageHeader] =
     fieldName ~ elem(':') ~ fieldValue.? ~ CRLF ^^ {
-      case n ~ _ ~ v ~ _ => (n, v.getOrElse(""))
+      case n ~ _ ~ v ~ _ => new MessageHeader(n, v.getOrElse(new Array[Byte](0)))
     }
 
   val HttpSlash = elem('H') ~ elem('T') ~ elem('T') ~ elem('P') ~ elem('/')
 
   val HttpVersion = HttpSlash ~
     DIGIT.+ ~ elem('.') ~ DIGIT.+ ^^ {
-      case _ ~ major ~ _ ~ minor =>
-        s"HTTP/${major.map(_.toChar.asDigit).mkString}.${minor.map(_.toChar.asDigit).mkString}"
+      case _ ~ major ~ _ ~ minor => {
+        val m = new String(major.toArray, "UTF-8").toInt
+        val n = new String(minor.toArray, "UTF-8").toInt
+        new HttpVersion(m, n)
+      }
     }
 
   val RequestURI = NON_WS.+ ^^ {
@@ -78,7 +97,9 @@ object HttpHeaderParser extends PackratParsers {
   val Method = NON_WS.+
 
   val RequestLine = Method ~ SP ~ RequestURI ~ SP ~ HttpVersion ~ CRLF ^^ {
-    case m ~ _ ~ uri ~ _ ~ v ~ _ => s"$m ${uri} $v"
+    case m ~ _ ~ uri ~ _ ~ v ~ _ => {
+      new RequestLine(new String(m.toArray, "UTF-8"), uri, v)
+    }
   }
 
   val StatusCode = DIGIT ~ DIGIT ~ DIGIT ^^ {
@@ -91,7 +112,9 @@ object HttpHeaderParser extends PackratParsers {
   }
 
   val StatusLine = HttpVersion ~ SP ~ StatusCode ~ SP ~ ReasonPhrase ~ CRLF ^^ {
-    case v ~ _ ~ c ~ _ ~ r ~ _ => s"$v $c $r"
+    case v ~ _ ~ c ~ _ ~ r ~ _ => {
+      new StatusLine(v, c, r)
+    }
   }
 
   //val startLine = RequestLine | StatusLine
@@ -103,6 +126,6 @@ object HttpHeaderParser extends PackratParsers {
   val startLine = StatusLine | RequestLine
 
   val genericMessage = startLine ~ messageHeader.+ ~ CRLF ^^ {
-    _.toString
+    case s ~ m ~ _ => new HttpHeader(s, m)
   }
 }
