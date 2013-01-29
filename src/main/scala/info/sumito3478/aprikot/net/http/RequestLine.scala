@@ -21,4 +21,11 @@ import java.net.URI
 /**
  * A class that represents the start line of HTTP request message.
  */
-class RequestLine(val method: String, val uri: URI, val version: HttpVersion)
+class RequestLine(
+  val method: String,
+  val uri: URI,
+  val version: HttpVersion) extends StartLine {
+  override def toString: String = {
+    s"${method} ${uri} ${version}"
+  }
+}

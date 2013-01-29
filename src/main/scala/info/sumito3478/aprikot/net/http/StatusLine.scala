@@ -19,4 +19,11 @@ package info.sumito3478.aprikot.net.http
 /**
  * A class that represents a start line of HTTP response message.
  */
-class StatusLine(val version: HttpVersion, val code: Int, val reason: String)
+class StatusLine(
+  val version: HttpVersion,
+  val code: Int,
+  val reason: String) extends StartLine {
+  override def toString: String = {
+    s"${version} ${code} ${reason}"
+  }
+}
