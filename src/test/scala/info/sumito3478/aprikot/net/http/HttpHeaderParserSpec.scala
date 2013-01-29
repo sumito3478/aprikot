@@ -19,7 +19,7 @@ import org.scalatest.FunSpec
 import info.sumito3478.aprikot.parsing.IndexedSeqReader
 
 class HttpHeaderParserSpec extends FunSpec {
-  describe("HttpHeaderParser#genericMessage") {
+  describe("HttpHeaderParser.apply") {
     it("should be able to parse HTTP ResponseMessage") {
       val message = """HTTP/1.1 200 OK
 Transfer-Encoding: chunked  
@@ -39,13 +39,8 @@ Vary: Accept-Encoding, Cookie, User-Agent
   
 
 """.replace("\n", "\r\n")
-      val ret = HttpHeaderParser.genericMessage(
-        new IndexedSeqReader(message.getBytes("UTF-8")))
-      ret match {
-        case e: HttpHeaderParser.Failure => println(e.msg)
-        case e: HttpHeaderParser.Error => println(e.msg)
-        case r: HttpHeaderParser.Success[_] => println(r.result)
-      }
+      val ret = HttpHeaderParser(message.getBytes("UTF-8"))
+      assert(ret.startLine.isInstanceOf[StatusLine] === true)
     }
     it("should be able to parse HTTP RequestMessage") {
       val message = """GET /tutorials/other/top-20-mysql-best-practices/ HTTP/1.1
@@ -63,13 +58,8 @@ Cache-Control: no-cache
   
 
 """.replace("\n", "\r\n")
-      val ret = HttpHeaderParser.genericMessage(
-        new IndexedSeqReader(message.getBytes("UTF-8")))
-      ret match {
-        case e: HttpHeaderParser.Failure => println(e.msg)
-        case e: HttpHeaderParser.Error => println(e.msg)
-        case r: HttpHeaderParser.Success[_] => println(r.result)
-      }
+      val ret = HttpHeaderParser(message.getBytes("UTF-8"))
+      assert(ret.startLine.isInstanceOf[RequestLine] === true)
     }
   }
 }

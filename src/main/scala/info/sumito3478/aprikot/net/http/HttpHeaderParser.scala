@@ -18,6 +18,7 @@ package info.sumito3478.aprikot.net.http
 import scala.util.parsing.combinator.PackratParsers
 import java.net.URI
 import scala.collection.mutable.ArrayBuilder
+import info.sumito3478.aprikot.parsing.IndexedSeqReader
 
 object HttpHeaderParser extends PackratParsers {
   type Elem = Byte
@@ -127,5 +128,18 @@ object HttpHeaderParser extends PackratParsers {
 
   val genericMessage = startLine ~ messageHeader.+ ~ CRLF ^^ {
     case s ~ m ~ _ => new HttpHeader(s, m)
+  }
+
+  def apply(input: Array[Byte]): HttpHeader = {
+    HttpHeaderParser.genericMessage(
+      new IndexedSeqReader(input)) match {
+      case e: HttpHeaderParser.Failure => sys.error(f"ParseError: ${e.msg}")
+      case e: HttpHeaderParser.Error => sys.error(f"ParseError: ${e.msg}")
+      case r: HttpHeaderParser.Success[_] => r.result match {
+        case r: HttpHeader => r
+        case _ => sys.error("Unknown Parser Error")
+      }
+      case _ => sys.error("Unknown Parser Error")
+    }
   }
 }
