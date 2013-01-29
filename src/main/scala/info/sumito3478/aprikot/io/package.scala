@@ -24,6 +24,10 @@ import java.lang.{ Integer => JInteger }
 import java.nio.channels.AsynchronousSocketChannel
 
 package object io {
+  class Dummy0
+
+  implicit object dummy0 extends Dummy0
+
   private[this] def completionHandler(
     f: AsynchronousSocketChannel => Unit): CompletionHandler[AsynchronousSocketChannel, Unit] = {
     new CompletionHandler[AsynchronousSocketChannel, Unit] {
@@ -46,7 +50,8 @@ package object io {
   }
 
   private[this] def completionHandler(
-    f: Int => Unit): CompletionHandler[JInteger, Unit] = {
+    f: Int => Unit)(
+      implicit dummy: Dummy0): CompletionHandler[JInteger, Unit] = {
     new CompletionHandler[JInteger, Unit] {
       def completed(result: JInteger, attachment: Unit) = {
         f(result)
