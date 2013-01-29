@@ -19,4 +19,8 @@ package info.sumito3478.aprikot.net.http
 /**
  * A class that represents HTTP version.
  */
-class HttpVersion(val major: Int, val minor: Int)
+class HttpVersion(val major: Int, val minor: Int) {
+  override def toString: String = {
+    s"HTTP/${major}.${minor}"
+  }
+}
