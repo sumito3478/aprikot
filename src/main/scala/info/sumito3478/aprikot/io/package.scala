@@ -25,6 +25,27 @@ import java.nio.channels.AsynchronousSocketChannel
 
 package object io {
   private[this] def completionHandler(
+    f: AsynchronousSocketChannel => Unit): CompletionHandler[AsynchronousSocketChannel, Unit] = {
+    new CompletionHandler[AsynchronousSocketChannel, Unit] {
+      def completed(result: AsynchronousSocketChannel, attachment: Unit) = {
+        f(result)
+      }
+
+      def failed(exc: Throwable, attachment: Unit) = {
+        throw new RuntimeException(exc)
+      }
+    }
+  }
+
+  implicit class AsynchronousServerSocketChannelW(
+    val underlined: AsynchronousServerSocketChannel) extends AnyVal {
+
+    def accept(f: AsynchronousSocketChannel => Unit): Unit = {
+      underlined.accept((), completionHandler(f))
+    }
+  }
+
+  private[this] def completionHandler(
     f: Int => Unit): CompletionHandler[JInteger, Unit] = {
     new CompletionHandler[JInteger, Unit] {
       def completed(result: JInteger, attachment: Unit) = {
