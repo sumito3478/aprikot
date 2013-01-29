@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.io
+package info.sumito3478.aprikot
 
 import java.nio.channels.AsynchronousServerSocketChannel
 import java.nio.channels.CompletionHandler
@@ -23,23 +23,8 @@ import java.util.concurrent.TimeUnit
 import java.lang.{ Integer => JInteger }
 import java.nio.channels.AsynchronousSocketChannel
 
-class AsynchronousSocketChannelW(
-  val underlined: AsynchronousSocketChannel) extends AnyVal {
-  import AsynchronousSocketChannelW._
-
-  def read(dst: ByteBuffer, timeout: Duration)(f: Int => Unit): Unit = {
-    underlined.read[Unit](
-      dst, timeout.toNanos, TimeUnit.NANOSECONDS, (), completionHandler(f))
-  }
-
-  def write(src: ByteBuffer, timeout: Duration)(f: Int => Unit): Unit = {
-    underlined.write[Unit](
-      src, timeout.toNanos, TimeUnit.NANOSECONDS, (), completionHandler(f))
-  }
-}
-
-object AsynchronousSocketChannelW {
-  private def completionHandler(
+package object io {
+  private[this] def completionHandler(
     f: Int => Unit): CompletionHandler[JInteger, Unit] = {
     new CompletionHandler[JInteger, Unit] {
       def completed(result: JInteger, attachment: Unit) = {
@@ -52,15 +37,16 @@ object AsynchronousSocketChannelW {
     }
   }
 
-  class Dummy0
+  implicit class AsynchronousSocketChannelW(
+    val underlined: AsynchronousSocketChannel) extends AnyVal {
+    def read(dst: ByteBuffer, timeout: Duration)(f: Int => Unit): Unit = {
+      underlined.read[Unit](
+        dst, timeout.toNanos, TimeUnit.NANOSECONDS, (), completionHandler(f))
+    }
 
-  implicit object Dummy0 extends Dummy0
-
-  implicit def apply(x: AsynchronousSocketChannel): AsynchronousSocketChannelW = {
-    new AsynchronousSocketChannelW(x)
-  }
-
-  implicit def apply(x: AsynchronousSocketChannelW)(dummy: Dummy0): AsynchronousSocketChannel = {
-    x.underlined
+    def write(src: ByteBuffer, timeout: Duration)(f: Int => Unit): Unit = {
+      underlined.write[Unit](
+        src, timeout.toNanos, TimeUnit.NANOSECONDS, (), completionHandler(f))
+    }
   }
 }
