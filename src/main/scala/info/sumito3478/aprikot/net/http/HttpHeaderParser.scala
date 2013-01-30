@@ -133,14 +133,14 @@ trait HttpHeaderParser extends PackratParsers {
   def apply(input: Array[Byte]): HttpHeader = {
     HttpHeaderParser.genericMessage(
       new IndexedSeqReader(input)) match {
-      case e: HttpHeaderParser.Failure => sys.error(f"ParseError: ${e.msg}")
-      case e: HttpHeaderParser.Error => sys.error(f"ParseError: ${e.msg}")
-      case r: HttpHeaderParser.Success[_] => r.result match {
-        case r: HttpHeader => r
+        case e: HttpHeaderParser.Failure => sys.error(f"ParseError: ${e.msg}")
+        case e: HttpHeaderParser.Error => sys.error(f"ParseError: ${e.msg}")
+        case r: HttpHeaderParser.Success[_] => r.result match {
+          case r: HttpHeader => r
+          case _ => sys.error("Unknown Parser Error")
+        }
         case _ => sys.error("Unknown Parser Error")
       }
-      case _ => sys.error("Unknown Parser Error")
-    }
   }
 }
 
