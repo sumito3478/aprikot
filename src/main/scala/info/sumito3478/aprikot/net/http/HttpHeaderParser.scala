@@ -20,7 +20,7 @@ import java.net.URI
 import scala.collection.mutable.ArrayBuilder
 import info.sumito3478.aprikot.parsing.IndexedSeqReader
 
-object HttpHeaderParser extends PackratParsers {
+trait HttpHeaderParser extends PackratParsers {
   type Elem = Byte
 
   def isCTL(b: Byte) = b <= 31 || b == 127
@@ -143,3 +143,5 @@ object HttpHeaderParser extends PackratParsers {
     }
   }
 }
+
+object HttpHeaderParser extends HttpHeaderParser
