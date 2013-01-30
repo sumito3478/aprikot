@@ -25,7 +25,7 @@ trait HttpHeader extends ToBytesable {
 
   val startLine: StartLine
 
-  val fields: List[MessageHeader]
+  val fields: MessageHeaderMap
 
   override def toString: String = {
     startLine.toString + "\r\n" + fields.mkString("\r\n") + "\r\n\r\n"
@@ -35,7 +35,7 @@ trait HttpHeader extends ToBytesable {
     val builder = new VectorBuilder[Byte]
     builder ++= startLine.toBytes
     builder ++= sep
-    fields.map(_.toBytes).addTraversableOnce(builder, sep)
+    fields.map(_._2.toBytes).addTraversableOnce(builder, sep)
     builder ++= sep ++= sep
     builder.result
   }
@@ -44,7 +44,7 @@ trait HttpHeader extends ToBytesable {
 object HttpHeader {
   private val sep = List[Byte]('\r', '\n')
 
-  def apply(startLine: StartLine, fields: List[MessageHeader]): HttpHeader = {
+  def apply(startLine: StartLine, fields: MessageHeaderMap): HttpHeader = {
     startLine match {
       case r: RequestLine => new HttpRequestHeader(r, fields)
       case s: StatusLine => new HttpResponseHeader(s, fields)

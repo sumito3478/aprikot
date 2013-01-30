@@ -18,6 +18,6 @@ package info.sumito3478.aprikot.net.http
 
 object HttpRequestHeaderParser extends HttpHeaderParser {
   val requestMessage = RequestLine ~ messageHeader.+ ~ CRLF ^^ {
-    case s ~ m ~ _ => new HttpRequestHeader(s, m)
+    case s ~ m ~ _ => new HttpRequestHeader(s, MessageHeaderMap(m:_*))
   }
 }

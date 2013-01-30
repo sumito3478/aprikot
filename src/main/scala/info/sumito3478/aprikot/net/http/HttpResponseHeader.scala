@@ -18,5 +18,5 @@ package info.sumito3478.aprikot.net.http
 
 class HttpResponseHeader(
   val startLine: StatusLine,
-  val fields: List[MessageHeader]) extends HttpHeader {
+  val fields: MessageHeaderMap) extends HttpHeader {
 }
