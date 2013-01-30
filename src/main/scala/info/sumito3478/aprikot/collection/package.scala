@@ -79,6 +79,19 @@ package object collection {
       builder ++= end
     }
 
+    def addTraversableOnce[B, C](
+      builder: Builder[B, C],
+      sep: TraversableOnce[B])(
+        implicit asTraversable: (A) => TraversableOnce[B]): Unit = {
+      addTraversableOnce(builder, List(), sep, List())(asTraversable)
+    }
+
+    def addTraversableOnce[B, C](
+      builder: Builder[B, C])(
+        implicit asTraversable: (A) => TraversableOnce[B]): Unit = {
+      addTraversableOnce[B, C](builder, List(), List(), List())(asTraversable)
+    }
+
     def mkBuildable[B, C](
       builder: Builder[B, C],
       start: TraversableOnce[B],
