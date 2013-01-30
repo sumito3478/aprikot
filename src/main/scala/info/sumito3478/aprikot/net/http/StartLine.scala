@@ -16,7 +16,9 @@
 
 package info.sumito3478.aprikot.net.http
 
+import info.sumito3478.aprikot.collection.ToBytesable
+
 /**
  * A trait that represents the start-line of HTTP message.
  */
-trait StartLine
+trait StartLine extends ToBytesable

@@ -17,7 +17,7 @@
 package info.sumito3478.aprikot.net.http
 
 object HttpResponseHeaderParser extends HttpHeaderParser {
-  val requestMessage =  StatusLine ~ messageHeader.+ ~ CRLF ^^ {
+  val requestMessage = StatusLine ~ messageHeader.+ ~ CRLF ^^ {
     case s ~ m ~ _ => new HttpResponseHeader(s, m)
   }
 }
