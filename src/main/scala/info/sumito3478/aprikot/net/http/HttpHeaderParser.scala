@@ -20,7 +20,7 @@ import java.net.URI
 import scala.collection.mutable.ArrayBuilder
 import info.sumito3478.aprikot.parsing.IndexedSeqReader
 
-object HttpHeaderParser extends PackratParsers {
+trait HttpHeaderParser extends PackratParsers {
   type Elem = Byte
 
   def isCTL(b: Byte) = b <= 31 || b == 127
@@ -127,19 +127,21 @@ object HttpHeaderParser extends PackratParsers {
   val startLine = StatusLine | RequestLine
 
   val genericMessage = startLine ~ messageHeader.+ ~ CRLF ^^ {
-    case s ~ m ~ _ => new HttpHeader(s, m)
+    case s ~ m ~ _ => HttpHeader(s, MessageHeaderMap(m:_*))
   }
 
   def apply(input: Array[Byte]): HttpHeader = {
     HttpHeaderParser.genericMessage(
       new IndexedSeqReader(input)) match {
-      case e: HttpHeaderParser.Failure => sys.error(f"ParseError: ${e.msg}")
-      case e: HttpHeaderParser.Error => sys.error(f"ParseError: ${e.msg}")
-      case r: HttpHeaderParser.Success[_] => r.result match {
-        case r: HttpHeader => r
+        case e: HttpHeaderParser.Failure => sys.error(f"ParseError: ${e.msg}")
+        case e: HttpHeaderParser.Error => sys.error(f"ParseError: ${e.msg}")
+        case r: HttpHeaderParser.Success[_] => r.result match {
+          case r: HttpHeader => r
+          case _ => sys.error("Unknown Parser Error")
+        }
         case _ => sys.error("Unknown Parser Error")
       }
-      case _ => sys.error("Unknown Parser Error")
-    }
   }
 }
+
+object HttpHeaderParser extends HttpHeaderParser

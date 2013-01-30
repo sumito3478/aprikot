@@ -16,10 +16,39 @@
 
 package info.sumito3478.aprikot.net.http
 
-class HttpHeader(
-  val startLine: StartLine,
-  val fields: List[MessageHeader]) {
+import info.sumito3478.aprikot.collection.ToBytesable
+import info.sumito3478.aprikot.collection.TraversableOnceW
+import scala.collection.immutable.VectorBuilder
+
+trait HttpHeader extends ToBytesable {
+  import HttpHeader._
+
+  val startLine: StartLine
+
+  val fields: MessageHeaderMap
+
   override def toString: String = {
     startLine.toString + "\r\n" + fields.mkString("\r\n") + "\r\n\r\n"
+  }
+
+  override def toBytes: Vector[Byte] = {
+    val builder = new VectorBuilder[Byte]
+    builder ++= startLine.toBytes
+    builder ++= sep
+    fields.map(_._2.toBytes).addTraversableOnce(builder, sep)
+    builder ++= sep ++= sep
+    builder.result
+  }
+}
+
+object HttpHeader {
+  private val sep = List[Byte]('\r', '\n')
+
+  def apply(startLine: StartLine, fields: MessageHeaderMap): HttpHeader = {
+    startLine match {
+      case r: RequestLine => new HttpRequestHeader(r, fields)
+      case s: StatusLine => new HttpResponseHeader(s, fields)
+      case _ => sys.error("Unknown kind of HTTP StartLine")
+    }
   }
 }

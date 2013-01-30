@@ -16,8 +16,19 @@
 
 package info.sumito3478.aprikot.net.http
 
-class MessageHeader(val fieldName: String, val fieldValue: Array[Byte]) {
+import info.sumito3478.aprikot.collection.ToBytesable
+import scala.collection.immutable.VectorBuilder
+
+class MessageHeader(
+  val fieldName: String, val fieldValue: Array[Byte]) extends ToBytesable {
   override def toString: String = {
     s"""${fieldName}: ${new String(fieldValue, "UTF-8")}"""
+  }
+
+  override def toBytes: Vector[Byte] = {
+    val builder = new VectorBuilder[Byte]
+    builder ++= s"${fieldName}: ".getBytes("UTF-8")
+    builder ++= fieldValue
+    builder.result
   }
 }
