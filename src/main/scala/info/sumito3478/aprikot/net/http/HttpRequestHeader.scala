@@ -16,22 +16,7 @@
 
 package info.sumito3478.aprikot.net.http
 
-trait HttpHeader {
-  val startLine: StartLine
-
-  val fields: List[MessageHeader]
-
-  override def toString: String = {
-    startLine.toString + "\r\n" + fields.mkString("\r\n") + "\r\n\r\n"
-  }
-}
-
-object HttpHeader {
-  def apply(startLine: StartLine, fields: List[MessageHeader]): HttpHeader = {
-    startLine match {
-      case r: RequestLine => new HttpRequestHeader(r, fields)
-      case s: StatusLine => new HttpResponseHeader(s, fields)
-      case _ => sys.error("Unknown kind of HTTP StartLine")
-    }
-  }
+class HttpRequestHeader(
+  val startLine: RequestLine,
+  val fields: List[MessageHeader]) extends HttpHeader {
 }
