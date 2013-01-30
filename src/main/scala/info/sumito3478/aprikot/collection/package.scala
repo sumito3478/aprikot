@@ -15,6 +15,12 @@
  */
 package info.sumito3478.aprikot
 
+import scala.collection.immutable.VectorBuilder
+import scala.collection.TraversableOnce
+import scala.collection.mutable.Builder
+import scala.reflect.ClassTag
+import scala.collection.mutable.ArrayBuilder
+
 package object collection {
   private def bufferedTakeWhile[A](underlined: BufferedIterator[A], p: (A, Option[A]) => Boolean): BufferedIterator[A] = {
     var h: Option[A] = None
@@ -51,4 +57,49 @@ package object collection {
     }
   }
 
+  implicit class TraversableOnceW[A](
+    val underlined: TraversableOnce[A]) extends AnyVal {
+    def addTraversableOnce[B, C](
+      builder: Builder[B, C],
+      start: TraversableOnce[B],
+      sep: TraversableOnce[B],
+      end: TraversableOnce[B])(
+        implicit asTraversable: (A) => TraversableOnce[B]): Unit = {
+      builder ++= start
+      var first = true
+      underlined foreach {
+        a =>
+          if (!first) {
+            builder ++= sep
+          } else {
+            first = false
+          }
+          builder ++= asTraversable(a)
+      }
+      builder ++= end
+    }
+
+    def mkBuildable[B, C](
+      builder: Builder[B, C],
+      start: TraversableOnce[B],
+      sep: TraversableOnce[B],
+      end: TraversableOnce[B])(
+        implicit asTraversable: (A) => TraversableOnce[B]): C = {
+      addTraversableOnce(builder, start, sep, end)
+      builder.result
+    }
+
+    def mkBuildable[B, C](
+      builder: Builder[B, C],
+      sep: TraversableOnce[B])(
+        implicit asTraversable: (A) => TraversableOnce[B]): C = {
+      mkBuildable(builder, List(), sep, List())(asTraversable)
+    }
+
+    def mkBuildable[B, C](
+      builder: Builder[B, C])(
+        implicit asTraversable: (A) => TraversableOnce[B]): C = {
+      mkBuildable[B, C](builder, List(), List(), List())(asTraversable)
+    }
+  }
 }
