@@ -16,9 +16,8 @@
 
 package info.sumito3478.aprikot.net.http
 
-import info.sumito3478.aprikot.collection.ToBytesable
-
-/**
- * A trait that represents the start-line of HTTP message.
- */
-trait StartLine extends ToBytesable
+object HttpRequestHeaderParser extends HttpHeaderParser {
+  val requestMessage = RequestLine ~ messageHeader.+ ~ CRLF ^^ {
+    case s ~ m ~ _ => new HttpRequestHeader(s, MessageHeaderMap(m:_*))
+  }
+}

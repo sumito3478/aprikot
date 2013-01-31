@@ -23,4 +23,8 @@ class HttpVersion(val major: Int, val minor: Int) {
   override def toString: String = {
     s"HTTP/${major}.${minor}"
   }
+
+  def toBytes: Array[Byte] = {
+    toString.getBytes("UTF-8")
+  }
 }

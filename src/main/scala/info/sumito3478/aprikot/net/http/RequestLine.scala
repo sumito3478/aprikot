@@ -17,6 +17,7 @@
 package info.sumito3478.aprikot.net.http
 
 import java.net.URI
+import scala.collection.mutable.WrappedArray
 
 /**
  * A class that represents the start line of HTTP request message.
