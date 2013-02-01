@@ -58,4 +58,8 @@ trait HttpServer {
   def start: Unit = {
     listener.accept(callback)
   }
+
+  def stop: Unit = {
+    group.shutdown
+  }
 }
