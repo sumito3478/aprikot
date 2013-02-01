@@ -24,6 +24,8 @@ import java.nio.channels.AsynchronousSocketChannel
 import java.nio.ByteBuffer
 import info.sumito3478.aprikot.unsafe.Memory
 import info.sumito3478.aprikot.time.Duration
+import java.nio.channels.AsynchronousChannelGroup
+import java.util.concurrent.Executors
 
 trait HttpServer {
   def port: Int
@@ -34,8 +36,13 @@ trait HttpServer {
 
   private[this] lazy val byteBuffer = buffer.pointer.byteBuffer(0x2000)
 
+  private[this] lazy val group =
+    AsynchronousChannelGroup.withCachedThreadPool(
+      Executors.newCachedThreadPool, 0)
+
   private[this] lazy val listener =
-    AsynchronousServerSocketChannel.open.bind(new InetSocketAddress(port))
+    AsynchronousServerSocketChannel.open(group).
+      bind(new InetSocketAddress(port))
 
   private[this] val callback: AsynchronousSocketChannel => Unit = {
     s: AsynchronousSocketChannel =>
