@@ -57,7 +57,7 @@ trait Memory extends Disposable {
   /**
    * Returns the ByteBuffer view of this memory.
    */
-  def byteBuffer: ByteBuffer = {
+  lazy val byteBuffer: ByteBuffer = {
     pointer.byteBuffer(length)
   }
 }
