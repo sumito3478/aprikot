@@ -17,6 +17,7 @@
 package info.sumito3478.aprikot.unsafe
 
 import com.sun.jna.Native
+import java.nio.ByteBuffer
 
 /**
  * A trait represents a memory block.
@@ -47,6 +48,18 @@ trait Memory extends Disposable {
    * Get the pointer that points to the beginning of the memory block.
    */
   def pointer: Pointer
+
+  /**
+   * Returns the length of memory in bytes.
+   */
+  def length: Long
+
+  /**
+   * Returns the ByteBuffer view of this memory.
+   */
+  def byteBuffer: ByteBuffer = {
+    pointer.byteBuffer(length)
+  }
 }
 
 object Memory {
@@ -77,6 +90,8 @@ object Memory {
       override def finalize: Unit = {
         dispose
       }
+
+      def length = size
     }
   }
 }
