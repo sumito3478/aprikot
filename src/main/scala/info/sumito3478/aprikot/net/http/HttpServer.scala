@@ -16,50 +16,10 @@
 
 package info.sumito3478.aprikot.net.http
 
-import java.nio.channels.AsynchronousServerSocketChannel
-import info.sumito3478.aprikot.io.AsynchronousServerSocketChannelW
-import info.sumito3478.aprikot.io.AsynchronousSocketChannelW
-import java.net.InetSocketAddress
-import java.nio.channels.AsynchronousSocketChannel
-import java.nio.ByteBuffer
-import info.sumito3478.aprikot.unsafe.Memory
-import info.sumito3478.aprikot.time.Duration
-import java.nio.channels.AsynchronousChannelGroup
-import java.util.concurrent.Executors
+import info.sumito3478.aprikot.io._
 
-trait HttpServer {
-  def port: Int
+trait HttpServer extends TCPServer {
+  def handle(ctx: HttpServerContext): Unit
 
-  protected[this] def handle(s: AsynchronousSocketChannel)
-
-  private[this] lazy val buffer = Memory(0x2000)
-
-  private[this] lazy val byteBuffer = buffer.pointer.byteBuffer(0x2000)
-
-  private[this] lazy val group =
-    AsynchronousChannelGroup.withCachedThreadPool(
-      Executors.newCachedThreadPool, 0)
-
-  private[this] lazy val listener =
-    AsynchronousServerSocketChannel.open(group).
-      bind(new InetSocketAddress(port))
-
-  private[this] val callback: AsynchronousSocketChannel => Unit = {
-    s: AsynchronousSocketChannel =>
-      listener.accept(callback)
-      s.read(byteBuffer, Duration.seconds(40)) {
-        b =>
-          byteBuffer.flip
-          val header = HttpHeaderParser(byteBuffer.array)
-          println(header)
-      }
-  }
-
-  def start: Unit = {
-    listener.accept(callback)
-  }
-
-  def stop: Unit = {
-    group.shutdown
-  }
+  def handle(ctx: TCPContext): Unit = handle(HttpServerContext(ctx))
 }
