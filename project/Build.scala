@@ -14,7 +14,7 @@ object build extends Build {
       libraryDependencies ++= Seq(
         "net.java.dev.jna" % "jna" % "3.5.+"
         ),
-      version := "0.0.7"
+      version := "0.0.8"
     ): _*
   )
 
