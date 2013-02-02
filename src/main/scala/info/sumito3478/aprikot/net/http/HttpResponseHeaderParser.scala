@@ -21,7 +21,7 @@ import info.sumito3478.aprikot.parsing.ByteBufferReader
 import java.nio.charset.Charset
 
 object HttpResponseHeaderParser extends HttpHeaderParser {
-  val requestMessage = StatusLine ~ messageHeader.+ ~ CRLF ^^ {
+  val responseMessage = StatusLine ~ messageHeader.+ ~ CRLF ^^ {
     case s ~ m ~ _ => new HttpResponseHeader(s, MessageHeaderMap(m:_*))
   }
 
