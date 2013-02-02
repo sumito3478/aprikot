@@ -22,6 +22,7 @@ import info.sumito3478.aprikot.time.Duration
 import java.util.concurrent.TimeUnit
 import java.lang.{ Integer => JInteger }
 import java.nio.channels.AsynchronousSocketChannel
+import java.net.SocketAddress
 
 package object io {
   class Dummy0
@@ -75,6 +76,10 @@ package object io {
       underlined.write[Unit](
         src, timeout.toNanos, TimeUnit.NANOSECONDS, (),
         completionHandler[JInteger](f(_)))
+    }
+
+    def connect(remote: SocketAddress, f: => Unit): Unit = {
+      underlined.connect[Unit](remote, (), completionHandler[Void](_ => f))
     }
   }
 }
