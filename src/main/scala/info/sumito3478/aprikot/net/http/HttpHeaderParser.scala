@@ -127,7 +127,7 @@ trait HttpHeaderParser extends PackratParsers {
   val startLine = StatusLine | RequestLine
 
   val genericMessage = startLine ~ messageHeader.+ ~ CRLF ^^ {
-    case s ~ m ~ _ => HttpHeader(s, MessageHeaderMap(m:_*))
+    case s ~ m ~ _ => HttpHeader(s, MessageHeaderMap(m: _*))
   }
 
   def apply(input: Array[Byte]): HttpHeader = {
