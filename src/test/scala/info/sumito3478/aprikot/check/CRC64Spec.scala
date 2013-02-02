@@ -18,9 +18,7 @@ package info.sumito3478.aprikot.check
 
 import org.scalatest.FunSpec
 
-import info.sumito3478.aprikot.unsafe.ArrayOfByteW
-import info.sumito3478.aprikot.unsafe.LongW
-import info.sumito3478.aprikot.unsafe.Memory
+import info.sumito3478.aprikot.unmanaged._
 
 trait CRC64Spec extends FunSpec {
   def crc64: CRC64

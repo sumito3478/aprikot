@@ -16,7 +16,7 @@
 package info.sumito3478.aprikot.hashing
 
 import info.sumito3478.aprikot.numeric._
-import info.sumito3478.aprikot.unsafe.Pointer
+import info.sumito3478.aprikot.unmanaged.Pointer
 
 /**
  * CityHash v1.1 implementation.

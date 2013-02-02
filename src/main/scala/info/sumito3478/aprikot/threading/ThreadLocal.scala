@@ -18,7 +18,7 @@ package info.sumito3478.aprikot.threading
 
 import java.lang.{ ThreadLocal => JThreadLocal }
 
-import info.sumito3478.aprikot.unsafe.Memory
+import info.sumito3478.aprikot.unmanaged.Memory
 
 /**
  * A trait that represents a thread local storage.

@@ -15,7 +15,7 @@
  */
 package info.sumito3478.aprikot.io
 
-import info.sumito3478.aprikot.unsafe.Memory
+import info.sumito3478.aprikot.unmanaged.Memory
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousSocketChannel
 

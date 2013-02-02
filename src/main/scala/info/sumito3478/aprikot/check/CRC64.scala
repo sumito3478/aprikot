@@ -31,7 +31,7 @@
 package info.sumito3478.aprikot.check
 
 import java.lang.{ Long => JLong }
-import info.sumito3478.aprikot.unsafe.{ Memory, Pointer, ByteOrder, bswap, ArrayOfByteW }
+import info.sumito3478.aprikot.unmanaged.{ Memory, Pointer, ByteOrder, bswap, ArrayOfByteW }
 import java.lang.{ Integer => JInteger }
 import info.sumito3478.aprikot.threading.ThreadLocal
 
