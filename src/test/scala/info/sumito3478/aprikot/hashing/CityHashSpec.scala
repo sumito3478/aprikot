@@ -17,8 +17,7 @@
 package info.sumito3478.aprikot.hashing
 
 import org.scalatest.FunSpec
-import info.sumito3478.aprikot.unsafe.Memory
-import info.sumito3478.aprikot.unsafe.ArrayOfByteW
+import info.sumito3478.aprikot.unmanaged._
 import info.sumito3478.aprikot.numeric.Cent
 
 class CityHashSpec extends FunSpec {

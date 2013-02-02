@@ -16,8 +16,6 @@
 
 package info.sumito3478.aprikot.unmanaged
 
-import info.sumito3478.aprikot.unmanaged.JByteOrder;
-
 import java.nio.ByteBuffer
 import java.nio.{ ByteOrder => JByteOrder }
 
