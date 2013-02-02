@@ -108,7 +108,7 @@ trait HttpHeaderParser extends PackratParsers {
       c.toChar.asDigit
   }
 
-  val ReasonPhrase = NON_WS.* ^^ {
+  val ReasonPhrase = NON_CTL.* ^^ {
     xs => new String(xs.toArray, "UTF-8")
   }
 
