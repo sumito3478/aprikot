@@ -27,11 +27,11 @@ trait HttpHeader extends ToBytesable {
 
   val fields: MessageHeaderMap
 
-  override def toString: String = {
+  override lazy val toString: String = {
     startLine.toString + "\r\n" + fields.mkString("\r\n") + "\r\n\r\n"
   }
 
-  override def toBytes: Vector[Byte] = {
+  override lazy val toBytes: Vector[Byte] = {
     val builder = new VectorBuilder[Byte]
     builder ++= startLine.toBytes
     builder ++= sep
