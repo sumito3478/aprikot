@@ -13,17 +13,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package info.sumito3478.aprikot.http
 
-package info.sumito3478.aprikot.net.http
+import org.scalatest.FunSpec
+import java.util.concurrent.TimeUnit
 
-/**
- * A class that represents a start line of HTTP response message.
- */
-class StatusLine(
-  val version: HttpVersion,
-  val code: Int,
-  val reason: String) extends StartLine {
-  override def toString: String = {
-    s"${version} ${code} ${reason}"
+class HttpProxyServerSpec extends FunSpec {
+  describe("HttpProxyServer") {
+    it("should run HTTP Proxy Server.") {
+      val server = new HttpProxyServer{
+        def port = 8080
+      }
+      server.start
+      server.group.awaitTermination(5, TimeUnit.SECONDS)
+    }
   }
 }

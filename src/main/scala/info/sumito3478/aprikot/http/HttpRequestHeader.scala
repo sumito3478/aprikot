@@ -14,12 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.net.http
+package info.sumito3478.aprikot.http
 
-import info.sumito3478.aprikot.io._
-
-trait HttpServer extends TCPServer {
-  def handle(ctx: HttpServerContext): Unit
-
-  def handle(ctx: TCPContext): Unit = handle(HttpServerContext(ctx))
+class HttpRequestHeader(
+  val startLine: RequestLine,
+  val fields: MessageHeaderMap) extends HttpHeader {
 }

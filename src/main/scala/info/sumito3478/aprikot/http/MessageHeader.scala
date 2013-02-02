@@ -14,11 +14,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.net.http
+package info.sumito3478.aprikot.http
 
 import info.sumito3478.aprikot.collection.ToBytesable
+import scala.collection.immutable.VectorBuilder
 
-/**
- * A trait that represents the start-line of HTTP message.
- */
-trait StartLine extends ToBytesable
+class MessageHeader(
+  val fieldName: String, val fieldValue: Array[Byte]) extends ToBytesable {
+  override def toString: String = {
+    s"""${fieldName}: ${new String(fieldValue, "UTF-8")}"""
+  }
+
+  override def toBytes: Vector[Byte] = {
+    val builder = new VectorBuilder[Byte]
+    builder ++= s"${fieldName}: ".getBytes("UTF-8")
+    builder ++= fieldValue
+    builder.result
+  }
+}

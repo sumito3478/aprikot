@@ -14,19 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.net.http
-
-import java.net.URI
-import scala.collection.mutable.WrappedArray
+package info.sumito3478.aprikot.http
 
 /**
- * A class that represents the start line of HTTP request message.
+ * A class that represents a start line of HTTP response message.
  */
-class RequestLine(
-  val method: String,
-  val uri: URI,
-  val version: HttpVersion) extends StartLine {
+class StatusLine(
+  val version: HttpVersion,
+  val code: Int,
+  val reason: String) extends StartLine {
   override def toString: String = {
-    s"${method} ${uri} ${version}"
+    s"${version} ${code} ${reason}"
   }
 }

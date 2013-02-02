@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.net.http
+package info.sumito3478.aprikot.http
 
 import scala.util.parsing.combinator.PackratParsers
 import java.net.URI

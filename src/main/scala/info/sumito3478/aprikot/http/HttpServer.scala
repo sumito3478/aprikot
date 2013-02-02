@@ -14,9 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.net.http
+package info.sumito3478.aprikot.http
 
-class HttpResponseHeader(
-  val startLine: StatusLine,
-  val fields: MessageHeaderMap) extends HttpHeader {
+import info.sumito3478.aprikot.io._
+
+trait HttpServer extends TCPServer {
+  def handle(ctx: HttpServerContext): Unit
+
+  def handle(ctx: TCPContext): Unit = handle(HttpServerContext(ctx))
 }

@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.net.http
+package info.sumito3478.aprikot.http
 
 import scala.collection.immutable.TreeMap
 
