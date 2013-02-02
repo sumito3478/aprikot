@@ -16,8 +16,28 @@
 
 package info.sumito3478.aprikot.net.http
 
+import java.nio.ByteBuffer
+import info.sumito3478.aprikot.parsing.ByteBufferReader
+import java.nio.charset.Charset
+
 object HttpResponseHeaderParser extends HttpHeaderParser {
   val requestMessage = StatusLine ~ messageHeader.+ ~ CRLF ^^ {
     case s ~ m ~ _ => new HttpResponseHeader(s, MessageHeaderMap(m:_*))
+  }
+
+  def apply(input: ByteBuffer): (HttpResponseHeader, ByteBuffer) = {
+    //println(Charset.forName("UTF-8").decode(input))
+    responseMessage(new ByteBufferReader(input, 0)) match {
+        case e: Failure => sys.error(f"ParseError at ${e.next.pos.column}: ${e.msg}")
+        case e: Error => sys.error(f"ParseError: ${e.msg}")
+        case r: Success[_] => {
+          input.position(r.next.offset)
+          val slice = input.slice
+          slice.position(slice.limit)
+          println(f"response slice: ${slice.position}, ${slice.limit}")
+          (r.result, slice)
+        }
+        case _ => sys.error("Unknown Parser Error")
+      }
   }
 }
