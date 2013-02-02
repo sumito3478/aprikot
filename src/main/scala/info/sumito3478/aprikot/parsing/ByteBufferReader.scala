@@ -13,13 +13,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package info.sumito3478.aprikot.parsing
 
-package info.sumito3478.aprikot.net.http
+import scala.util.parsing.input.Reader
+import java.nio.ByteBuffer
 
-import info.sumito3478.aprikot.io._
+class ByteBufferReader(
+  val data: ByteBuffer, override val offset: Int) extends Reader[Byte] {
+  def this(data: ByteBuffer) = this(data, 0)
 
-trait HttpServer extends TCPServer {
-  def handle(ctx: HttpServerContext): Unit
+  class Position(val offset: Int) extends scala.util.parsing.input.Position {
+    override val line = 1
 
-  def handle(ctx: TCPContext): Unit = handle(HttpServerContext(ctx))
+    override def column = offset + 1
+
+    override def lineContents = ""
+  }
+
+  override def atEnd = offset >= data.limit
+
+  override def first = data.get(offset)
+
+  override def pos = new Position(offset)
+
+  override def rest = new ByteBufferReader(data, offset + 1)
 }

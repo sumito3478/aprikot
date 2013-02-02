@@ -13,13 +13,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package info.sumito3478.aprikot.io
 
-package info.sumito3478.aprikot.net.http
+import java.nio.channels.AsynchronousSocketChannel
+import java.net.InetSocketAddress
 
-import info.sumito3478.aprikot.io._
+trait TCPClient {
+  def host: String
 
-trait HttpServer extends TCPServer {
-  def handle(ctx: HttpServerContext): Unit
+  def port: Int
 
-  def handle(ctx: TCPContext): Unit = handle(HttpServerContext(ctx))
+  def handle(ctx: TCPContext): Unit
+
+  def start: Unit = {
+    val c = AsynchronousSocketChannel.open
+    c.connect(new InetSocketAddress(host, port), {
+      handle(new TCPContext {
+        def channel = c
+      })
+    })
+  }
 }

@@ -13,13 +13,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package info.sumito3478.aprikot.net.http
 
-import info.sumito3478.aprikot.io._
+import org.scalatest.FunSpec
+import java.util.concurrent.TimeUnit
 
-trait HttpServer extends TCPServer {
-  def handle(ctx: HttpServerContext): Unit
-
-  def handle(ctx: TCPContext): Unit = handle(HttpServerContext(ctx))
+class HttpProxyServerSpec extends FunSpec {
+  describe("HttpProxyServer") {
+    it("should run HTTP Proxy Server.") {
+      val server = new HttpProxyServer{
+        def port = 8080
+      }
+      server.start
+      server.group.awaitTermination(5, TimeUnit.SECONDS)
+    }
+  }
 }

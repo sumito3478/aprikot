@@ -22,6 +22,7 @@ import info.sumito3478.aprikot.time.Duration
 import java.util.concurrent.TimeUnit
 import java.lang.{ Integer => JInteger }
 import java.nio.channels.AsynchronousSocketChannel
+import java.net.SocketAddress
 
 package object io {
   class Dummy0
@@ -49,11 +50,11 @@ package object io {
     }
   }
 
-  private[this] def completionHandler(
-    f: Int => Unit)(
-      implicit dummy: Dummy0): CompletionHandler[JInteger, Unit] = {
-    new CompletionHandler[JInteger, Unit] {
-      def completed(result: JInteger, attachment: Unit) = {
+  private[this] def completionHandler[A](
+    f: A => Unit)(
+      implicit dummy: Dummy0): CompletionHandler[A, Unit] = {
+    new CompletionHandler[A, Unit] {
+      def completed(result: A, attachment: Unit) = {
         f(result)
       }
 
@@ -67,12 +68,18 @@ package object io {
     val underlined: AsynchronousSocketChannel) extends AnyVal {
     def read(dst: ByteBuffer, timeout: Duration)(f: Int => Unit): Unit = {
       underlined.read[Unit](
-        dst, timeout.toNanos, TimeUnit.NANOSECONDS, (), completionHandler(f))
+        dst, timeout.toNanos, TimeUnit.NANOSECONDS, (),
+        completionHandler[JInteger](f(_)))
     }
 
     def write(src: ByteBuffer, timeout: Duration)(f: Int => Unit): Unit = {
       underlined.write[Unit](
-        src, timeout.toNanos, TimeUnit.NANOSECONDS, (), completionHandler(f))
+        src, timeout.toNanos, TimeUnit.NANOSECONDS, (),
+        completionHandler[JInteger](f(_)))
+    }
+
+    def connect(remote: SocketAddress, f: => Unit): Unit = {
+      underlined.connect[Unit](remote, (), completionHandler[Void](_ => f))
     }
   }
 }

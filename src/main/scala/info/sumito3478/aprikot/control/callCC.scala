@@ -13,13 +13,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package info.sumito3478.aprikot.control
 
-package info.sumito3478.aprikot.net.http
+import scala.util.continuations.{ suspendable, shift }
 
-import info.sumito3478.aprikot.io._
-
-trait HttpServer extends TCPServer {
-  def handle(ctx: HttpServerContext): Unit
-
-  def handle(ctx: TCPContext): Unit = handle(HttpServerContext(ctx))
+object callCC {
+  def apply[A](f: (A => Unit) => Unit): A @suspendable =
+    shift[A, Unit, Unit](f)
 }
