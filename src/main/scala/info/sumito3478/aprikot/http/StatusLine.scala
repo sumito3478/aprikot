@@ -13,21 +13,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.io
 
-import info.sumito3478.aprikot.unmanaged.Memory
-import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousSocketChannel
+package info.sumito3478.aprikot.http
 
-import scala.util.continuations._
-import info.sumito3478.aprikot.control.callCC
-
-trait IOContext {
-  def read(buffer: ByteBuffer, continuation: Int => Unit): Unit
-
-  def read(buffer: ByteBuffer): Int @suspendable = callCC(read(buffer, _))
-
-  def write(buffer: ByteBuffer, continuation: Int => Unit): Unit
-
-  def write(buffer: ByteBuffer): Int @suspendable = callCC(write(buffer, _))
+/**
+ * A class that represents a start line of HTTP response message.
+ */
+class StatusLine(
+  val version: HttpVersion,
+  val code: Int,
+  val reason: String) extends StartLine {
+  override def toString: String = {
+    s"${version} ${code} ${reason}"
+  }
 }

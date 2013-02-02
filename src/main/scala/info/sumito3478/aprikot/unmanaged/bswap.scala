@@ -13,21 +13,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.io
 
-import info.sumito3478.aprikot.unmanaged.Memory
-import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousSocketChannel
+package info.sumito3478.aprikot.unmanaged
 
-import scala.util.continuations._
-import info.sumito3478.aprikot.control.callCC
+import java.lang.{ Integer => JInt }
+import java.lang.{ Long => JLong }
+import java.lang.{ Short => JShort }
 
-trait IOContext {
-  def read(buffer: ByteBuffer, continuation: Int => Unit): Unit
+/**
+ * Converts an integral value to the value with reversed bytes.
+ */
+object bswap {
+  def apply(x: Short): Short = {
+    JShort.reverseBytes(x)
+  }
 
-  def read(buffer: ByteBuffer): Int @suspendable = callCC(read(buffer, _))
+  def apply(x: Int): Int = {
+    JInt.reverseBytes(x)
+  }
 
-  def write(buffer: ByteBuffer, continuation: Int => Unit): Unit
-
-  def write(buffer: ByteBuffer): Int @suspendable = callCC(write(buffer, _))
+  def apply(x: Long): Long = {
+    JLong.reverseBytes(x)
+  }
 }

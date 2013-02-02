@@ -13,21 +13,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.io
 
-import info.sumito3478.aprikot.unmanaged.Memory
+package info.sumito3478.aprikot.unmanaged
+
 import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousSocketChannel
+import java.nio.ByteOrder
 
-import scala.util.continuations._
-import info.sumito3478.aprikot.control.callCC
+import scala.concurrent.util.Unsafe.{ instance => _unsafe }
 
-trait IOContext {
-  def read(buffer: ByteBuffer, continuation: Int => Unit): Unit
+import org.scalatest.FunSpec
 
-  def read(buffer: ByteBuffer): Int @suspendable = callCC(read(buffer, _))
+class BswapSpec extends FunSpec {
+  describe("bswap") {
+    it("should swap bytes in Long") {
+      assert(bswap(0xdeadbeefcafebabeL) === 0xbebafecaefbeaddeL)
+    }
 
-  def write(buffer: ByteBuffer, continuation: Int => Unit): Unit
+    it("should swap bytes in Int") {
+      assert(bswap(0xcafebabe) === 0xbebafeca)
+    }
 
-  def write(buffer: ByteBuffer): Int @suspendable = callCC(write(buffer, _))
+    it("should swap bytes in Short") {
+      assert(bswap(0x1234: Short) === 0x3412)
+    }
+  }
 }
