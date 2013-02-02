@@ -15,10 +15,8 @@
  */
 package info.sumito3478.aprikot.hashing
 
-import info.sumito3478.aprikot.numeric.Cent
-import info.sumito3478.aprikot.unsafe.Pointer
-import info.sumito3478.aprikot.math._
-import info.sumito3478.aprikot.numeric.MutableCent
+import info.sumito3478.aprikot.numeric._
+import info.sumito3478.aprikot.unmanaged.Pointer
 
 /**
  * CityHash v1.1 implementation.

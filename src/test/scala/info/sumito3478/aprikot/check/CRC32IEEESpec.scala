@@ -18,9 +18,7 @@ package info.sumito3478.aprikot.check
 
 import java.util.zip.{ CRC32 => JCRC32 }
 
-import info.sumito3478.aprikot.unsafe.ArrayOfByteW
-import info.sumito3478.aprikot.unsafe.Memory
-import info.sumito3478.aprikot.unsafe.benchmark
+import info.sumito3478.aprikot.unmanaged._
 
 class CRC32IEEESpec extends CRC32Spec {
   def crc32: CRC32 = CRC32IEEE

@@ -13,21 +13,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.io
 
-import info.sumito3478.aprikot.unmanaged.Memory
-import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousSocketChannel
+package info.sumito3478.aprikot.unmanaged
 
-import scala.util.continuations._
-import info.sumito3478.aprikot.control.callCC
+/**
+ * A trait similar to System.IDisposable in C#.
+ *
+ * To implement Disposable trait, implement disposeInternal.
+ * disposeInternal is called only once by dispose.
+ */
+trait Disposable {
+  private[this] var disposed = false
 
-trait IOContext {
-  def read(buffer: ByteBuffer, continuation: Int => Unit): Unit
+  protected[this] def disposeInternal: Unit
 
-  def read(buffer: ByteBuffer): Int @suspendable = callCC(read(buffer, _))
-
-  def write(buffer: ByteBuffer, continuation: Int => Unit): Unit
-
-  def write(buffer: ByteBuffer): Int @suspendable = callCC(write(buffer, _))
+  def dispose: Unit = {
+    if (!disposed) {
+      disposeInternal
+    }
+    disposed = true
+  }
 }
