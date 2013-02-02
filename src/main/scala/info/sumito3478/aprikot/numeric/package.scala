@@ -13,7 +13,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package info.sumito3478.aprikot
 
 import java.lang.{ Long => JLong }
@@ -23,7 +22,7 @@ import java.lang.{ Byte => JByte }
 import java.lang.{ Float => JFloat }
 import java.lang.{ Double => JDouble }
 
-package object math {
+package object numeric {
 
   implicit class ByteW(val underlined: Byte) extends AnyVal {
     def toByteChecked: Byte = {
@@ -339,5 +338,4 @@ package object math {
       ret
     }
   }
-
 }
