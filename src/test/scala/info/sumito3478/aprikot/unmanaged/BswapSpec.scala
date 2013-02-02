@@ -14,23 +14,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.unsafe
+package info.sumito3478.aprikot.unmanaged
 
-/**
- * Converts an integral value to the little-endian value.
- */
-object le {
-  private[this] val le = (0xcafebabe >>> 16) == 0xcafe
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
-  def apply(x: Short): Short = {
-    if (le) x else bswap(x)
-  }
+import scala.concurrent.util.Unsafe.{ instance => _unsafe }
 
-  def apply(x: Int): Int = {
-    if (le) x else bswap(x)
-  }
+import org.scalatest.FunSpec
 
-  def apply(x: Long): Long = {
-    if (le) x else bswap(x)
+class BswapSpec extends FunSpec {
+  describe("bswap") {
+    it("should swap bytes in Long") {
+      assert(bswap(0xdeadbeefcafebabeL) === 0xbebafecaefbeaddeL)
+    }
+
+    it("should swap bytes in Int") {
+      assert(bswap(0xcafebabe) === 0xbebafeca)
+    }
+
+    it("should swap bytes in Short") {
+      assert(bswap(0x1234: Short) === 0x3412)
+    }
   }
 }

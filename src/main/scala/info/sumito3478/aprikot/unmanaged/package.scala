@@ -22,7 +22,7 @@ import java.lang.{ Integer => JInt }
 import java.lang.{ Long => JLong }
 import java.lang.{ Short => JShort }
 
-package object unsafe {
+package object unmanaged {
   private[this] val le = (0xcafebabe >>> 16) == 0xcafe
 
   private[this] val be = !le

@@ -14,27 +14,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.unsafe
+package info.sumito3478.aprikot.unmanaged
 
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
-
-import scala.concurrent.util.Unsafe.{ instance => _unsafe }
-
-import org.scalatest.FunSpec
-
-class BswapSpec extends FunSpec {
-  describe("bswap") {
-    it("should swap bytes in Long") {
-      assert(bswap(0xdeadbeefcafebabeL) === 0xbebafecaefbeaddeL)
-    }
-
-    it("should swap bytes in Int") {
-      assert(bswap(0xcafebabe) === 0xbebafeca)
-    }
-
-    it("should swap bytes in Short") {
-      assert(bswap(0x1234: Short) === 0x3412)
+/**
+ * Implementation of RAII with [[Disposable]], similar to the `using` of C#.
+ *
+ * Example Usage:
+ * {{{
+ * import info.sumito3478.aprikot.io.{Memory, using}
+ *
+ * using(Memory(4)) {
+ *   block =>
+ *     // do something...
+ * } // block.dispose called
+ * }}}
+ */
+object using {
+  def apply[A <: Disposable, R](d: A)(f: A => R): R = {
+    try {
+      f(d)
+    } finally {
+      d.dispose
     }
   }
 }

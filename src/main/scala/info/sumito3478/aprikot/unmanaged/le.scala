@@ -14,27 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.unsafe
+package info.sumito3478.aprikot.unmanaged
 
 /**
- * Implementation of RAII with [[Disposable]], similar to the `using` of C#.
- *
- * Example Usage:
- * {{{
- * import info.sumito3478.aprikot.io.{Memory, using}
- *
- * using(Memory(4)) {
- *   block =>
- *     // do something...
- * } // block.dispose called
- * }}}
+ * Converts an integral value to the little-endian value.
  */
-object using {
-  def apply[A <: Disposable, R](d: A)(f: A => R): R = {
-    try {
-      f(d)
-    } finally {
-      d.dispose
-    }
+object le {
+  private[this] val le = (0xcafebabe >>> 16) == 0xcafe
+
+  def apply(x: Short): Short = {
+    if (le) x else bswap(x)
+  }
+
+  def apply(x: Int): Int = {
+    if (le) x else bswap(x)
+  }
+
+  def apply(x: Long): Long = {
+    if (le) x else bswap(x)
   }
 }

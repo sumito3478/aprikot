@@ -14,23 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.unsafe
+package info.sumito3478.aprikot.unmanaged
 
 /**
- * Converts an integral value to the big-endian value.
+ * A trait similar to System.IDisposable in C#.
+ *
+ * To implement Disposable trait, implement disposeInternal.
+ * disposeInternal is called only once by dispose.
  */
-object be {
-  private[this] val le = (0xcafebabe >>> 16) == 0xcafe
+trait Disposable {
+  private[this] var disposed = false
 
-  def apply(x: Short): Short = {
-    if (le) bswap(x) else x
-  }
+  protected[this] def disposeInternal: Unit
 
-  def apply(x: Int): Int = {
-    if (le) bswap(x) else x
-  }
-
-  def apply(x: Long): Long = {
-    if (le) bswap(x) else x
+  def dispose: Unit = {
+    if (!disposed) {
+      disposeInternal
+    }
+    disposed = true
   }
 }
