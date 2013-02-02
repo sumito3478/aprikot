@@ -14,6 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.control
+package info.sumito3478.aprikot
 
 trait __ extends Any

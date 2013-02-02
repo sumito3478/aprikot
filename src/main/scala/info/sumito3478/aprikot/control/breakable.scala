@@ -16,6 +16,8 @@
 
 package info.sumito3478.aprikot.control
 
+import info.sumito3478.aprikot.__
+
 /**
  * Pass 'break' function that causes early or non-local exits when called.
  *

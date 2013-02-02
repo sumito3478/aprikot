@@ -18,6 +18,7 @@ package info.sumito3478.aprikot.control
 
 import org.scalatest
 import scalatest.FunSpec
+import info.sumito3478.aprikot.__
 
 class BreakableSpec extends FunSpec {
   describe("breakable") {
