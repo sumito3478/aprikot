@@ -25,7 +25,7 @@ class HttpProxyServerSpec extends FunSpec {
         def port = 8080
       }
       server.start
-      server.group.awaitTermination(40, TimeUnit.SECONDS)
+      server.group.awaitTermination(5, TimeUnit.SECONDS)
     }
   }
 }
