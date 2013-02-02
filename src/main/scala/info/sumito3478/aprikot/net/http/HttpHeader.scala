@@ -19,6 +19,8 @@ package info.sumito3478.aprikot.net.http
 import info.sumito3478.aprikot.collection.ToBytesable
 import info.sumito3478.aprikot.collection.TraversableOnceW
 import scala.collection.immutable.VectorBuilder
+import scala.collection.mutable.ArrayBuilder
+import scala.collection.mutable.WrappedArray
 
 trait HttpHeader extends ToBytesable {
   import HttpHeader._
@@ -27,12 +29,12 @@ trait HttpHeader extends ToBytesable {
 
   val fields: MessageHeaderMap
 
-  override def toString: String = {
+  override lazy val toString: String = {
     startLine.toString + "\r\n" + fields.mkString("\r\n") + "\r\n\r\n"
   }
 
-  override def toBytes: Vector[Byte] = {
-    val builder = new VectorBuilder[Byte]
+  override lazy val toBytes: WrappedArray[Byte] = {
+    val builder = new ArrayBuilder.ofByte
     builder ++= startLine.toBytes
     builder ++= sep
     fields.map(_._2.toBytes).addTraversableOnce(builder, sep)
