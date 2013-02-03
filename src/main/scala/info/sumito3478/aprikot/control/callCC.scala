@@ -17,6 +17,32 @@ package info.sumito3478.aprikot.control
 
 import scala.util.continuations.{ suspendable, shift }
 
+/**
+ * Calls a function with current continuation.
+ *
+ * This function is identical to shift[A, Unit, Unit].
+ *
+ * Exmaple Usage:
+ * {{{
+ * import scala.util.continuations._
+ * import info.sumito3478.aprikot.control.callCC
+ *
+ * // A continuation passing style method.
+ * def someMethod(i: Int, continuation: Int => Unit): Unit = {
+ *   continuation(i * 2)
+ * }
+ *
+ * // Use Scala's delimited continuation!
+ * def someMethod(i: Int): Int @suspendable = callCC(someMethod(i, _))
+ *
+ * // ...
+ *
+ * reset {
+ *   val n = someMethod(1)
+ *   // n == 2
+ * }
+ * }}}
+ */
 object callCC {
   def apply[A](f: (A => Unit) => Unit): A @suspendable =
     shift[A, Unit, Unit](f)
