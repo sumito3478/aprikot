@@ -16,7 +16,18 @@
 
 package info.sumito3478.aprikot.collection
 
+/**
+ * A trait that represents the object that can be converted to a collection
+ * of bytes.
+ */
 trait ToBytesable {
+  /**
+   * Converts this object to a collection of bytes.
+   * 
+   * @note
+   *   The default implementation of this method returns the UTF-8 bytes
+   *   that is converted from the result of toString.
+   */
   def toBytes: Iterable[Byte] = {
     toString.getBytes("UTF-8")
   }

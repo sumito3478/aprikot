@@ -40,8 +40,8 @@ import info.sumito3478.aprikot.threading.ThreadLocal
  * A base trait for CRC32 implementations.
  *
  * To create a new implementation of CRC32,
- * implement `def poly`, which returns 32bit integer value
- * that each bits represents the coefficient value of
+ * implement `def poly`, which returns a 32bit integer value
+ * that each bits represent the coefficient value of
  * the polynominal of CRC, except for the maximum one
  * (e.g.  0x04c11db7, which equals to 0b00000100110000010001110110110111,
  * for x^32^ + x^26^ + x^23^ + x^22^ + x^16^ + x^12^ + x^11^ + x^10^ +
@@ -73,6 +73,18 @@ import info.sumito3478.aprikot.threading.ThreadLocal
 trait CRC32 {
   import CRC32._
 
+  /**
+   * Returns a 32bit integer value
+   * that each bits represent the coefficient value of
+   * the polynominal of CRC, except for the maximum one
+   * (e.g.  0x04c11db7, which equals to 0b00000100110000010001110110110111,
+   * for x^32^ + x^26^ + x^23^ + x^22^ + x^16^ + x^12^ + x^11^ + x^10^ +
+   * x^8^ + x^7^ + x^5^ + x^4^ + x^2^ + x + 1).
+   *
+   * @return A 32bit integer value
+   * that each bits represent the coefficient value of
+   * the polynominal of CRC, except for the maximum one
+   */
   def poly: Int
 
   private[this] val rp = JInteger.reverse(poly)
@@ -119,10 +131,34 @@ trait CRC32 {
 
   private[this] def S32(x: Int) = if (be) x << 32 else x >>> 32
 
+  /**
+   * Returns the CRC code of the given byte and the given seed,
+   * without flipping bits.
+   *
+   * @param x
+   *   the value of which CRC code to be calculated
+   * @param seed
+   *   the seed to be used
+   *
+   * @return calculated CRC code
+   */
   def process(x: Byte, seed: Int) = {
     tab(0)((x & 0xff) ^ A(seed)) ^ S8(seed)
   }
 
+  /**
+   * Returns the CRC code of the given two 32-bit values and the given seed,
+   * without flipping bits.
+   *
+   * @param first
+   *   the first value of which CRC code to be calculated
+   * @param second
+   *   the second value of which CRC code to be calculated
+   * @param seed
+   *   the seed to be used
+   *
+   * @return calculated CRC code
+   */
   def process(first: Int, second: Int, seed: Int) = {
     var crc = seed
     crc ^= first
@@ -138,6 +174,19 @@ trait CRC32 {
     crc
   }
 
+  /**
+   * Returns the CRC code of the memory block that begins from the specified
+   * [[Pointer]] with the specified length, using the specified seed value.
+   *
+   * @param p
+   *   the [[Pointer]] that points to the beginning of the memory block
+   * @param len
+   *   the length of the memory block
+   * @param seed
+   *   the seed value
+   *
+   * @return the CRC code of the memory block
+   */
   def apply(p: Pointer, len: Long, seed: Int): Int = {
     var size = len
     var crc = ~seed
@@ -174,8 +223,32 @@ trait CRC32 {
     ~crc
   }
 
+  /**
+   * Returns the CRC code of the memory block that begins from the specified
+   * [[Pointer]] with the specified length, using 0 as a seed value.
+   *
+   * @param p the [[Pointer]] that points to the beginning of the memory block
+   * @param len the length of the memory block
+   *
+   * @return the CRC code of the memory block
+   */
   def apply(p: Pointer, len: Long): Int = apply(p, len, 0)
 
+  /**
+   * Returns the CRC code of the array block, which is a part of the specified
+   * byte array, beginning at the specified position, with the specified length.
+   *
+   * @param data
+   *   the byte array that contains the array block of which CRC to be
+   *   calculated
+   * @param start
+   *   the beginning position of the array block of which CRC to be
+   *   calculated
+   * @param len
+   *   the length of the array block of which CRC to be calculated
+   *
+   * @return the CRC code of the array block
+   */
   def apply(data: Array[Byte], start: Int, len: Int): Int = {
     val buf = buffer().pointer
     var i = start
@@ -195,10 +268,31 @@ trait CRC32 {
     crc
   }
 
+  /**
+   * Returns the CRC code of the array block, which is a part of the specified
+   * byte array, beginning at the specified position.
+   *
+   * @param data
+   *   the byte array that contains the array block of which CRC to be
+   *   calculated
+   * @param start
+   *   the beginning position of the array block of which CRC to be
+   *   calculated
+   *
+   * @return the CRC code of the array block
+   */
   def apply(data: Array[Byte], start: Int): Int = {
     apply(data, start, data.length - start)
   }
 
+  /**
+   * Returns the CRC code of the specified byte array.
+   *
+   * @param data
+   *   the byte array of which CRC to be calculated
+   *
+   * @return the CRC code of the byte array
+   */
   def apply(data: Array[Byte]): Int = {
     apply(data, 0, data.length)
   }
