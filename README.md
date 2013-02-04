@@ -1,6 +1,19 @@
 # The Aprikot Library
 
 Aprikot is yet another general-purpose Scala Library.
+Early development.
+
+# Dependencies
+
+`JDK 7` (and possibly future versions of JDK).
+Other dependencies are handled by `sbt-extras`.
+
+Currently Aprikot only supports `Scala 2.10.0`.
+Corss building with future versions (`2.10.1`, `2.11.0`...) will be
+added soon after they are released.
+Back porting to `2.9.2` is not planned.
+
+Tested on `Arch Linux x86_64` and `OpenJDK 1.7.0_09`.
 
 # How to use the Aprikot Library
 
@@ -10,10 +23,7 @@ In SBT settings, add my Maven repository to the resolvers.
 
 Then add aprikot to the library dependencies.
 
-    libraryDependencies += "info.sumito3478" %% "aprikot" % "0.0.+"
-
-Aprikot 0.1.x will be released soon.
-After that, binary compatibility will be maintained in patch releases.
+    libraryDependencies += "info.sumito3478" %% "aprikot" % "0.1.+"
 
 # How to build
 
@@ -37,11 +47,16 @@ In SBT prompt, execute `compile`, `test`, etc.
     [success] Total time: 18 s, completed Feb 2, 2013 10:15:14 PM
     >
 
+Currently, the `./sbt` script just invokes the script of `sbt-extras`.
+
 # Documentation
 
-This software is in early development and not well documented, but has some
-documentation comments in the source and with `sbt doc`, you can generate
-API documents.
+The Aprikot Library is in early development and not well documented, but has some
+documentation comments in the source.
+
+Scaladoc is available here: http://sumito3478.info/aprikot/api/current/
+
+You can also generate API document by yourself, with `sbt doc`.
 
 # Features
 
@@ -74,6 +89,9 @@ val crc32OfTestData = crc32(testData)
 ## aprikot.collection
 
 Some extensions to the Scala Collection Library.
+
+Some collections in `sumito-base`, the older version of this library,
+is planned to be ported to Aprikot.
 
 ## aprikot.combinator
 
@@ -108,6 +126,8 @@ val i = breakable[Int] {
 This is a utility function for delimited continuation.
 Calls the specified function with current continuation.
 
+This is just a wrapper of `scala.util.continuations.shift`.
+
 ### generator
 
 A generator implementation with delimited continuation.
@@ -119,6 +139,14 @@ A hash code library. Currently supports `CityHash v1.1`.
 ## aprikot.http
 
 An HTTP library. Parsers and servers.
+
+The HTTP header parsers are based on `scala.util.parsing`.
+It handles the HTTP message as a byte sequence, not as a String.
+
+The Http Server is based on NIO2 and Delimited Continuation.
+
+An experimental HTTP Proxy Server implementation is included.
+It isn't implemented well yet, but works to some extent.
 
 ## aprikot.io
 
