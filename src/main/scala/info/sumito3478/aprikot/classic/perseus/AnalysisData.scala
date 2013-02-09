@@ -16,19 +16,19 @@
 
 package info.sumito3478.aprikot.classic.perseus
 
-class AnalysesData(
+class AnalysisData(
   val inflected: InflectedWord,
   val lemma: LemmaDescription,
   val vocab: ShortVocabDescription,
   val inflection: InflectionDescription) extends Equals {
   def canEqual(other: Any) = {
-    other.isInstanceOf[AnalysesData]
+    other.isInstanceOf[AnalysisData]
   }
 
   override def equals(other: Any) = {
     other match {
-      case that: AnalysesData => {
-        that.canEqual(this) &&
+      case that: AnalysisData => {
+        that.canEqual(AnalysisData.this) &&
           inflected == that.inflected &&
           lemma == that.lemma &&
           vocab == that.vocab &&

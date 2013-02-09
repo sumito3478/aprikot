@@ -18,7 +18,7 @@ package info.sumito3478.aprikot.classic.perseus
 
 import scala.util.parsing.combinator.PackratParsers
 
-object AnalysesDataParser extends PackratParsers {
+object AnalysisDataParser extends PackratParsers {
   type Elem = Char
 
   val TAB = elem("TAB", _ == '\t')
@@ -61,6 +61,6 @@ object AnalysesDataParser extends PackratParsers {
   val Line = InflectedWord ~ TAB ~ Analyses.+ ^^ {
     case inflected ~ _ ~ analyses =>
       for (analysis <- analyses)
-        yield (new AnalysesData(inflected, analysis._1, analysis._2, analysis._3))
+        yield (new AnalysisData(inflected, analysis._1, analysis._2, analysis._3))
   }
 }
