@@ -45,4 +45,9 @@ object AnalysesDataLineParser extends PackratParsers {
     xs =>
       new LemmaDescription(xs.mkString)
   }
+
+  val ShortVocabDescription = NON_CTL.+ ^^ {
+    xs =>
+      new LemmaDescription(xs.mkString)
+  }
 }
