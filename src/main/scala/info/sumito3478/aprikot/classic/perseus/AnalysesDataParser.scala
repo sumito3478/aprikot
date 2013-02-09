@@ -18,7 +18,7 @@ package info.sumito3478.aprikot.classic.perseus
 
 import scala.util.parsing.combinator.PackratParsers
 
-object AnalysesDataLineParser extends PackratParsers {
+object AnalysesDataParser extends PackratParsers {
   type Elem = Char
 
   val TAB = elem("TAB", _ == '\t')
@@ -29,7 +29,7 @@ object AnalysesDataLineParser extends PackratParsers {
 
   val RIGHT_CURLY_BRACKET = elem("RIGHT_CURLY_BRACKET", _ == '}')
 
-  val NON_CTL = elem("NON_CTL", !"\t {}".contains(_))
+  val NON_CTL = elem("NON_CTL", !("\t {}".contains(_)))
 
   val InflectedWord = NON_CTL.+ ^^ {
     xs =>
