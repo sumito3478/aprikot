@@ -31,4 +31,6 @@ object PerseusAnalysisDatum extends Table[(Option[Int], String, String, String, 
   def inflection = column[String]("INFLECTION")
 
   def * = id.? ~ inflected ~ lemma ~ vocab ~ inflection
+
+  def idx = index("idx", inflected)
 }
