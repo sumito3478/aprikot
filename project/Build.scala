@@ -12,6 +12,7 @@ object build extends Build {
   ).settings(
     Seq(
       libraryDependencies ++= Seq(
+        "ch.qos.logback" % "logback-classic" % "1.0.+",
         "net.java.dev.jna" % "jna" % "3.5.+"
         ),
       version := "0.2.0-SNAPSHOT"
