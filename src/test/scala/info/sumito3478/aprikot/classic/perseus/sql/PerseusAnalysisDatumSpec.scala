@@ -22,8 +22,8 @@ import scala.slick.driver.BasicDriver.simple._
 import Database.threadLocalSession
 
 class PerseusAnalysisDatumSpec extends FunSpec {
-  describe("PerseusAnalysisDatum.create") {
-    it("should create new table in database") {
+  describe("PerseusAnalysisDatum") {
+    it("should create new table in database, insert and query") {
       val db = Database.forURL("jdbc:h2:mem:test1", driver = "org.h2.Driver")
       db withSession {
         val datum = PerseusAnalysisDatum
@@ -38,6 +38,24 @@ class PerseusAnalysisDatumSpec extends FunSpec {
         assert(lemma === "67838076 9 salu_to_,saluto")
         assert(vocab === " ")
         assert(inflection === "pres ind act 1st sg")
+      }
+    }
+
+    it("should query with inflected string") {
+      val db = Database.forURL("jdbc:h2:mem:test1", driver = "org.h2.Driver")
+      db withSession {
+        val datum = PerseusAnalysisDatum
+        datum.ddl.create
+        datum.insert(None, "saluto", "67838076 9 salu_to_,saluto", " ", "pres ind act 1st sg")
+        datum.insert(None, "cerebrum", "12844671 9 cere_bru_m,cerebrum",
+          "the brain", "neut gen pl")
+        datum.insert(None, "cerebrum", "12844671 9 cere_bru_m,cerebrum",
+          "the brain", "neut nom/voc/acc sg")
+        val r = for (d <- datum if d.inflected === "cerebrum") yield d.inflected
+        r.foreach {
+          inflected =>
+            assert(inflected === "cerebrum")
+        }
       }
     }
   }
