@@ -50,5 +50,11 @@ object AnalysesDataLineParser extends PackratParsers {
     xs =>
       new ShortVocabDescription(xs.mkString)
   }
+
+  val Line = InflectedWord ~ TAB ~ LEFT_CURLY_BRACKET ~
+    NON_CTL.+ ~ NON_CTL.+ ~ LemmaDescription ~ TAB ~ ShortVocabDescription ~
+    TAB ~ InflectionDescription ~ RIGHT_CURLY_BRACKET ^^ {
+    case inflected ~ _ ~ _ ~ _ ~ _ ~ lemma ~ _ ~ vocab ~ _ ~ inflection ~ _ =>
+      new AnalysesData(inflected, lemma, vocab, inflection)
   }
 }
