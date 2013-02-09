@@ -20,4 +20,29 @@ class AnalysesData(
   val inflected: InflectedWord,
   val lemma: LemmaDescription,
   val vocab: ShortVocabDescription,
-  val inflection: InflectionDescription)
+  val inflection: InflectionDescription) extends Equals {
+  def canEqual(other: Any) = {
+    other.isInstanceOf[AnalysesData]
+  }
+
+  override def equals(other: Any) = {
+    other match {
+      case that: AnalysesData => {
+        that.canEqual(this) &&
+          inflected == that.inflected &&
+          lemma == that.lemma &&
+          vocab == that.vocab &&
+          inflection == that.inflection
+      }
+      case _ => false
+    }
+  }
+
+  override def hashCode() = {
+    val prime = 41
+    prime * (
+      prime * (
+        prime * (prime + inflected.hashCode) + lemma.hashCode) +
+        vocab.hashCode) + inflection.hashCode
+  }
+}
