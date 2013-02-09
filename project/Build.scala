@@ -12,6 +12,8 @@ object build extends Build {
   ).settings(
     Seq(
       libraryDependencies ++= Seq(
+        "com.typesafe.slick" %% "slick" % "1.0.+",
+        "com.h2database" % "h2" % "1.3.+",
         "ch.qos.logback" % "logback-classic" % "1.0.+",
         "net.java.dev.jna" % "jna" % "3.5.+"
         ),
