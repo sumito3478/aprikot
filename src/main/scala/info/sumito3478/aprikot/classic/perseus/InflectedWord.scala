@@ -16,4 +16,4 @@
 
 package info.sumito3478.aprikot.classic.perseus
 
-class InflectedWord(val underlined: String)
+class InflectedWord(val underlined: String) extends AnyVal

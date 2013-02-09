@@ -16,4 +16,4 @@
 
 package info.sumito3478.aprikot.classic.perseus
 
-class ShortVocabDescription(val underlined: String)
+class ShortVocabDescription(val underlined: String) extends AnyVal

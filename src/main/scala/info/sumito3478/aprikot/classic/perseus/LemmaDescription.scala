@@ -16,4 +16,4 @@
 
 package info.sumito3478.aprikot.classic.perseus
 
-class LemmaDescription(val underlined: String)
+class LemmaDescription(val underlined: String) extends AnyVal
