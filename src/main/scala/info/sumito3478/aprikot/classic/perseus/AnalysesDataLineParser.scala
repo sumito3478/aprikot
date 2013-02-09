@@ -16,5 +16,18 @@
 
 package info.sumito3478.aprikot.classic.perseus
 
-object AnalysesDataLineParser {
+import scala.util.parsing.combinator.PackratParsers
+
+object AnalysesDataLineParser extends PackratParsers {
+  type Elem = Char
+
+  val TAB = elem("TAB", _ == '\t')
+
+  val SP = elem("SP", _ == ' ')
+
+  val LEFT_CURLY_BRACKET = elem("LEFT_CURLY_BRACKET", _ == '{')
+
+  val RIGHT_CURLY_BRACKET = elem("RIGHT_CURLY_BRACKET", _ == '}')
+
+  val NON_CTL = elem("NON_CTL", ! "\t {}".contains(_))
 }
