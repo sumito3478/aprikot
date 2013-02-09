@@ -29,7 +29,7 @@ object AnalysesDataParser extends PackratParsers {
 
   val RIGHT_CURLY_BRACKET = elem("RIGHT_CURLY_BRACKET", _ == '}')
 
-  val NON_CTL = elem("NON_CTL", c => !("\t {}".contains(c)))
+  val NON_CTL = elem("NON_CTL", c => !("\t{}".contains(c)))
 
   val InflectedWord = NON_CTL.+ ^^ {
     xs =>
@@ -51,10 +51,16 @@ object AnalysesDataParser extends PackratParsers {
       new ShortVocabDescription(xs.mkString)
   }
 
-  val Line = InflectedWord ~ TAB ~ LEFT_CURLY_BRACKET ~
-    NON_CTL.+ ~ NON_CTL.+ ~ LemmaDescription ~ TAB ~ ShortVocabDescription ~
+  val Analyses = LEFT_CURLY_BRACKET ~
+    LemmaDescription ~ TAB ~ ShortVocabDescription ~
     TAB ~ InflectionDescription ~ RIGHT_CURLY_BRACKET ^^ {
-    case inflected ~ _ ~ _ ~ _ ~ _ ~ lemma ~ _ ~ vocab ~ _ ~ inflection ~ _ =>
-      new AnalysesData(inflected, lemma, vocab, inflection)
+      case _ ~ lemma ~ _ ~ vocab ~ _ ~ inflection ~ _ =>
+        (lemma, vocab, inflection)
+    }
+
+  val Line = InflectedWord ~ TAB ~ Analyses.+ ^^ {
+    case inflected ~ _ ~ analyses =>
+      for (analysis <- analyses)
+        yield (new AnalysesData(inflected, analysis._1, analysis._2, analysis._3))
   }
 }
