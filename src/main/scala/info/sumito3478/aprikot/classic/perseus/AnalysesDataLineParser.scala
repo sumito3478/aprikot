@@ -29,7 +29,7 @@ object AnalysesDataLineParser extends PackratParsers {
 
   val RIGHT_CURLY_BRACKET = elem("RIGHT_CURLY_BRACKET", _ == '}')
 
-  val NON_CTL = elem("NON_CTL", ! "\t {}".contains(_))
+  val NON_CTL = elem("NON_CTL", !"\t {}".contains(_))
 
   val InflectedWord = NON_CTL.+ ^^ {
     xs =>
