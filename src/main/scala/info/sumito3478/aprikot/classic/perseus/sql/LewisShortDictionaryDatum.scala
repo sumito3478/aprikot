@@ -22,9 +22,11 @@ import Database.threadLocalSession
 object LewisShortDictionaryDatum extends Table[(String, String, String)]("LEWIS_SHORT_DICTIONARY_DATUM") {
   def key = column[String]("KEY")
 
-  def tei = column[String]("TEI")
+  def tei = column[String]("TEI", O.DBType("TEXT"))
 
-  def html = column[String]("HTML")
+  def html = column[String]("HTML", O.DBType("TEXT"))
 
   def * = key ~ tei ~ html
+
+  def idx = index("IDX", key)
 }
