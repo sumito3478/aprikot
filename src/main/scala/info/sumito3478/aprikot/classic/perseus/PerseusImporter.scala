@@ -16,6 +16,26 @@
 
 package info.sumito3478.aprikot.classic.perseus
 
+import scala.xml._
+import scala.slick.driver.BasicDriver.simple._
+import Database.threadLocalSession
+import info.sumito3478.aprikot.classic.perseus.sql.LewisShortDictionaryDatum
 
 object PerseusImporter {
+  def importLewisShort(dataPath: String, db: Database) = {
+    val xml = XML.load(Source.fromFile(dataPath))
+    val teis = xml \\ "entryFree"
+    val datum = teis map {
+      tei =>
+        val key = Lemma.normalize((tei \ "@key").toString)
+        new LewisShortDictionaryData(key, tei.toString)
+    }
+    db withSession {
+      datum foreach {
+        data =>
+          println(s"inserting ${data.key}")
+          LewisShortDictionaryDatum.insert(data.key, data.tei, data.html)
+      }
+    }
+  }
 }
