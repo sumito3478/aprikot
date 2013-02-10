@@ -16,4 +16,4 @@
 
 package info.sumito3478.aprikot.classic.perseus
 
-class InflectionDescription(val underlined: String) extends AnyVal
+case class InflectionDescription(val underlined: String)
