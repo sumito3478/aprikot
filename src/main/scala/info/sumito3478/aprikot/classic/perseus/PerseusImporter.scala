@@ -26,7 +26,7 @@ import scala.util.parsing.input.CharSequenceReader
 import info.sumito3478.aprikot.classic.perseus.db.PerseusAnalysisDatum
 
 object PerseusImporter {
-  def importLewisShort(dataPath: String, db: Database) = {
+  def importLewisShort(db: Database, dataPath: String) = {
     val xml = XML.load(Source.fromFile(dataPath))
     val teis = xml \\ "entryFree"
     val datum = teis map {
@@ -43,7 +43,7 @@ object PerseusImporter {
     }
   }
 
-  def importLatinAnalyses(dataPath: String, db: Database) = {
+  def importLatinAnalyses(db: Database, dataPath: String) = {
     val it = FileUtils.lineIterator(new File(dataPath), "UTF-8")
     try {
       val lines = Iterator.continually(it.next).takeWhile(_ => it.hasNext)
