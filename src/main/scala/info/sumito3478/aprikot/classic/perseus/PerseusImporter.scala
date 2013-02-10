@@ -70,4 +70,24 @@ object PerseusImporter {
       it.close
     }
   }
+
+  def openDefaultDatabase = Database.forURL("jdbc:h2:~/.aprikot/perseus_data/perseus_data")
+
+  val defaultLewisShortDataPath =
+    "/usr/share/diogenes/perl/Perseus_Data/1999.04.0059.xml"
+
+  val defaultLatinAnalysesDataPath =
+    "/usr/share/diogenes/perl/Perseus_Data/latin-analyses.txt"
+
+  def importAll(
+    db: => Database = openDefaultDatabase,
+    lewisShortDataPath: String = defaultLewisShortDataPath,
+    latinAnalysesDataPath: String = defaultLatinAnalysesDataPath) = {
+    db withTransaction {
+      LewisShortDictionaryDatum.ddl.create
+      importLewisShort(db, lewisShortDataPath)
+      PerseusAnalysisDatum.ddl.create
+      importLatinAnalyses(db, defaultLatinAnalysesDataPath)
+    }
+  }
 }
