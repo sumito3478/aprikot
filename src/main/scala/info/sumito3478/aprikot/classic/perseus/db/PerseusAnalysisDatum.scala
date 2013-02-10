@@ -19,9 +19,7 @@ package info.sumito3478.aprikot.classic.perseus.db
 import scala.slick.driver.BasicDriver.simple._
 import Database.threadLocalSession
 
-object PerseusAnalysisDatum extends Table[(Option[Int], String, String, String, String)]("PERSEUS_ANALYSIS_DATUM") {
-  def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
-
+object PerseusAnalysisDatum extends Table[(String, String, String, String)]("PERSEUS_ANALYSIS_DATUM") {
   def inflected = column[String]("INFLECTED")
 
   def lemma = column[String]("LEMMA")
@@ -30,7 +28,7 @@ object PerseusAnalysisDatum extends Table[(Option[Int], String, String, String, 
 
   def inflection = column[String]("INFLECTION")
 
-  def * = id.? ~ inflected ~ lemma ~ vocab ~ inflection
+  def * = inflected ~ lemma ~ vocab ~ inflection
 
   def idx = index("idx", inflected)
 }

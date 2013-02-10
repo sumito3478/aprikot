@@ -28,12 +28,11 @@ class PerseusAnalysisDatumSpec extends FunSpec {
       db withSession {
         val datum = PerseusAnalysisDatum
         datum.ddl.create
-        datum.insert(None, "saluto", "67838076 9 salu_to_,saluto", " ", "pres ind act 1st sg")
+        datum.insert("saluto", "67838076 9 salu_to_,saluto", " ", "pres ind act 1st sg")
         val r = Query(datum)
         val data = r.first
         println(data)
-        val (id, inflected, lemma, vocab, inflection) = data
-        assert(id === Some(1))
+        val (inflected, lemma, vocab, inflection) = data
         assert(inflected === "saluto")
         assert(lemma === "67838076 9 salu_to_,saluto")
         assert(vocab === " ")
@@ -46,10 +45,10 @@ class PerseusAnalysisDatumSpec extends FunSpec {
       db withSession {
         val datum = PerseusAnalysisDatum
         datum.ddl.create
-        datum.insert(None, "saluto", "67838076 9 salu_to_,saluto", " ", "pres ind act 1st sg")
-        datum.insert(None, "cerebrum", "12844671 9 cere_bru_m,cerebrum",
+        datum.insert("saluto", "67838076 9 salu_to_,saluto", " ", "pres ind act 1st sg")
+        datum.insert("cerebrum", "12844671 9 cere_bru_m,cerebrum",
           "the brain", "neut gen pl")
-        datum.insert(None, "cerebrum", "12844671 9 cere_bru_m,cerebrum",
+        datum.insert("cerebrum", "12844671 9 cere_bru_m,cerebrum",
           "the brain", "neut nom/voc/acc sg")
         val r = for (d <- datum if d.inflected === "cerebrum") yield d.inflected
         r.foreach {
