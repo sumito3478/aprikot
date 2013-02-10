@@ -31,6 +31,8 @@ object AnalysisDataParser extends PackratParsers {
 
   val NON_CTL = elem("NON_CTL", c => !("\t{}".contains(c)))
 
+  val NON_WS = elem("NON_WS", !_.isWhitespace)
+
   val InflectedWord = NON_CTL.+ ^^ {
     xs =>
       new InflectedWord(xs.mkString)
@@ -41,8 +43,8 @@ object AnalysisDataParser extends PackratParsers {
       new InflectionDescription(xs.mkString)
   }
 
-  val LemmaDescription = NON_CTL.+ ^^ {
-    xs =>
+  val LemmaDescription = NON_WS.+ ~ SP ~ NON_WS.+ ~ SP ~ NON_WS.+ ^^ {
+    case _ ~ _ ~ _ ~ xs =>
       new LemmaDescription(xs.mkString)
   }
 
