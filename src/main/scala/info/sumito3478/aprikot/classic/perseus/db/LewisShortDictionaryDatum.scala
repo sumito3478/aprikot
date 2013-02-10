@@ -14,23 +14,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.classic.perseus.sql
+package info.sumito3478.aprikot.classic.perseus.db
 
 import scala.slick.driver.BasicDriver.simple._
 import Database.threadLocalSession
 
-object PerseusAnalysisDatum extends Table[(Option[Int], String, String, String, String)]("PERSEUS_ANALYSIS_DATUM") {
-  def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
+object LewisShortDictionaryDatum extends Table[(String, String, String)]("LEWIS_SHORT_DICTIONARY_DATUM") {
+  def key = column[String]("KEY")
 
-  def inflected = column[String]("INFLECTED")
+  def tei = column[String]("TEI", O.DBType("TEXT"))
 
-  def lemma = column[String]("LEMMA")
+  def html = column[String]("HTML", O.DBType("TEXT"))
 
-  def vocab = column[String]("VOCAB")
+  def * = key ~ tei ~ html
 
-  def inflection = column[String]("INFLECTION")
-
-  def * = id.? ~ inflected ~ lemma ~ vocab ~ inflection
-
-  def idx = index("idx", inflected)
+  def idx = index("IDX", key)
 }

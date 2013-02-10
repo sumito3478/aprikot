@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.classic.perseus.sql
+package info.sumito3478.aprikot.classic.perseus.db
 
 import org.scalatest.FunSpec
 

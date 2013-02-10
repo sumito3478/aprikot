@@ -19,7 +19,7 @@ package info.sumito3478.aprikot.classic.perseus
 import scala.xml._
 import scala.slick.driver.BasicDriver.simple._
 import Database.threadLocalSession
-import info.sumito3478.aprikot.classic.perseus.sql.LewisShortDictionaryDatum
+import info.sumito3478.aprikot.classic.perseus.db.LewisShortDictionaryDatum
 
 object PerseusImporter {
   def importLewisShort(dataPath: String, db: Database) = {
