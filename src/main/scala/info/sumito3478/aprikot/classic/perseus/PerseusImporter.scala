@@ -20,6 +20,10 @@ import scala.xml._
 import scala.slick.driver.BasicDriver.simple._
 import Database.threadLocalSession
 import info.sumito3478.aprikot.classic.perseus.db.LewisShortDictionaryDatum
+import org.apache.commons.io.FileUtils
+import java.io.File
+import scala.util.parsing.input.CharSequenceReader
+import info.sumito3478.aprikot.classic.perseus.db.PerseusAnalysisDatum
 
 object PerseusImporter {
   def importLewisShort(dataPath: String, db: Database) = {
@@ -36,6 +40,34 @@ object PerseusImporter {
           println(s"inserting ${data.key}")
           LewisShortDictionaryDatum.insert(data.key, data.tei, data.html)
       }
+    }
+  }
+
+  def importLatinAnalyses(dataPath: String, db: Database) = {
+    val it = FileUtils.lineIterator(new File(dataPath), "UTF-8")
+    try {
+      val lines = Iterator.continually(it.next).takeWhile(_ => it.hasNext)
+      db withSession {
+        for (line <- lines) {
+          val r = AnalysisDataParser.Line(new CharSequenceReader(line))
+          r match {
+            case s: AnalysisDataParser.Success[_] => {
+              for (data <- s.result) {
+                PerseusAnalysisDatum.insert(
+                  data.inflected.underlined,
+                  data.lemma.underlined,
+                  data.vocab.underlined,
+                  data.inflection.underlined)
+              }
+            }
+            case _ => {
+              // TODO: Log non successful parsing result
+            }
+          }
+        }
+      }
+    } finally {
+      it.close
     }
   }
 }
