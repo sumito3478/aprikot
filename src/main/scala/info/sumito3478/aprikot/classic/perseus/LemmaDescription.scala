@@ -16,4 +16,8 @@
 
 package info.sumito3478.aprikot.classic.perseus
 
-case class LemmaDescription(val underlined: String)
+case class LemmaDescription(val underlined: String) {
+  override def toString: String = {
+    underlined.replaceAll("_", "\u0304")
+  }
+}

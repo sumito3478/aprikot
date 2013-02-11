@@ -39,7 +39,7 @@ class LatinTextAnalysis(
     val dics = (for(html <- dictionaryHtmls) yield
         XML.load(Source.fromString(html)).flatten
     )
-    <div><div>{analyses}</div><div>{dics}</div></div>
+    <div class="latin-word-analyses"><div class="latin-inflection-analyses">{analyses}</div><div class="latin-dictionary-entries">{dics}</div></div>
   }
 }
 
