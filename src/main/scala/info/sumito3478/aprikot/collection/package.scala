@@ -226,4 +226,7 @@ package object collection {
       mkBuildable[B, C](builder, List(), List(), List())(asTraversable)
     }
   }
+
+  implicit class IteratorW[A](val underlined: Iterator[A]) extends AnyVal {
+  }
 }
