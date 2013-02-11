@@ -16,33 +16,8 @@
 
 package info.sumito3478.aprikot.classic.perseus
 
-class AnalysisData(
+case class AnalysisData(
   val inflected: InflectedWord,
   val lemma: LemmaDescription,
   val vocab: ShortVocabDescription,
-  val inflection: InflectionDescription) extends Equals {
-  def canEqual(other: Any) = {
-    other.isInstanceOf[AnalysisData]
-  }
-
-  override def equals(other: Any) = {
-    other match {
-      case that: AnalysisData => {
-        that.canEqual(AnalysisData.this) &&
-          inflected == that.inflected &&
-          lemma == that.lemma &&
-          vocab == that.vocab &&
-          inflection == that.inflection
-      }
-      case _ => false
-    }
-  }
-
-  override def hashCode() = {
-    val prime = 41
-    prime * (
-      prime * (
-        prime * (prime + inflected.hashCode) + lemma.hashCode) +
-        vocab.hashCode) + inflection.hashCode
-  }
-}
+  val inflection: InflectionDescription)
