@@ -49,24 +49,27 @@ object LatinTextAnalysis {
     val words = text.neutralWordIterator
     val db = openPerseusDatabase
     db withSession {
-      return (for (word <- words) yield {
+      val inflectionQuery = for (
+        word <- Parameters[String];
+        data <- PerseusAnalysisDatum if data.inflected === word
+      ) yield (
+        (data.inflected, data.lemma, data.vocab, data.inflection))
+      val dicQuery = for (
+        key <- Parameters[String];
+        data <- LewisShortDictionaryDatum if data.key === key
+      ) yield (data.html)
+      (for (word <- words) yield {
         val inflectionBuffer = new ListBuffer[AnalysisData]
         val dictionaryBuffer = new ListBuffer[String]
-        db withSession {
-          val q = for (data <- PerseusAnalysisDatum if data.inflected.toLowerCase === word.toLowerCase) yield (
-            (data.inflected, data.lemma, data.vocab, data.inflection))
-          q foreach {
-            data =>
-              val (inflected, lemma, vocab, inflection) = data
-              inflectionBuffer += new AnalysisData(new InflectedWord(inflected), new LemmaDescription(lemma), new ShortVocabDescription(vocab), new InflectionDescription(inflection))
-              val key = lemma.split(",").toVector.last
-              val q = for (data <- LewisShortDictionaryDatum if data.key.toLowerCase === key.toLowerCase)
-                yield (data.html)
-              q foreach {
-                html =>
-                  dictionaryBuffer += html
-              }
-          }
+        inflectionQuery(word) foreach {
+          data =>
+            val (inflected, lemma, vocab, inflection) = data
+            inflectionBuffer += new AnalysisData(new InflectedWord(inflected), new LemmaDescription(lemma), new ShortVocabDescription(vocab), new InflectionDescription(inflection))
+            val key = lemma.split(",").toVector.last
+            dicQuery(key) foreach {
+              html =>
+                dictionaryBuffer += html
+            }
         }
         new LatinTextAnalysis(inflectionBuffer.toList, dictionaryBuffer.toList)
       }).toList
