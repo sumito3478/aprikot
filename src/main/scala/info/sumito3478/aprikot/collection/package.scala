@@ -20,6 +20,7 @@ import scala.collection.TraversableOnce
 import scala.collection.mutable.Builder
 import scala.reflect.ClassTag
 import scala.collection.mutable.ArrayBuilder
+import info.sumito3478.aprikot.control.breakable
 
 package object collection {
   private def bufferedTakeWhile[A](underlined: BufferedIterator[A], p: (A, Option[A]) => Boolean): BufferedIterator[A] = {
@@ -228,5 +229,19 @@ package object collection {
   }
 
   implicit class IteratorW[A](val underlined: Iterator[A]) extends AnyVal {
+    def forceTake(n: Int): IndexedSeq[A] = {
+      val builder = new VectorBuilder[A]
+      breakable[IndexedSeq[A]] {
+        break =>
+          for (_ <- 0 until n) {
+            if (underlined.hasNext) {
+              builder += underlined.next
+            } else {
+              break(builder.result)
+            }
+          }
+          builder.result
+      }
+    }
   }
 }
