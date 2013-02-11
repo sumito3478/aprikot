@@ -84,8 +84,10 @@ object PerseusImporter {
     lewisShortDataPath: String = defaultLewisShortDataPath,
     latinAnalysesDataPath: String = defaultLatinAnalysesDataPath) = {
     db withTransaction {
+      LewisShortDictionaryDatum.ddl.drop
       LewisShortDictionaryDatum.ddl.create
       importLewisShort(db, lewisShortDataPath)
+      PerseusAnalysisDatum.ddl.drop
       PerseusAnalysisDatum.ddl.create
       importLatinAnalyses(db, defaultLatinAnalysesDataPath)
     }
