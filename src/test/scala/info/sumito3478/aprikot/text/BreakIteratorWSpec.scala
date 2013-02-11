@@ -68,9 +68,7 @@ class BreakIteratorWSpec extends FunSpec {
         val en = Locale.ENGLISH
         val it = BreakIterator.getWordInstance
         val words = it.mapIterator(new WrappedString(civ5._1).iterator)
-        for (word <- words) {
-          assert(word === civ5._2)
-        }
+        assert(words.toList === civ5._2)
       }
     }
   }
