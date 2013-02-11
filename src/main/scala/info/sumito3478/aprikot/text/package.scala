@@ -20,6 +20,8 @@ import java.text._
 import info.sumito3478.aprikot.collection.IteratorW
 import scala.collection.mutable.Queue
 import scala.collection.immutable.VectorBuilder
+import java.util.Locale
+import scala.collection.immutable.WrappedString
 
 package object text {
   implicit class BreakIteratorW(val self: BreakIterator) extends AnyVal {
@@ -72,6 +74,18 @@ package object text {
         } else {
           Some(queue.dequeue)
         }).takeWhile(_.isDefined).map(_.get)
+    }
+  }
+
+  private[this] lazy val neutralWordRegex =
+    """[^\p{C}\p{Z}\p{P}].*""".r
+
+  implicit class StringW(val underlined: String) extends AnyVal {
+    def neutralWordIterator: Iterator[String] = {
+      val en = Locale.ENGLISH
+      val it = BreakIterator.getWordInstance
+      val words = it.mapIterator(underlined.iterator)
+      words.filter(neutralWordRegex.pattern.matcher(_).matches)
     }
   }
 }
