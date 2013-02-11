@@ -243,5 +243,19 @@ package object collection {
           builder.result
       }
     }
+
+    def forceDrop(n: Int): Iterator[A] = {
+      breakable[Iterator[A]] {
+        break =>
+          for (_ <- 0 until n) {
+            if (underlined.hasNext) {
+              underlined.next
+            } else {
+              break(underlined)
+            }
+          }
+          underlined
+      }
+    }
   }
 }
