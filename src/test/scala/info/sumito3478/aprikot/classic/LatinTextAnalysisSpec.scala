@@ -14,14 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.classic.perseus
+package info.sumito3478.aprikot.classic
 
-class LatinTextAnalysis {
-  
-}
+import org.scalatest.FunSpec
 
-object LatinTextAnalysis {
-  def apply(text: String) = {
-    ???
+import scala.xml._
+
+class LatinTextAnalysisSpec extends FunSpec {
+  describe("LatinTextAnalysis.toHtml") {
+    it("should return expected html") {
+      val analyses = LatinTextAnalysis("Te saluto. Augustus sum, imperator et pontifex maximus romae. Si tu es Romae amicus, es gratus.")
+      println(new PrettyPrinter(80, 2).format(<html>{analyses.map(_.toHtml)}</html>))
+    }
   }
 }
