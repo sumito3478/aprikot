@@ -16,4 +16,6 @@
 
 package info.sumito3478.aprikot.classic.perseus
 
-case class InflectionDescription(val underlined: String)
+case class InflectionDescription(val underlined: String) {
+  override def toString: String = underlined
+}
