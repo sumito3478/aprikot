@@ -38,7 +38,7 @@ object PerseusImporter {
       datum foreach {
         data =>
           println(s"inserting ${data.key}")
-          LewisShortDictionaryDatum.insert(data.key, data.tei, data.html)
+          LewisShortDictionaryDatum.insert(data.key.toLowerCase, data.tei, data.html)
       }
     }
   }
@@ -54,6 +54,7 @@ object PerseusImporter {
             case s: AnalysisDataParser.Success[_] => {
               for (data <- s.result) {
                 PerseusAnalysisDatum.insert(
+                  data.inflected.underlined.toLowerCase,
                   data.inflected.underlined,
                   data.lemma.underlined,
                   data.vocab.underlined,
