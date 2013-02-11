@@ -257,5 +257,9 @@ package object collection {
           underlined
       }
     }
+
+    def lookAhead: LookAheadIterator[A] = {
+      new LookAheadIterator(underlined)
+    }
   }
 }
