@@ -14,23 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.classic.perseus.sql
+package info.sumito3478.aprikot.classic.perseus
 
-import scala.slick.driver.BasicDriver.simple._
-import Database.threadLocalSession
+class LatinTextAnalysis {
+  
+}
 
-object PerseusAnalysisDatum extends Table[(Option[Int], String, String, String, String)]("PERSEUS_ANALYSIS_DATUM") {
-  def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
-
-  def inflected = column[String]("INFLECTED")
-
-  def lemma = column[String]("LEMMA")
-
-  def vocab = column[String]("VOCAB")
-
-  def inflection = column[String]("INFLECTION")
-
-  def * = id.? ~ inflected ~ lemma ~ vocab ~ inflection
-
-  def idx = index("idx", inflected)
+object LatinTextAnalysis {
+  def apply(text: String) = {
+    ???
+  }
 }

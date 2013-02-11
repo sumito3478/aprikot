@@ -14,6 +14,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.classic.perseus
+package info.sumito3478.aprikot.classic.perseus.db
 
-case class InflectionDescription(val underlined: String)
+import scala.slick.driver.BasicDriver.simple._
+import Database.threadLocalSession
+
+object LewisShortDictionaryDatum extends Table[(String, String, String)]("LEWIS_SHORT_DICTIONARY_DATUM") {
+  def key = column[String]("KEY")
+
+  def tei = column[String]("TEI", O.DBType("TEXT"))
+
+  def html = column[String]("HTML", O.DBType("TEXT"))
+
+  def * = key ~ tei ~ html
+
+  def idx = index("IDX", key)
+}

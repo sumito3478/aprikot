@@ -29,7 +29,7 @@ class AnalysisDataParserSpec extends FunSpec {
         case s: AnalysisDataParser.Success[_] =>
           assert(s.result.head === new AnalysisData(
             new InflectedWord("saluto"),
-            new LemmaDescription("67838076 9 salu_to_,saluto"),
+            new LemmaDescription("salu_to_,saluto"),
             new ShortVocabDescription(" "),
             new InflectionDescription("pres ind act 1st sg")))
         case f: AnalysisDataParser.Failure => {
@@ -51,12 +51,12 @@ class AnalysisDataParserSpec extends FunSpec {
           assert(xs.length === 2)
           assert(xs(0) === new AnalysisData(
             new InflectedWord("cerebrum"),
-            new LemmaDescription("12844671 9 cere_bru_m,cerebrum"),
+            new LemmaDescription("cere_bru_m,cerebrum"),
             new ShortVocabDescription("the brain"),
             new InflectionDescription("neut gen pl")))
           assert(xs(1) === new AnalysisData(
             new InflectedWord("cerebrum"),
-            new LemmaDescription("12844671 9 cere_brum,cerebrum"),
+            new LemmaDescription("cere_brum,cerebrum"),
             new ShortVocabDescription("the brain"),
             new InflectionDescription("neut nom/voc/acc sg")))
         }

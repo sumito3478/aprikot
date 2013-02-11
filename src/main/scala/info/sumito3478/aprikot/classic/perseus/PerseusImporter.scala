@@ -19,10 +19,14 @@ package info.sumito3478.aprikot.classic.perseus
 import scala.xml._
 import scala.slick.driver.BasicDriver.simple._
 import Database.threadLocalSession
-import info.sumito3478.aprikot.classic.perseus.sql.LewisShortDictionaryDatum
+import info.sumito3478.aprikot.classic.perseus.db.LewisShortDictionaryDatum
+import org.apache.commons.io.FileUtils
+import java.io.File
+import scala.util.parsing.input.CharSequenceReader
+import info.sumito3478.aprikot.classic.perseus.db.PerseusAnalysisDatum
 
 object PerseusImporter {
-  def importLewisShort(dataPath: String, db: Database) = {
+  def importLewisShort(db: Database, dataPath: String) = {
     val xml = XML.load(Source.fromFile(dataPath))
     val teis = xml \\ "entryFree"
     val datum = teis map {
@@ -36,6 +40,54 @@ object PerseusImporter {
           println(s"inserting ${data.key}")
           LewisShortDictionaryDatum.insert(data.key, data.tei, data.html)
       }
+    }
+  }
+
+  def importLatinAnalyses(db: Database, dataPath: String) = {
+    val it = FileUtils.lineIterator(new File(dataPath), "UTF-8")
+    try {
+      val lines = Iterator.continually(it.next).takeWhile(_ => it.hasNext)
+      db withSession {
+        for (line <- lines) {
+          val r = AnalysisDataParser.Line(new CharSequenceReader(line))
+          r match {
+            case s: AnalysisDataParser.Success[_] => {
+              for (data <- s.result) {
+                PerseusAnalysisDatum.insert(
+                  data.inflected.underlined,
+                  data.lemma.underlined,
+                  data.vocab.underlined,
+                  data.inflection.underlined)
+              }
+            }
+            case _ => {
+              // TODO: Log non successful parsing result
+            }
+          }
+        }
+      }
+    } finally {
+      it.close
+    }
+  }
+
+  def openDefaultDatabase = Database.forURL("jdbc:h2:~/.aprikot/perseus_data/perseus_data")
+
+  val defaultLewisShortDataPath =
+    "/usr/share/diogenes/perl/Perseus_Data/1999.04.0059.xml"
+
+  val defaultLatinAnalysesDataPath =
+    "/usr/share/diogenes/perl/Perseus_Data/latin-analyses.txt"
+
+  def importAll(
+    db: => Database = openDefaultDatabase,
+    lewisShortDataPath: String = defaultLewisShortDataPath,
+    latinAnalysesDataPath: String = defaultLatinAnalysesDataPath) = {
+    db withTransaction {
+      LewisShortDictionaryDatum.ddl.create
+      importLewisShort(db, lewisShortDataPath)
+      PerseusAnalysisDatum.ddl.create
+      importLatinAnalyses(db, defaultLatinAnalysesDataPath)
     }
   }
 }
