@@ -35,10 +35,11 @@ object PerseusImporter {
         new LewisShortDictionaryData(key, tei.toString)
     }
     db withSession {
+      val insertInvoker = LewisShortDictionaryDatum.insertInvoker
       datum foreach {
         data =>
-          println(s"inserting ${data.key}")
-          LewisShortDictionaryDatum.insert(data.key.toLowerCase, data.tei, data.html)
+          println(s"inserting ${data.key}...")
+          insertInvoker.insert(data.key.toLowerCase, data.tei, data.html)
       }
     }
   }
@@ -48,12 +49,14 @@ object PerseusImporter {
     try {
       val lines = Iterator.continually(it.next).takeWhile(_ => it.hasNext)
       db withSession {
+        val insertInvoker = PerseusAnalysisDatum.insertInvoker
         for (line <- lines) {
           val r = AnalysisDataParser.Line(new CharSequenceReader(line))
           r match {
             case s: AnalysisDataParser.Success[_] => {
               for (data <- s.result) {
-                PerseusAnalysisDatum.insert(
+                println(s"inserting ${data.inflected.underlined}")
+                insertInvoker.insert(
                   data.inflected.underlined.toLowerCase,
                   data.inflected.underlined,
                   data.lemma.underlined,
@@ -85,10 +88,8 @@ object PerseusImporter {
     lewisShortDataPath: String = defaultLewisShortDataPath,
     latinAnalysesDataPath: String = defaultLatinAnalysesDataPath) = {
     db withTransaction {
-      LewisShortDictionaryDatum.ddl.drop
       LewisShortDictionaryDatum.ddl.create
       importLewisShort(db, lewisShortDataPath)
-      PerseusAnalysisDatum.ddl.drop
       PerseusAnalysisDatum.ddl.create
       importLatinAnalyses(db, defaultLatinAnalysesDataPath)
     }
