@@ -31,6 +31,7 @@ import info.sumito3478.aprikot.classic.perseus.InflectionDescription
 import scala.xml._
 
 class LatinTextAnalysis(
+  val word: String,
   val inflectionAnalyses: List[AnalysisData],
   val dictionaryHtmls: List[String]) {
   def toHtml: Elem = {
@@ -71,7 +72,7 @@ object LatinTextAnalysis {
                 dictionaryBuffer += html
             }
         }
-        new LatinTextAnalysis(inflectionBuffer.toList, dictionaryBuffer.toList)
+        new LatinTextAnalysis(word, inflectionBuffer.toList, dictionaryBuffer.toList)
       }).toList
     }
   }
