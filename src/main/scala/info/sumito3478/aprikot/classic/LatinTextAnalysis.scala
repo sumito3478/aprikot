@@ -51,7 +51,7 @@ object LatinTextAnalysis {
     db withSession {
       val inflectionQuery = for (
         word <- Parameters[String];
-        data <- PerseusAnalysisDatum if data.inflected === word
+        data <- PerseusAnalysisDatum if data.key === word
       ) yield (
         (data.inflected, data.lemma, data.vocab, data.inflection))
       val dicQuery = for (
@@ -61,12 +61,12 @@ object LatinTextAnalysis {
       (for (word <- words) yield {
         val inflectionBuffer = new ListBuffer[AnalysisData]
         val dictionaryBuffer = new ListBuffer[String]
-        inflectionQuery(word) foreach {
+        inflectionQuery(word.toLowerCase) foreach {
           data =>
             val (inflected, lemma, vocab, inflection) = data
             inflectionBuffer += new AnalysisData(new InflectedWord(inflected), new LemmaDescription(lemma), new ShortVocabDescription(vocab), new InflectionDescription(inflection))
             val key = lemma.split(",").toVector.last
-            dicQuery(key) foreach {
+            dicQuery(key.toLowerCase) foreach {
               html =>
                 dictionaryBuffer += html
             }
