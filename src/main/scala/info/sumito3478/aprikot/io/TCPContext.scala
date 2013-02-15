@@ -13,15 +13,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.io
+package info.sumito3478
+package aprikot.io
 
-import java.nio.channels.AsynchronousSocketChannel
-import info.sumito3478.aprikot.time.Duration
-import java.nio.ByteBuffer
-import java.net.InetSocketAddress
 import scala.util.continuations._
-import info.sumito3478.aprikot.control.callCC
-import java.nio.channels.AsynchronousChannelGroup
+
+import java.net._
+import java.nio._
+import java.nio.channels._
+
+import aprikot.control._
+import aprikot.time._
 
 trait TCPContext extends IOContext {
   def channel: AsynchronousSocketChannel

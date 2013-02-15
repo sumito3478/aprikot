@@ -14,13 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.http
+package info.sumito3478
+package aprikot.http
 
-import info.sumito3478.aprikot.io._
 import scala.util.continuations._
-import info.sumito3478.aprikot.control.callCC
-import java.nio.ByteBuffer
-import info.sumito3478.aprikot.parsing.ByteBufferReader
+
+import java.nio._
+
+import aprikot.control._
+import aprikot.io._
+import aprikot.parsing._
 
 trait HttpServerContext extends TCPContext {
   def writeHeader(

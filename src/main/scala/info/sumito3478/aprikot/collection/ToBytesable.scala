@@ -14,7 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.collection
+package info.sumito3478
+package aprikot.collection
 
 /**
  * A trait that represents the object that can be converted to a collection
@@ -23,7 +24,7 @@ package info.sumito3478.aprikot.collection
 trait ToBytesable {
   /**
    * Converts this object to a collection of bytes.
-   * 
+   *
    * @note
    *   The default implementation of this method returns the UTF-8 bytes
    *   that is converted from the result of toString.

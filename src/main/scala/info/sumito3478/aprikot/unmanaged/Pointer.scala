@@ -14,11 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.unmanaged
-
-import java.nio.ByteBuffer
+package info.sumito3478
+package aprikot.unmanaged
 
 import scala.concurrent.util.Unsafe.{ instance => _unsafe }
+
+import java.nio._
 
 import com.sun.jna.{ Pointer => JPointer }
 

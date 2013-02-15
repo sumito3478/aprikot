@@ -14,11 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.control
+package info.sumito3478
+package aprikot.control
 
-import org.scalatest
-import scalatest.FunSpec
-import info.sumito3478.aprikot.__
+import org.scalatest._
+
+import aprikot._
 
 class BreakableSpec extends FunSpec {
   describe("breakable") {

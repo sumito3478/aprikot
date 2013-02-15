@@ -14,17 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.control
+package info.sumito3478
+package aprikot.control
 
-import scala.collection.Iterator
-import scala.util.continuations.{ cps, reset, shift }
+import scala.util.continuations._
 
 /**
  * A generator implementation with delimited continuation.
  *
  * Example usage:
  * {{{
- * import info.sumito3478.aprikot.control.generator
+ * import aprikot.control.generator
  * import generator.susp
  *
  * val it = generator[Int] {

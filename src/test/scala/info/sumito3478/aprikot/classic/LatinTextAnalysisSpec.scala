@@ -14,17 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.classic
-
-import org.scalatest.FunSpec
+package info.sumito3478
+package aprikot.classic
 
 import scala.xml._
+
+import org.scalatest._
 
 class LatinTextAnalysisSpec extends FunSpec {
   describe("LatinTextAnalysis.toHtml") {
     it("should return expected html") {
       val analyses = LatinTextAnalysis("Te saluto. Augustus sum, imperator et pontifex maximus romae. Si tu es Romae amicus, es gratus.")
-      println(new PrettyPrinter(80, 2).format(<html>{analyses.map(_.toHtml)}</html>))
+      println(new PrettyPrinter(80, 2).format(<html>{ analyses.map(_.toHtml) }</html>))
     }
   }
 }

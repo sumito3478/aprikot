@@ -14,7 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot
+package info.sumito3478
+package aprikot
 
 /**
  * A tag trait that is used in the Aprikot Library.
@@ -25,7 +26,7 @@ package info.sumito3478.aprikot
  *
  * Example Usage:
  * {{{
- * import info.sumito3478.aprikot.__
+ * import aprikot.__
  * object breakable {
  *   class Dummy0
  *   implicit object dummy0 extends Dummy0

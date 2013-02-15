@@ -14,7 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.unmanaged
+package info.sumito3478
+package aprikot.unmanaged
 
 import java.lang.{ Integer => JInt }
 import java.lang.{ Long => JLong }

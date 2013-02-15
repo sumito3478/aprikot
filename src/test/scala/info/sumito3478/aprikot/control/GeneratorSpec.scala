@@ -14,18 +14,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.control
+package info.sumito3478
+package aprikot.control
 
-import scala.collection.mutable.Queue
+import scala.collection.mutable
 
-import org.scalatest
-import scalatest.FunSpec
+import org.scalatest._
+
 import generator.susp
 
 class GeneratorSpec extends FunSpec {
   describe("generator") {
     it("should support yielding") {
-      val history = new Queue[Int]
+      val history = new mutable.Queue[Int]
       val it = generator[Int] {
         yields =>
           history.enqueue(0)
@@ -48,7 +49,7 @@ class GeneratorSpec extends FunSpec {
     }
 
     it("should support yielding from the while block") {
-      val history = new Queue[Int]
+      val history = new mutable.Queue[Int]
       val it = generator[Int] {
         yields =>
           var i = 0
@@ -69,7 +70,7 @@ class GeneratorSpec extends FunSpec {
     }
 
     it("should support yielding from the function with @susp") {
-      val history = new Queue[Int]
+      val history = new mutable.Queue[Int]
       val it = generator[Int] {
         yields =>
           def loop(i: Int): Unit @susp[Int] = {
