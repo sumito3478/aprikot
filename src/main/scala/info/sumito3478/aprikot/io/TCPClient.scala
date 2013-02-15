@@ -13,10 +13,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.io
+package info.sumito3478
+package aprikot.io
 
-import java.nio.channels.AsynchronousSocketChannel
-import java.net.InetSocketAddress
+import java.net._
+import java.nio.channels._
 
 trait TCPClient {
   def host: String

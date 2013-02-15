@@ -14,7 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.collection
+package info.sumito3478
+package aprikot.collection
 
 /**
  * A trait that represents the object that can be converted to a collection

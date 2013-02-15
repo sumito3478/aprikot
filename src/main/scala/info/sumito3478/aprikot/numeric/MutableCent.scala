@@ -13,7 +13,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.numeric
+package info.sumito3478
+package aprikot.numeric
 
 class MutableCent(var low: Long, var high: Long) {
   def toCent: Cent = {

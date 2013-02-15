@@ -13,12 +13,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.http
+package info.sumito3478
+package aprikot.http
 
-import scala.util.parsing.combinator.PackratParsers
-import java.net.URI
-import scala.collection.mutable.ArrayBuilder
-import info.sumito3478.aprikot.parsing.IndexedSeqReader
+import scala.collection.mutable
+import scala.util.parsing.combinator._
+
+import java.net._
+
+import aprikot.parsing._
 
 trait HttpHeaderParser extends PackratParsers {
   type Elem = Byte
@@ -55,7 +58,7 @@ trait HttpHeaderParser extends PackratParsers {
   val fieldValue: Parser[Array[Byte]] =
     (fieldContent | LWS).* ^^ {
       case xs =>
-        val builder = new ArrayBuilder.ofByte
+        val builder = new mutable.ArrayBuilder.ofByte
         var first = true
         xs foreach {
           x =>

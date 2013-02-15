@@ -14,9 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.http
+package info.sumito3478
+package aprikot.http
 
-import info.sumito3478.aprikot.io._
+import aprikot.io._
 
 trait HttpServer extends TCPServer {
   def handle(ctx: HttpServerContext): Unit

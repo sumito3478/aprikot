@@ -14,11 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.http
+package info.sumito3478
+package aprikot.http
 
-import java.nio.ByteBuffer
-import info.sumito3478.aprikot.parsing.ByteBufferReader
-import java.nio.charset.Charset
+import java.nio._
+
+import aprikot.parsing._
 
 object HttpResponseHeaderParser extends HttpHeaderParser {
   val responseMessage = StatusLine ~ messageHeader.+ ~ CRLF ^^ {

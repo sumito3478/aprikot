@@ -14,13 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.http
+package info.sumito3478
+package aprikot.http
 
-import info.sumito3478.aprikot.collection.ToBytesable
-import info.sumito3478.aprikot.collection.TraversableOnceW
-import scala.collection.immutable.VectorBuilder
-import scala.collection.mutable.ArrayBuilder
-import scala.collection.mutable.WrappedArray
+import scala.collection.mutable
+
+import aprikot.collection._
 
 trait HttpHeader extends ToBytesable {
   import HttpHeader._
@@ -33,8 +32,8 @@ trait HttpHeader extends ToBytesable {
     startLine.toString + "\r\n" + fields.mkString("\r\n") + "\r\n\r\n"
   }
 
-  override lazy val toBytes: WrappedArray[Byte] = {
-    val builder = new ArrayBuilder.ofByte
+  override lazy val toBytes: mutable.WrappedArray[Byte] = {
+    val builder = new mutable.ArrayBuilder.ofByte
     builder ++= startLine.toBytes
     builder ++= sep
     fields.map(_._2.toBytes).addTraversableOnce(builder, sep)

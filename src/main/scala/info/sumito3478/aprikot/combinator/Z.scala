@@ -14,7 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.combinator
+package info.sumito3478
+package aprikot.combinator
 
 /**
  * An implementation of z-combinator - Z(a) == {x => a(Z(a))(x)}.
@@ -23,7 +24,7 @@ package info.sumito3478.aprikot.combinator
  *
  * Example Usage:
  * {{{
- * import info.sumito3478.aprikot.combinator.{|>|, Z}
+ * import aprikot.combinator.{|>|, Z}
  *
  * val i = ({
  *   f: (Int => Int) =>

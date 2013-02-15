@@ -13,10 +13,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.hashing
+package info.sumito3478
+package aprikot.hashing
 
-import info.sumito3478.aprikot.numeric._
-import info.sumito3478.aprikot.unmanaged.Pointer
+import aprikot.numeric._
+import aprikot.unmanaged.Pointer
 
 /**
  * CityHash v1.1 implementation.

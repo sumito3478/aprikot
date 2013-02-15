@@ -13,9 +13,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.control
+package info.sumito3478
+package aprikot.control
 
-import scala.util.continuations.{ suspendable, shift }
+import scala.util.continuations._
 
 /**
  * Calls a function with current continuation.
@@ -25,7 +26,7 @@ import scala.util.continuations.{ suspendable, shift }
  * Exmaple Usage:
  * {{{
  * import scala.util.continuations._
- * import info.sumito3478.aprikot.control.callCC
+ * import aprikot.control.callCC
  *
  * // A continuation passing style method.
  * def someMethod(i: Int, continuation: Int => Unit): Unit = {

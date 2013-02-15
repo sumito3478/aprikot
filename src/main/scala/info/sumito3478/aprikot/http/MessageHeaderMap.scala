@@ -14,14 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.http
+package info.sumito3478
+package aprikot.http
 
-import scala.collection.immutable.TreeMap
+import scala.collection.immutable
 
-import info.sumito3478.aprikot.text.NeutralIgnoreCaseOrder
+import aprikot.text._
 
 class MessageHeaderMap private (
-  map: TreeMap[String, MessageHeader]) extends Map[String, MessageHeader] {
+  map: immutable.TreeMap[String, MessageHeader]) extends Map[String, MessageHeader] {
   def get(key: String): Option[MessageHeader] = map get key
 
   def iterator: Iterator[(String, MessageHeader)] = map.iterator
@@ -43,7 +44,7 @@ class MessageHeaderMap private (
 object MessageHeaderMap {
   def apply(elems: MessageHeader*): MessageHeaderMap = {
     new MessageHeaderMap(
-      TreeMap[String, MessageHeader](
+      immutable.TreeMap[String, MessageHeader](
         elems.map(e => (e.fieldName, e)): _*)(NeutralIgnoreCaseOrder))
   }
 }

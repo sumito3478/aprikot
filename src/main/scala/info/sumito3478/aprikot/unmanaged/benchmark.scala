@@ -14,17 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.unmanaged
+package info.sumito3478
+package aprikot.unmanaged
 
-import java.lang.System.gc
-import java.lang.System.nanoTime
+import java.lang.System._
 
 /**
  * A benchmark function.
  *
  * Example Usage:
  * {{{
- * import info.sumito3478.aprikot.io.benchmark
+ * import aprikot.io.benchmark
  *
  * // Execute the block for 10000 time and get the time consumed in micro
  * // seconds.

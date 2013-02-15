@@ -13,14 +13,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot
+package info.sumito3478
+package aprikot
 
-import scala.collection.immutable.VectorBuilder
-import scala.collection.TraversableOnce
-import scala.collection.mutable.Builder
-import scala.reflect.ClassTag
-import scala.collection.mutable.ArrayBuilder
-import info.sumito3478.aprikot.control.breakable
+import scala.collection.immutable
+import scala.collection.mutable
+import scala.reflect._
+
+import aprikot.control._
 
 package object collection {
   private def bufferedTakeWhile[A](underlined: BufferedIterator[A], p: (A, Option[A]) => Boolean): BufferedIterator[A] = {
@@ -104,7 +104,7 @@ package object collection {
      * @see [[GenTraversableOnce#addString]]
      */
     def addTraversableOnce[B, C](
-      builder: Builder[B, C],
+      builder: mutable.Builder[B, C],
       start: TraversableOnce[B],
       sep: TraversableOnce[B],
       end: TraversableOnce[B])(
@@ -136,7 +136,7 @@ package object collection {
      * @see [[GenTraversableOnce#addString]]
      */
     def addTraversableOnce[B, C](
-      builder: Builder[B, C],
+      builder: mutable.Builder[B, C],
       sep: TraversableOnce[B])(
         implicit asTraversable: (A) => TraversableOnce[B]): Unit = {
       addTraversableOnce(builder, List(), sep, List())(asTraversable)
@@ -151,7 +151,7 @@ package object collection {
      * @see [[GenTraversableOnce#addString]]
      */
     def addTraversableOnce[B, C](
-      builder: Builder[B, C])(
+      builder: mutable.Builder[B, C])(
         implicit asTraversable: (A) => TraversableOnce[B]): Unit = {
       addTraversableOnce[B, C](builder, List(), List(), List())(asTraversable)
     }
@@ -178,7 +178,7 @@ package object collection {
      *   [[scala.collection.GenTraversableOnce#mkString]].
      */
     def mkBuildable[B, C](
-      builder: Builder[B, C],
+      builder: mutable.Builder[B, C],
       start: TraversableOnce[B],
       sep: TraversableOnce[B],
       end: TraversableOnce[B])(
@@ -204,7 +204,7 @@ package object collection {
      *   [[scala.collection.GenTraversableOnce#mkString]].
      */
     def mkBuildable[B, C](
-      builder: Builder[B, C],
+      builder: mutable.Builder[B, C],
       sep: TraversableOnce[B])(
         implicit asTraversable: (A) => TraversableOnce[B]): C = {
       mkBuildable(builder, List(), sep, List())(asTraversable)
@@ -222,16 +222,16 @@ package object collection {
      *   [[scala.collection.GenTraversableOnce#mkString]].
      */
     def mkBuildable[B, C](
-      builder: Builder[B, C])(
+      builder: mutable.Builder[B, C])(
         implicit asTraversable: (A) => TraversableOnce[B]): C = {
       mkBuildable[B, C](builder, List(), List(), List())(asTraversable)
     }
   }
 
   implicit class IteratorW[A](val underlined: Iterator[A]) extends AnyVal {
-    def forceTake(n: Int): IndexedSeq[A] = {
-      val builder = new VectorBuilder[A]
-      breakable[IndexedSeq[A]] {
+    def forceTake(n: Int): immutable.IndexedSeq[A] = {
+      val builder = new immutable.VectorBuilder[A]
+      breakable[immutable.IndexedSeq[A]] {
         break =>
           for (_ <- 0 until n) {
             if (underlined.hasNext) {

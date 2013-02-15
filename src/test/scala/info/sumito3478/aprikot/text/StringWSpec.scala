@@ -14,13 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.text
+package info.sumito3478
+package aprikot.text
 
-import java.util.Locale
-import java.text.BreakIterator
-import org.scalatest.FunSpec
-import scala.collection.immutable.WrappedString
-import scala.collection.mutable.ListBuffer
+import org.scalatest._
 
 class StringWWSpec extends FunSpec {
   describe("StringW#neutralWordIterator") {

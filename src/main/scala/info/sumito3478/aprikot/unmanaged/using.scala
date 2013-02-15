@@ -14,14 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.unmanaged
+package info.sumito3478
+package aprikot.unmanaged
 
 /**
  * Implementation of RAII with [[Disposable]], similar to the `using` of C#.
  *
  * Example Usage:
  * {{{
- * import info.sumito3478.aprikot.io.{Memory, using}
+ * import aprikot.io.{Memory, using}
  *
  * using(Memory(4)) {
  *   block =>

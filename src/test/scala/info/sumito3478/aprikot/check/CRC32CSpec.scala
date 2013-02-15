@@ -14,7 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.check
+package info.sumito3478
+package aprikot.check
 
 class CRC32CSpec extends CRC32Spec {
   def crc32 = CRC32C

@@ -13,13 +13,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.io
 
-import java.nio.channels.AsynchronousServerSocketChannel
-import java.net.InetSocketAddress
-import java.nio.channels.AsynchronousSocketChannel
-import java.nio.channels.AsynchronousChannelGroup
-import java.util.concurrent.Executors
+package info.sumito3478
+package aprikot.io
+
+import java.net._
+import java.nio.channels._
+import java.util.concurrent._
 
 trait TCPServer {
   def port: Int

@@ -28,13 +28,13 @@
  * The author of C implementation is Lasse Collin. Thanks a lot!
  */
 
-package info.sumito3478.aprikot.check
+package info.sumito3478
+package aprikot.check
 
 import java.lang.{ Integer => JInteger }
-import info.sumito3478.aprikot.unmanaged.{ Memory, Pointer, ByteOrder, bswap, ArrayOfByteW }
-import java.lang.{ Integer => JInteger }
-import info.sumito3478.aprikot.unmanaged.using
-import info.sumito3478.aprikot.threading.ThreadLocal
+
+import aprikot.unmanaged._
+import aprikot.threading._
 
 /**
  * A base trait for CRC32 implementations.
@@ -49,7 +49,7 @@ import info.sumito3478.aprikot.threading.ThreadLocal
  *
  * Example Usage:
  * {{{
- * import info.sumito3478.aprikot.check.CRC32
+ * import aprikot.check.CRC32
  *
  * object crc32 extends CRC32 {
  *   def poly: Int = 0x04c11db7

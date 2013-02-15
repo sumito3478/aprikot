@@ -14,7 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot
+package info.sumito3478
+package aprikot
 
 package object combinator {
   /**
@@ -29,7 +30,7 @@ package object combinator {
      *
      * Example Usage:
      * {{{
-     * import info.sumito3478.aprikot.combinator.{|>|, |<|}
+     * import aprikot.combinator.{|>|, |<|}
      * val abs = math.abs _
      * val
      * val ret = -1 |>| abs |>|
@@ -48,7 +49,7 @@ package object combinator {
      *
      * Example Usage:
      * {{{
-     * import info.sumito3478.aprikot.combinator.{|>|, |<|}
+     * import aprikot.combinator.{|>|, |<|}
      * val min = math.min _
      * val ret = 1 |>| min |<| 2 |>| max |<| 0
      * // ret == max(min(1, 2), 0)
@@ -71,7 +72,7 @@ package object combinator {
      *
      * Example Usage:
      * {{{
-     * import info.sumito3478.aprikot.combinator.{|>|, |<|}
+     * import aprikot.combinator.{|>|, |<|}
      * val min = math.min _
      * val ret = 1 |>| min |<| 2 |>| max |<| 0
      * // ret == max(min(1, 2), 0)

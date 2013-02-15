@@ -14,10 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.http
+package info.sumito3478
+package aprikot.http
 
-import java.net.URI
-import scala.collection.mutable.WrappedArray
+import java.net._
 
 /**
  * A class that represents the start line of HTTP request message.

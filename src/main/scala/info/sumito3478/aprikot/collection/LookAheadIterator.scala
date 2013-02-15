@@ -14,21 +14,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.collection
+package info.sumito3478
+package aprikot.collection
 
-import scala.collection.immutable.VectorBuilder
-import scala.collection.mutable.Queue
+import scala.collection.immutable
+import scala.collection.mutable
 
 class LookAheadIterator[+A](
   val underlined: Iterator[A]) extends BufferedIterator[A] {
-  private[this] val buffer = new Queue[A]
+  private[this] val buffer = new mutable.Queue[A]
 
   def lookAhead(n: Int): IndexedSeq[A] = {
     val d = n - buffer.length
     if (d > 0) {
       buffer.enqueue(underlined.forceTake(d): _*)
     }
-    (new VectorBuilder[A] ++= buffer.slice(0, n)).result
+    (new immutable.VectorBuilder[A] ++= buffer.slice(0, n)).result
   }
 
   def hasNext: Boolean = {
