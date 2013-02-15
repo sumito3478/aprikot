@@ -13,14 +13,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.io
-
-import info.sumito3478.aprikot.unmanaged.Memory
-import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousSocketChannel
+package info.sumito3478
+package aprikot.io
 
 import scala.util.continuations._
-import info.sumito3478.aprikot.control.callCC
+
+import java.nio._
+
+import aprikot.control._
+import aprikot.unmanaged._
 
 trait IOContext {
   def read(buffer: ByteBuffer, continuation: Int => Unit): Unit

@@ -14,9 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.threading
+package info.sumito3478
+package aprikot.threading
 
-import org.scalatest.FunSpec
+import org.scalatest._
 
 class ThreadLocalSpec extends FunSpec {
   describe("ThreadLocal#apply") {

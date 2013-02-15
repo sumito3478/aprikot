@@ -14,9 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.http
+package info.sumito3478
+package aprikot.http
 
-import info.sumito3478.aprikot.collection.ToBytesable
+import aprikot.collection.ToBytesable
 import scala.collection.immutable.VectorBuilder
 
 class MessageHeader(

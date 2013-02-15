@@ -13,22 +13,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478
-package aprikot.text
 
-/**
- * A [[scala.math.Ordering]] instance that represent a *locale-unaware*
- * ignore-case ordering.
- */
-object NeutralIgnoreCaseOrder extends Ordering[String] {
-  /**
-   * Compares two strings lexicographically, ignoring case differences, in
-   * a locale-unaware manner.
-   *
-   * @return
-   *   - negative integer if a < b
-   *   - positive integer if b < a
-   *   - zero if a == b
-   */
-  def compare(a: String, b: String) = a.compareToIgnoreCase(b)
+package info.sumito3478
+
+package object aprikot {
+  type JLocale = java.util.Locale
+
+  val NeutralJLocale = java.util.Locale.ENGLISH
 }

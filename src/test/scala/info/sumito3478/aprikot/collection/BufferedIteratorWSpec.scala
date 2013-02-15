@@ -14,10 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.collection
+package info.sumito3478
+package aprikot.collection
 
-import org.scalatest
-import scalatest.FunSpec
+import org.scalatest._
 
 class BufferedIteratorWSpec extends FunSpec {
   describe("BufferedIteratorW#takeWhile") {

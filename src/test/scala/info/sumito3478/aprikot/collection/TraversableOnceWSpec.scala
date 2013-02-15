@@ -14,24 +14,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.collection
+package info.sumito3478
+package aprikot.collection
 
-import org.scalatest
-import scalatest.FunSpec
-import scala.collection.immutable.VectorBuilder
-import scala.collection.mutable.ArrayBuilder
+import scala.collection.immutable
+import scala.collection.mutable
+
+import org.scalatest._
 
 class TraversableOnceWSpec extends FunSpec {
   describe("TraversableOnceW#mkBuildable") {
     it("should create Vector, flatten with the specified separator") {
       val l = List(Set(1, 2, 3, 4), Set(5, 6))
-      assert(l.mkBuildable(new VectorBuilder[Int], List(0))
+      assert(l.mkBuildable(new immutable.VectorBuilder[Int], List(0))
         === Vector(1, 2, 3, 4, 0, 5, 6))
     }
 
     it("should create Array, flatten with the specified separator") {
       val l = List(Set(1, 2, 3, 4), Set(5, 6))
-      assert(l.mkBuildable(new ArrayBuilder.ofInt, List(0))
+      assert(l.mkBuildable(new mutable.ArrayBuilder.ofInt, List(0))
         === Array(1, 2, 3, 4, 0, 5, 6))
     }
   }

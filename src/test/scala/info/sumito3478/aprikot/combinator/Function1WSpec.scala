@@ -14,10 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.combinator
+package info.sumito3478
+package aprikot.combinator
 
-import org.scalatest
-import scalatest.FunSpec
+import org.scalatest._
 
 class Function1WSpec extends FunSpec {
   describe("|<|") {

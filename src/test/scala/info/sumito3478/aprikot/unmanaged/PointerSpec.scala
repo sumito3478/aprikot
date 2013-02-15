@@ -14,14 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.unmanaged
-
-import java.nio.ByteBuffer
-import java.nio.{ ByteOrder => JByteOrder }
+package info.sumito3478
+package aprikot.unmanaged
 
 import scala.concurrent.util.Unsafe.{ instance => _unsafe }
 
-import org.scalatest.FunSpec
+import java.nio.{ ByteOrder => JByteOrder, _ }
+
+import org.scalatest._
 
 class PointerSpec extends FunSpec {
   describe("Pointer") {

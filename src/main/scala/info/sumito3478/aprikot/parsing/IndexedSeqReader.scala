@@ -13,9 +13,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.parsing
+package info.sumito3478
+package aprikot.parsing
 
-import scala.util.parsing.input.Reader
+import scala.util.parsing.input._
 
 class IndexedSeqReader[A](
   val data: IndexedSeq[A], override val offset: Int) extends Reader[A] {

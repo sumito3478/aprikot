@@ -14,14 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot
+package info.sumito3478
+package aprikot
+
+import scala.collection.immutable
+import scala.collection.mutable
 
 import java.text._
-import info.sumito3478.aprikot.collection.IteratorW
-import scala.collection.mutable.Queue
-import scala.collection.immutable.VectorBuilder
-import java.util.Locale
-import scala.collection.immutable.WrappedString
+
+import aprikot.collection._
 
 package object text {
   implicit class BreakIteratorW(val self: BreakIterator) extends AnyVal {
@@ -30,10 +31,10 @@ package object text {
     def readAll(xs: String): IndexedSeq[String] = {
       self.setText(xs)
       val first = self.first
-      val builder = new VectorBuilder[Int]
+      val builder = new immutable.VectorBuilder[Int]
       builder ++= (Iterator.continually(self.next).
         takeWhile(_ != BreakIterator.DONE))
-      val retBuilder = new VectorBuilder[String]
+      val retBuilder = new immutable.VectorBuilder[String]
       builder.result.foldLeft(first)((first, end) => {
         retBuilder += xs.substring(first, end)
         end
@@ -54,7 +55,7 @@ package object text {
 
     def mapIterator(xs: Iterator[Char]): Iterator[String] = {
       val ahead = xs.lookAhead
-      val queue = new Queue[String]
+      val queue = new mutable.Queue[String]
       Iterator.continually[Option[String]](
         if (queue.isEmpty && ahead.hasNext) {
           val aheadSize = 0x1000
@@ -82,7 +83,7 @@ package object text {
 
   implicit class StringW(val underlined: String) extends AnyVal {
     def neutralWordIterator: Iterator[String] = {
-      val en = Locale.ENGLISH
+      val en = NeutralJLocale
       val it = BreakIterator.getWordInstance
       val words = it.mapIterator(underlined.iterator)
       words.filter(neutralWordRegex.pattern.matcher(_).matches)

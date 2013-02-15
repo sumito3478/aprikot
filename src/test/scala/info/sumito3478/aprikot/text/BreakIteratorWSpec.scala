@@ -14,39 +14,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.text
+package info.sumito3478
+package aprikot.text
 
-import java.util.Locale
-import java.text.BreakIterator
-import org.scalatest.FunSpec
-import scala.collection.immutable.WrappedString
-import scala.collection.mutable.ListBuffer
+import scala.collection.immutable
+import scala.collection.mutable
+
+import java.text._
+
+import org.scalatest._
+
+import aprikot.NeutralJLocale
 
 class BreakIteratorWSpec extends FunSpec {
   describe("BreakIteratorWSpec#mapIterator") {
     val text = "Mis, Mis, Mister, Drill, Driller, I'll do  my best, I cant lose!"
     val ret = List("Mis", ",", " ", "Mis", ",", " ", "Mister", ",", " ", "Drill", ",", " ", "Driller", ",", " ", "I'll", " ", "do", "  ", "my", " ", "best", ",", " ", "I", " ", "cant", " ", "lose", "!")
     it("should map from text of which length is less than `aheadSize`") {
-      val en = Locale.ENGLISH
+      val en = NeutralJLocale
       val it = BreakIterator.getWordInstance
-      val words = it.mapIterator(new WrappedString(text).iterator)
+      val words = it.mapIterator(new immutable.WrappedString(text).iterator)
       assert(words.toList === ret)
     }
 
     it("should map from text of which length is greater than `aheadSize`") {
-      val en = Locale.ENGLISH
+      val en = NeutralJLocale
       val it = BreakIterator.getWordInstance
       val mul = (it.aheadSize / text.length + 1)
       val longText = text * mul
       val longRet = {
-        val buffer = new ListBuffer[String]
+        val buffer = new mutable.ListBuffer[String]
         for (_ <- 0 until mul) {
           buffer ++= ret
         }
         buffer.toList
       }
       assert(longText.length > it.aheadSize)
-      val words = it.mapIterator(new WrappedString(longText).iterator)
+      val words = it.mapIterator(new immutable.WrappedString(longText).iterator)
       assert(words.toList === longRet)
     }
 
@@ -63,11 +67,11 @@ class BreakIteratorWSpec extends FunSpec {
         ("Da nobis quod uolumus aut consecutiones patere.",
           List("Da", " ", "nobis", " ", "quod", " ", "uolumus", " ", "aut", " ", "consecutiones", " ", "patere", ".")),
         ("Deus Mars nobis iterum subrisit. Ita omnes hostes Romae comprimentur.",
-        List("Deus", " ", "Mars", " ", "nobis", " ", "iterum", " ", "subrisit", ".", " ", "Ita", " ", "omnes", " ", "hostes", " ", "Romae", " ", "comprimentur", ".")))
+          List("Deus", " ", "Mars", " ", "nobis", " ", "iterum", " ", "subrisit", ".", " ", "Ita", " ", "omnes", " ", "hostes", " ", "Romae", " ", "comprimentur", ".")))
       for (civ5 <- civ5Texts) {
-        val en = Locale.ENGLISH
+        val en = NeutralJLocale
         val it = BreakIterator.getWordInstance
-        val words = it.mapIterator(new WrappedString(civ5._1).iterator)
+        val words = it.mapIterator(new immutable.WrappedString(civ5._1).iterator)
         assert(words.toList === civ5._2)
       }
     }

@@ -13,16 +13,16 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot
+package info.sumito3478
+package aprikot
 
-import java.nio.channels.AsynchronousServerSocketChannel
-import java.nio.channels.CompletionHandler
-import java.nio.ByteBuffer
-import info.sumito3478.aprikot.time.Duration
-import java.util.concurrent.TimeUnit
 import java.lang.{ Integer => JInteger }
-import java.nio.channels.AsynchronousSocketChannel
-import java.net.SocketAddress
+import java.net._
+import java.nio._
+import java.nio.channels._
+import java.util.concurrent._
+
+import aprikot.time._
 
 package object io {
   class Dummy0

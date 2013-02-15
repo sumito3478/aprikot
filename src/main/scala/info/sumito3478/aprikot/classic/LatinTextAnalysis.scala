@@ -14,21 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.classic
+package info.sumito3478
+package aprikot.classic
+
+import scala.collection.mutable
+import scala.xml._
 
 import scala.slick.driver.BasicDriver.simple._
 import Database.threadLocalSession
-import info.sumito3478.aprikot.text._
-import info.sumito3478.aprikot.classic.perseus.db.PerseusAnalysisDatum
-import info.sumito3478.aprikot.classic.perseus.db.LewisShortDictionaryDatum
-import info.sumito3478.aprikot.classic.perseus.AnalysisData
-import scala.collection.mutable.ListBuffer
-import info.sumito3478.aprikot.classic.perseus.InflectedWord
-import info.sumito3478.aprikot.classic.perseus.LemmaDescription
-import info.sumito3478.aprikot.classic.perseus.ShortVocabDescription
-import info.sumito3478.aprikot.classic.perseus.InflectionDescription
 
-import scala.xml._
+import aprikot.classic.perseus._
+import aprikot.classic.perseus.db._
+import aprikot.text._
 
 class LatinTextAnalysis(
   val word: String,
@@ -60,8 +57,8 @@ object LatinTextAnalysis {
         data <- LewisShortDictionaryDatum if data.key === key
       ) yield (data.html)
       (for (word <- words) yield {
-        val inflectionBuffer = new ListBuffer[AnalysisData]
-        val dictionaryBuffer = new ListBuffer[String]
+        val inflectionBuffer = new mutable.ListBuffer[AnalysisData]
+        val dictionaryBuffer = new mutable.ListBuffer[String]
         inflectionQuery(word.toLowerCase) foreach {
           data =>
             val (inflected, lemma, vocab, inflection) = data

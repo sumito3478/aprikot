@@ -14,11 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.hashing
+package info.sumito3478
+package aprikot.hashing
 
-import org.scalatest.FunSpec
-import info.sumito3478.aprikot.unmanaged._
-import info.sumito3478.aprikot.numeric.Cent
+import org.scalatest._
+
+import aprikot.numeric._
+import aprikot.unmanaged._
 
 class CityHashSpec extends FunSpec {
   /*

@@ -14,9 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.control
+package info.sumito3478
+package aprikot.control
 
-import info.sumito3478.aprikot.__
+import aprikot._
 
 /**
  * Pass 'break' function that causes early or non-local exits when called.
@@ -40,7 +41,7 @@ import info.sumito3478.aprikot.__
  * '''breakable[`_``_`]''' instead. It passes '''=> Nothing''' instead of
  * '''Unit => Nothing'''.
  * {{{
- * import info.sumito3478.aprikot.control.{breakable, __}
+ * import aprikot.control.{breakable, __}
  * breakable[__] {
  *   break =>
  *     break // Correct.

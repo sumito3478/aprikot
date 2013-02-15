@@ -14,11 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.check
+package info.sumito3478
+package aprikot.check
 
 import java.util.zip.{ CRC32 => JCRC32 }
 
-import info.sumito3478.aprikot.unmanaged._
+import aprikot.unmanaged._
 
 class CRC32IEEESpec extends CRC32Spec {
   def crc32: CRC32 = CRC32IEEE

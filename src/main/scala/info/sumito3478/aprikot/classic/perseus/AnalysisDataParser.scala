@@ -14,9 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.classic.perseus
+package info.sumito3478
+package aprikot.classic.perseus
 
-import scala.util.parsing.combinator.PackratParsers
+import scala.util.parsing.combinator._
 
 object AnalysisDataParser extends PackratParsers {
   type Elem = Char

@@ -13,13 +13,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.http
+package info.sumito3478
+package aprikot.http
 
 import scala.util.continuations._
-import java.nio.ByteBuffer
-import info.sumito3478.aprikot.io.TCPContext
-import java.util.concurrent.atomic.AtomicBoolean
-import java.net.URI
+
+import java.net._
+import java.nio._
+
+import aprikot.io._
 
 trait HttpProxyServer extends HttpServer {
   private[this] def loop1(ctx: TCPContext, server: TCPContext, buffer: ByteBuffer, uri: URI): Unit @suspendable = {

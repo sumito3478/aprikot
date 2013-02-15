@@ -14,7 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.classic.perseus.db
+package info.sumito3478
+package aprikot.classic.perseus.db
 
 import scala.slick.driver.BasicDriver.simple._
 import Database.threadLocalSession

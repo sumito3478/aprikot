@@ -14,9 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.classic.perseus
+package info.sumito3478
+package aprikot.classic.perseus
 
-import org.scalatest.FunSpec
+import org.scalatest._
 
 class LemmaSpec extends FunSpec {
   describe("Lemma.normalize") {

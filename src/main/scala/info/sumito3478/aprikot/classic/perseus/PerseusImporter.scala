@@ -14,16 +14,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.classic.perseus
+package info.sumito3478
+package aprikot.classic.perseus
 
 import scala.xml._
+import scala.util.parsing.input.CharSequenceReader
+
 import scala.slick.driver.BasicDriver.simple._
 import Database.threadLocalSession
-import info.sumito3478.aprikot.classic.perseus.db.LewisShortDictionaryDatum
-import org.apache.commons.io.FileUtils
-import java.io.File
-import scala.util.parsing.input.CharSequenceReader
-import info.sumito3478.aprikot.classic.perseus.db.PerseusAnalysisDatum
+
+import java.io._
+
+import org.apache.commons.io._
+
+import aprikot.classic.perseus.db._
 
 object PerseusImporter {
   def importLewisShort(db: Database, dataPath: String) = {

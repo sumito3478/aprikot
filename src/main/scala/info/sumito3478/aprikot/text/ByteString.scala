@@ -13,14 +13,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.text
+package info.sumito3478
+package aprikot.text
 
-import scala.collection.immutable.StringLike
-import scala.collection.mutable.Builder
-import scala.collection.generic.CanBuildFrom
+import scala.collection.immutable
+import scala.collection.mutable
+import scala.collection.generic
 
 class ByteString(
-  underlined: String) extends IndexedSeq[Char] with StringLike[ByteString] {
+  underlined: String) extends IndexedSeq[Char] with immutable.StringLike[ByteString] {
   override def newBuilder = ByteString.newBuilder
 
   override def slice(from: Int, until: Int): ByteString = {
@@ -54,15 +55,15 @@ object ByteString {
     new ByteString(builder.result)
   }
 
-  implicit def canBuildFrom: CanBuildFrom[ByteString, Char, ByteString] = {
-    new CanBuildFrom[ByteString, Char, ByteString] {
+  implicit def canBuildFrom: generic.CanBuildFrom[ByteString, Char, ByteString] = {
+    new generic.CanBuildFrom[ByteString, Char, ByteString] {
       def apply(from: ByteString) = newBuilder
 
       def apply() = newBuilder
     }
   }
 
-  def newBuilder: Builder[Char, ByteString] = {
+  def newBuilder: mutable.Builder[Char, ByteString] = {
     StringBuilder.newBuilder mapResult (new ByteString(_))
   }
 }

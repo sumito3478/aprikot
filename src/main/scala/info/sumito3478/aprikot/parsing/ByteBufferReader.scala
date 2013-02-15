@@ -13,10 +13,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package info.sumito3478.aprikot.parsing
+package info.sumito3478
+package aprikot.parsing
 
-import scala.util.parsing.input.Reader
-import java.nio.ByteBuffer
+import scala.util.parsing.input._
+
+import java.nio._
 
 class ByteBufferReader(
   val data: ByteBuffer, override val offset: Int) extends Reader[Byte] {

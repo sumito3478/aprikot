@@ -14,11 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package info.sumito3478.aprikot.check
+package info.sumito3478
+package aprikot.check
 
-import org.scalatest.FunSpec
+import org.scalatest._
 
-import info.sumito3478.aprikot.unmanaged._
+import aprikot.unmanaged._
 
 trait CRC64Spec extends FunSpec {
   def crc64: CRC64
