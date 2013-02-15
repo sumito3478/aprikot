@@ -18,6 +18,6 @@ package info.sumito3478
 
 package object aprikot {
   type JLocale = java.util.Locale
-  
+
   val NeutralJLocale = java.util.Locale.ENGLISH
 }

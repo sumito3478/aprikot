@@ -24,7 +24,7 @@ package aprikot.collection
 trait ToBytesable {
   /**
    * Converts this object to a collection of bytes.
-   * 
+   *
    * @note
    *   The default implementation of this method returns the UTF-8 bytes
    *   that is converted from the result of toString.

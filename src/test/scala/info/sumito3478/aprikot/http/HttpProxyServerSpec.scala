@@ -23,7 +23,7 @@ import org.scalatest._
 class HttpProxyServerSpec extends FunSpec {
   describe("HttpProxyServer") {
     it("should run HTTP Proxy Server.") {
-      val server = new HttpProxyServer{
+      val server = new HttpProxyServer {
         def port = 8080
       }
       server.start

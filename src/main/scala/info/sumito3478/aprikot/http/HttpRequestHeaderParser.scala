@@ -23,21 +23,21 @@ import aprikot.parsing._
 
 object HttpRequestHeaderParser extends HttpHeaderParser {
   val requestMessage = RequestLine ~ messageHeader.+ ~ CRLF ^^ {
-    case s ~ m ~ _ => new HttpRequestHeader(s, MessageHeaderMap(m:_*))
+    case s ~ m ~ _ => new HttpRequestHeader(s, MessageHeaderMap(m: _*))
   }
 
   def apply(input: ByteBuffer): (HttpRequestHeader, ByteBuffer) = {
     requestMessage(new ByteBufferReader(input, 0)) match {
-        case e: Failure => sys.error(f"ParseError: ${e.msg}")
-        case e: Error => sys.error(f"ParseError: ${e.msg}")
-        case r: Success[_] => {
-          input.position(r.next.offset)
-          val slice = input.slice
-          slice.position(slice.limit)
-          println(f"slice: ${slice.position}, ${slice.limit}")
-          (r.result, slice)
-        }
-        case _ => sys.error("Unknown Parser Error")
+      case e: Failure => sys.error(f"ParseError: ${e.msg}")
+      case e: Error => sys.error(f"ParseError: ${e.msg}")
+      case r: Success[_] => {
+        input.position(r.next.offset)
+        val slice = input.slice
+        slice.position(slice.limit)
+        println(f"slice: ${slice.position}, ${slice.limit}")
+        (r.result, slice)
       }
+      case _ => sys.error("Unknown Parser Error")
+    }
   }
 }

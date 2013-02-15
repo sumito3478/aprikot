@@ -67,7 +67,7 @@ class BreakIteratorWSpec extends FunSpec {
         ("Da nobis quod uolumus aut consecutiones patere.",
           List("Da", " ", "nobis", " ", "quod", " ", "uolumus", " ", "aut", " ", "consecutiones", " ", "patere", ".")),
         ("Deus Mars nobis iterum subrisit. Ita omnes hostes Romae comprimentur.",
-        List("Deus", " ", "Mars", " ", "nobis", " ", "iterum", " ", "subrisit", ".", " ", "Ita", " ", "omnes", " ", "hostes", " ", "Romae", " ", "comprimentur", ".")))
+          List("Deus", " ", "Mars", " ", "nobis", " ", "iterum", " ", "subrisit", ".", " ", "Ita", " ", "omnes", " ", "hostes", " ", "Romae", " ", "comprimentur", ".")))
       for (civ5 <- civ5Texts) {
         val en = NeutralJLocale
         val it = BreakIterator.getWordInstance

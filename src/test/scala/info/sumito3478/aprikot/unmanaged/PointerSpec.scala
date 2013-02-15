@@ -19,7 +19,7 @@ package aprikot.unmanaged
 
 import scala.concurrent.util.Unsafe.{ instance => _unsafe }
 
-import java.nio.{ ByteOrder => JByteOrder, _}
+import java.nio.{ ByteOrder => JByteOrder, _ }
 
 import org.scalatest._
 

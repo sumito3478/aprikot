@@ -71,16 +71,16 @@ class CodePoint(val intern: Int) extends AnyVal {
   /**
    * Determine if the code point is an alphabet.
    */
-//  def isAlphabetic(): Boolean = {
-//    JChar.isAlphabetic(intern)
-//  }
+  //  def isAlphabetic(): Boolean = {
+  //    JChar.isAlphabetic(intern)
+  //  }
 
   /**
    * Determine if the code point is the BMP.
    */
-//  def isBmpCodePoint(): Boolean = {
-//    JChar.isBmpCodePoint(intern)
-//  }
+  //  def isBmpCodePoint(): Boolean = {
+  //    JChar.isBmpCodePoint(intern)
+  //  }
 
   /**
    * Determine if the code point is defined in Unicode.
@@ -107,9 +107,9 @@ class CodePoint(val intern: Int) extends AnyVal {
   /**
    * Determine if the code point is a CJKV ideograph.
    */
-//  def isIdeographic(): Boolean = {
-//    JChar.isIdeographic(intern)
-//  }
+  //  def isIdeographic(): Boolean = {
+  //    JChar.isIdeographic(intern)
+  //  }
 
   /**
    * Determine if the code point is an ISO control character.
