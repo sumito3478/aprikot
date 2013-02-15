@@ -102,8 +102,8 @@ trait CRC64 {
                 } else {
                   r >>>= 1
                 }
-                (p + (s * 256 + b) * 8).long = r
             }
+            (p + (s * 256 + b) * 8).long = r
         }
     }
     ret
