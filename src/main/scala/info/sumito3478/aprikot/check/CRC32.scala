@@ -104,8 +104,8 @@ trait CRC32 {
                 } else {
                   r >>>= 1
                 }
-                (p + (s * 256 + b) * 4).int = r
             }
+            (p + (s * 256 + b) * 4).int = r
         }
     }
     ret
