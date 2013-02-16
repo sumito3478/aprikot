@@ -64,6 +64,6 @@ object AnalysisDataParser extends PackratParsers {
   val Line = InflectedWord ~ TAB ~ Analyses.+ ^^ {
     case inflected ~ _ ~ analyses =>
       for (analysis <- analyses)
-        yield (new AnalysisData(inflected, analysis._1, analysis._2, analysis._3))
+        yield new AnalysisData(inflected, analysis._1, analysis._2, analysis._3)
   }
 }

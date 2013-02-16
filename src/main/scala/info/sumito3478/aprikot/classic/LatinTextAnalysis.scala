@@ -49,13 +49,11 @@ class LatinTextAnalysis(
 }
 
 object LatinTextAnalysis {
-  private[this] def openPerseusDatabase = {
+  private[this] lazy val db =
     Database.forURL("jdbc:h2:~/.aprikot/perseus_data/perseus_data")
-  }
 
   def apply(text: String): List[LatinTextAnalysis] = {
     val words = text.neutralWordIterator
-    val db = openPerseusDatabase
     db withSession {
       val inflectionQuery = for (
         word <- Parameters[String];
