@@ -98,8 +98,8 @@ trait CRC32 {
     ) {
       (p + (s * 256 + b) * 4).int = (0 until 8).foldLeft(
         if (s == 0) b else (p + ((s - 1) * 256 + b) * 4).int)(
-          (acc, _) =>
-            if ((acc & 1) != 0) (acc >>> 1) ^ rp else acc >>> 1)
+          (r, _) =>
+            if ((r & 1) != 0) (r >>> 1) ^ rp else r >>> 1)
     }
     ret
   }
