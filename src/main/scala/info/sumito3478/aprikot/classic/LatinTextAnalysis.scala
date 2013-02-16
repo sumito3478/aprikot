@@ -72,14 +72,21 @@ object LatinTextAnalysis {
         inflectionQuery(word.toLowerCase) foreach {
           data =>
             val (inflected, lemma, vocab, inflection) = data
-            inflectionBuffer += new AnalysisData(new InflectedWord(inflected), new LemmaDescription(lemma), new ShortVocabDescription(vocab), new InflectionDescription(inflection))
+            inflectionBuffer += new AnalysisData(
+              new InflectedWord(inflected),
+              new LemmaDescription(lemma),
+              new ShortVocabDescription(vocab),
+              new InflectionDescription(inflection))
             val key = lemma.split(",").toVector.last
             dicQuery(key.toLowerCase) foreach {
               html =>
                 dictionaryBuffer += html
             }
         }
-        new LatinTextAnalysis(word, inflectionBuffer.toList, dictionaryBuffer.toList)
+        new LatinTextAnalysis(
+          word,
+          inflectionBuffer.toList,
+          dictionaryBuffer.toList)
       }).toList
     }
   }
