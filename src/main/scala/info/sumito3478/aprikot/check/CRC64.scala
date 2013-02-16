@@ -90,21 +90,14 @@ trait CRC64 {
   private[this] val table: Memory = {
     val ret = Memory(8 * 8 * 256)
     val p = ret.pointer
-    0 until 4 foreach {
-      s =>
-        0 until 256 foreach {
-          b =>
-            var r = if (s == 0) b else (p + ((s - 1) * 256 + b) * 8).long
-            0 until 8 foreach {
-              i =>
-                if ((r & 1) != 0) {
-                  r = (r >>> 1) ^ rp
-                } else {
-                  r >>>= 1
-                }
-            }
-            (p + (s * 256 + b) * 8).long = r
-        }
+    for (
+      s <- 0 until 4;
+      b <- 0 until 256
+    ) {
+      (p + (s * 256 + b) * 8).long = (0 until 8).foldLeft(
+        if (s == 0) b else (p + ((s - 1) * 256 + b) * 8).long)(
+          (r, _) => if ((r & 1) != 0) (r >>> 1) ^ rp else r >>> 1)
+
     }
     ret
   }
