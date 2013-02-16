@@ -32,9 +32,19 @@ class LatinTextAnalysis(
   val inflectionAnalyses: List[AnalysisData],
   val dictionaryHtmls: List[String]) {
   def toHtml: Elem = {
-    val analyses = for (analysis <- inflectionAnalyses) yield <li>{ analysis.inflected }: { analysis.lemma } { analysis.vocab } { analysis.inflection }  </li>
-    val dics = for (html <- dictionaryHtmls) yield XML.load(Source.fromString(html))
-    <div class="latin-word-analyses"><div class="latin-inflection-analyses">{ analyses }</div><div class="latin-dictionary-entries">{ dics }</div></div>
+    val analyses =
+      for (analysis <- inflectionAnalyses)
+        yield <li>
+                { analysis.inflected }
+                :{ analysis.lemma }{ analysis.vocab }{ analysis.inflection }
+              </li>
+    val dics =
+      for (html <- dictionaryHtmls)
+        yield XML.load(Source.fromString(html))
+    <div class="latin-word-analyses">
+      <div class="latin-inflection-analyses">{ analyses }</div>
+      <div class="latin-dictionary-entries">{ dics }</div>
+    </div>
   }
 }
 
