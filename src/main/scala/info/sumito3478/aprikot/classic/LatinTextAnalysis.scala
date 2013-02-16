@@ -32,9 +32,19 @@ class LatinTextAnalysis(
   val inflectionAnalyses: List[AnalysisData],
   val dictionaryHtmls: List[String]) {
   def toHtml: Elem = {
-    val analyses = (for (analysis <- inflectionAnalyses) yield <li>{ analysis.inflected }: { analysis.lemma } { analysis.vocab } { analysis.inflection }  </li>).flatten
-    val dics = (for (html <- dictionaryHtmls) yield XML.load(Source.fromString(html)).flatten)
-    <div class="latin-word-analyses"><div class="latin-inflection-analyses">{ analyses }</div><div class="latin-dictionary-entries">{ dics }</div></div>
+    val analyses =
+      for (analysis <- inflectionAnalyses)
+        yield <li>
+                { analysis.inflected }
+                :{ analysis.lemma }{ analysis.vocab }{ analysis.inflection }
+              </li>
+    val dics =
+      for (html <- dictionaryHtmls)
+        yield XML.load(Source.fromString(html))
+    <div class="latin-word-analyses">
+      <div class="latin-inflection-analyses">{ analyses }</div>
+      <div class="latin-dictionary-entries">{ dics }</div>
+    </div>
   }
 }
 
@@ -62,14 +72,21 @@ object LatinTextAnalysis {
         inflectionQuery(word.toLowerCase) foreach {
           data =>
             val (inflected, lemma, vocab, inflection) = data
-            inflectionBuffer += new AnalysisData(new InflectedWord(inflected), new LemmaDescription(lemma), new ShortVocabDescription(vocab), new InflectionDescription(inflection))
+            inflectionBuffer += new AnalysisData(
+              new InflectedWord(inflected),
+              new LemmaDescription(lemma),
+              new ShortVocabDescription(vocab),
+              new InflectionDescription(inflection))
             val key = lemma.split(",").toVector.last
             dicQuery(key.toLowerCase) foreach {
               html =>
                 dictionaryBuffer += html
             }
         }
-        new LatinTextAnalysis(word, inflectionBuffer.toList, dictionaryBuffer.toList)
+        new LatinTextAnalysis(
+          word,
+          inflectionBuffer.toList,
+          dictionaryBuffer.toList)
       }).toList
     }
   }
