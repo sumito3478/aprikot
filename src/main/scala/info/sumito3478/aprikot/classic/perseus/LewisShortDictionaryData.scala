@@ -31,7 +31,6 @@ case class LewisShortDictionaryData(val key: String, val tei: String) {
 
 object LewisShortDictionaryData {
   private def mapTei2Html(e: Elem): Elem = {
-    //var Elem(prefix, label, attributes, scope, child) = e
     var label = e.label
     var attributes = e.attributes
     val child = e.child
