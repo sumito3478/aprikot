@@ -92,10 +92,10 @@ trait CRC32 {
   private[this] val table: Memory = {
     val ret = Memory(4 * 8 * 256)
     val p = ret.pointer
-    for (
-      s <- 0 until 8;
+    for {
+      s <- 0 until 8
       b <- 0 until 256
-    ) {
+    } {
       (p + (s * 256 + b) * 4).int = (0 until 8).foldLeft(
         if (s == 0) b else (p + ((s - 1) * 256 + b) * 4).int)(
           (r, _) =>
