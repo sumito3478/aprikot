@@ -18,7 +18,7 @@ object build extends Build {
         "ch.qos.logback" % "logback-classic" % "1.0.+",
         "net.java.dev.jna" % "jna" % "3.5.+"
         ),
-      version := "0.3.0"
+      version := "0.4.0-SNAPSHOT"
     ): _*
   )
 
