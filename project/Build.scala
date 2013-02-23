@@ -12,6 +12,8 @@ object build extends Build {
   ).settings(
     Seq(
       libraryDependencies ++= Seq(
+        "org.json4s" %% "json4s-jackson" % "3.1.+",
+        "org.json4s" %% "json4s-ext" % "3.1.+",
         "commons-io" % "commons-io" % "2.0.+",
         "com.typesafe.slick" %% "slick" % "1.0.+",
         "com.h2database" % "h2" % "1.3.+",
