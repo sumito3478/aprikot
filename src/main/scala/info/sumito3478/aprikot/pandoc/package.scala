@@ -32,7 +32,7 @@ package object pandoc {
     val date: Content[Inline]) extends Node
 
   object Alignment extends Enumeration {
-    val Left, Right, Center, Default = Value
+    val AlignLeft, AlignRight, AlignCenter, AlignDefault = Value
   }
 
   type Alignment = Alignment.Value
