@@ -8,7 +8,7 @@ externalResolvers <<= resolvers map {
     Resolver.withDefaultResolvers(rs, mavenCentral = false)
 }
 
-addSbtPlugin("info.sumito3478" %% "aprikot-sbt" % "0.0.6")
+addSbtPlugin("info.sumito3478" %% "aprikot-sbt" % "0.0.11")
 
 addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.2.0")
 
