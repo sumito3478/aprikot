@@ -21,7 +21,7 @@ import scala.concurrent.util.Unsafe.{ instance => _unsafe }
 
 import java.nio._
 
-import com.sun.jna.{ Pointer => JPointer }
+import org.bridj.{ Pointer => BPointer }
 
 /**
  * A class that represents a pointer of unmanaged memory.
@@ -184,10 +184,17 @@ class Pointer(val p: Long) extends AnyVal {
   }
 
   def byteBuffer(l: Long): ByteBuffer = {
-    new JPointer(p).getByteBuffer(0, l)
+    //new JPointer(p).getByteBuffer(0, l)
+    BPointer.pointerToAddress[Byte](p, classOf[Byte], Pointer.emptyReleaser).getByteBuffer(l)
   }
 
-  def jna: JPointer = {
-    new JPointer(p)
+  def bpointer: BPointer[Byte] = {
+    BPointer.pointerToAddress[Byte](p, classOf[Byte], Pointer.emptyReleaser)
+  }
+}
+
+object Pointer {
+  val emptyReleaser = new BPointer.Releaser {
+    override def release(p: BPointer[_]) = {}
   }
 }

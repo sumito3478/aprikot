@@ -48,26 +48,28 @@ class PointerSpec extends FunSpec {
       val s = 10240
       System.gc()
       // Use Long and Unsafe directly
-      val ret = benchmark {
-        val p = com.sun.jna.Native.malloc(s) //_unsafe.allocateMemory(1024)
-        var cp = p
-        var i = 0
-        while (i < s) {
-          _unsafe.putByte(cp, 1)
-          cp += 1
-          i += 1
-        }
-        var ret = 0
-        i = 0
-        cp = p
-        while (i < s - 4) {
-          ret += _unsafe.getInt(cp)
-          cp += 1
-          i += 1
-        }
-        com.sun.jna.Native.free(p) //_unsafe.freeMemory(p)
-      }
-      println(ret)
+//      val ret = benchmark {
+//        import org.bridj.{Pointer => BPointer}
+//        val bpointer = BPointer.allocateBytes(1024)
+//        val p = bpointer.getPeer
+//        var cp = p
+//        var i = 0
+//        while (i < s) {
+//          _unsafe.putByte(cp, 1)
+//          cp += 1
+//          i += 1
+//        }
+//        var ret = 0
+//        i = 0
+//        cp = p
+//        while (i < s - 4) {
+//          ret += _unsafe.getInt(cp)
+//          cp += 1
+//          i += 1
+//        }
+//        bpointer.release
+//      }
+//      println(ret)
       System.gc()
       // use DirectBuffer.
       val ret2 = benchmark(1) {
