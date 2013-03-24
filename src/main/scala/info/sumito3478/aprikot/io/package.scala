@@ -36,8 +36,9 @@ package object io {
         f(result)
       }
 
-      def failed(exc: Throwable, attachment: Unit) = {
-        throw new RuntimeException(exc)
+      def failed(exc: Throwable, attachment: Unit) = exc match {
+        case exc: AsynchronousCloseException => ()
+        case _ => throw new RuntimeException(exc)
       }
     }
   }
