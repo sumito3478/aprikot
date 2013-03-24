@@ -17,9 +17,11 @@
 package info.sumito3478
 package aprikot.unmanaged
 
+import scala.concurrent.util.Unsafe.{ instance => _unsafe }
+
 import java.nio._
 
-import com.sun.jna._
+import org.bridj.{Pointer => BPointer}
 
 /**
  * A trait represents a memory block.
@@ -78,7 +80,8 @@ object Memory {
    *   memory.
    */
   def apply(size: Long): Memory = {
-    val ptr = Native.malloc(size)
+    val bpointer = BPointer.allocateBytes(size)
+    val ptr = bpointer.getPeer
     new Memory {
       def pointer: Pointer = {
         //Pointer(ptr)
@@ -86,7 +89,7 @@ object Memory {
       }
 
       def disposeInternal: Unit = {
-        Native.free(ptr)
+        bpointer.release
       }
 
       override def finalize: Unit = {

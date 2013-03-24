@@ -18,7 +18,7 @@ object build extends Build {
         "com.typesafe.slick" %% "slick" % "1.0.+",
         "com.h2database" % "h2" % "1.3.+",
         "ch.qos.logback" % "logback-classic" % "1.0.+",
-        "net.java.dev.jna" % "jna" % "3.5.+"
+        "com.nativelibs4java" % "bridj" % "0.6.2"
         ),
       version := "0.4.0-SNAPSHOT"
     ): _*

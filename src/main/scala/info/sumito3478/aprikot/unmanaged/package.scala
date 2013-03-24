@@ -144,7 +144,8 @@ package object unmanaged {
 
   implicit class ArrayOfByteW(val underlined: Array[Byte]) extends AnyVal {
     def memcpy(dest: Pointer, start: Int, len: Int): Unit = {
-      dest.jna.write(0, underlined, start, len)
+      //dest.jna.write(0, underlined, start, len)
+      dest.bpointer.setBytesAtOffset(0, underlined, start, len)
     }
 
     def memcpy(dest: Pointer, start: Int): Unit = {
@@ -158,7 +159,7 @@ package object unmanaged {
 
   implicit class ArrayOfShortW(val underlined: Array[Short]) extends AnyVal {
     def memcpy(dest: Pointer, start: Int, len: Int): Unit = {
-      dest.jna.write(0, underlined, start, len)
+      dest.bpointer.setShortsAtOffset(0, underlined, start, len)
     }
 
     def memcpy(dest: Pointer, start: Int): Unit = {
@@ -172,7 +173,7 @@ package object unmanaged {
 
   implicit class ArrayOfIntW(val underlined: Array[Int]) extends AnyVal {
     def memcpy(dest: Pointer, start: Int, len: Int): Unit = {
-      dest.jna.write(0, underlined, start, len)
+      dest.bpointer.setIntsAtOffset(0, underlined, start, len)
     }
 
     def memcpy(dest: Pointer, start: Int): Unit = {
@@ -186,7 +187,7 @@ package object unmanaged {
 
   implicit class ArrayOfLongW(val underlined: Array[Long]) extends AnyVal {
     def memcpy(dest: Pointer, start: Int, len: Int): Unit = {
-      dest.jna.write(0, underlined, start, len)
+      dest.bpointer.setLongsAtOffset(0, underlined, start, len)
     }
 
     def memcpy(dest: Pointer, start: Int): Unit = {
