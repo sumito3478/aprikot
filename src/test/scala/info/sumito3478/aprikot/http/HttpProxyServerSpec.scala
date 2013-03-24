@@ -28,6 +28,7 @@ class HttpProxyServerSpec extends FunSpec {
       }
       server.start
       server.group.awaitTermination(5, TimeUnit.SECONDS)
+      server.shutdown
     }
   }
 }
