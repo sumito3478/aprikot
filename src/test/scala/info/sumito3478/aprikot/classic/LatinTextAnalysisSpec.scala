@@ -24,8 +24,9 @@ import org.scalatest._
 class LatinTextAnalysisSpec extends FunSpec {
   describe("LatinTextAnalysis.toHtml") {
     it("should return expected html") {
-      val analyses = LatinTextAnalysis("Te saluto. Augustus sum, imperator et pontifex maximus romae. Si tu es Romae amicus, es gratus.")
-      println(new PrettyPrinter(80, 2).format(<html>{ analyses.map(_.toHtml) }</html>))
+      //val analyses = LatinTextAnalysis("Te saluto. Augustus sum, imperator et pontifex maximus romae. Si tu es Romae amicus, es gratus.")
+      //println(new PrettyPrinter(80, 2).format(<html>{ analyses.map(_.toHtml) }</html>))
+      pending
     }
   }
 }

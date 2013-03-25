@@ -21,10 +21,12 @@ import java.net._
 import java.nio.channels._
 import java.util.concurrent._
 
+import aprikot.time._
+
 trait TCPServer {
   def port: Int
 
-  def group = AsynchronousChannelGroup.withThreadPool(
+  lazy val group = AsynchronousChannelGroup.withThreadPool(
     Executors.newCachedThreadPool)
 
   private[this] lazy val channel =
@@ -46,4 +48,13 @@ trait TCPServer {
   def start: Unit = {
     channel.accept(loop)
   }
+
+  def shutdown(await: Duration): Unit = {
+    group.shutdown
+    group.awaitTermination(await.toNanos, TimeUnit.NANOSECONDS)
+    group.shutdownNow
+    channel.close
+  }
+
+  def shutdown: Unit = shutdown(Duration.seconds(0))
 }
