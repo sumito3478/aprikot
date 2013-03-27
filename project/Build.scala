@@ -14,7 +14,7 @@ object build extends Build {
       libraryDependencies ++= Seq(
         "org.json4s" %% "json4s-jackson" % "3.1.+",
         "org.json4s" %% "json4s-ext" % "3.1.+",
-        "commons-io" % "commons-io" % "2.0.+",
+        "commons-io" % "commons-io" % "[2.4,2.4.1000]",
         "com.typesafe.slick" %% "slick" % "1.0.+",
         "com.h2database" % "h2" % "1.3.+",
         "ch.qos.logback" % "logback-classic" % "1.0.+",
