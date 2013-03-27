@@ -12,6 +12,7 @@ object build extends Build {
   ).settings(
     Seq(
       libraryDependencies ++= Seq(
+        "com.typesafe.akka" %% "akka-actor" % "[2.1.2,2.1.1000]",
         "org.json4s" %% "json4s-jackson" % "3.1.+",
         "org.json4s" %% "json4s-ext" % "3.1.+",
         "commons-io" % "commons-io" % "[2.4,2.4.1000]",
