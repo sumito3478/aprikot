@@ -21,7 +21,7 @@ import scala.concurrent.util.Unsafe.{ instance => _unsafe }
 
 import java.nio._
 
-import org.bridj.{Pointer => BPointer}
+import org.bridj.{ Pointer => BPointer }
 
 /**
  * A trait represents a memory block.
