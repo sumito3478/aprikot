@@ -19,6 +19,8 @@ package aprikot.http
 
 import java.nio._
 
+import akka.util._
+
 import aprikot.parsing._
 
 object HttpRequestHeaderParser extends HttpHeaderParser {
@@ -36,6 +38,17 @@ object HttpRequestHeaderParser extends HttpHeaderParser {
         slice.position(slice.limit)
         println(f"slice: ${slice.position}, ${slice.limit}")
         (r.result, slice)
+      }
+      case _ => sys.error("Unknown Parser Error")
+    }
+  }
+
+  def apply(input: ByteString): (HttpRequestHeader, ByteString) = {
+    requestMessage(new ByteStringReader(input, 0)) match {
+      case e: Failure => sys.error(f"ParseError: ${e.msg}")
+      case e: Error => sys.error(f"ParseError: ${e.msg}")
+      case r: Success[_] => {
+        (r.result, input.slice(r.next.offset, input.size))
       }
       case _ => sys.error("Unknown Parser Error")
     }

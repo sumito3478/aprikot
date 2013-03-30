@@ -20,8 +20,65 @@ import java.nio.charset._
 
 import akka.util._
 
+import aprikot._
+import aprikot.control._
+
 trait InputPort {
-  def read(n: Int): Option[ByteString]
+  def readByte: Option[Byte]
+
+  def read(n: Int): Option[ByteString] = {
+    val builder = new ByteStringBuilder
+    val b = readByte
+    breakable[Option[ByteString]] {
+      break =>
+        for (_ <- 0 until n) {
+          val b = readByte
+          if (b.isDefined) {
+            val byte = b.get
+            builder += byte
+          } else {
+            val ret = builder.result
+            if (ret.size == 0) {
+              break(None)
+            } else {
+              break(Some(ret))
+            }
+          }
+        }
+        val ret = builder.result
+        if (ret.size == 0) {
+          None
+        } else {
+          Some(ret)
+        }
+    }
+  }
+
+  def readUntil(until: Byte): Option[ByteString] = {
+    val builder = new ByteStringBuilder
+    val b = readByte
+    breakable[Option[ByteString]] {
+      break =>
+        while (true) {
+          val b = readByte
+          if (b.isDefined) {
+            val byte = b.get
+            builder += byte
+            if (byte == until) {
+              break(Some(builder.result))
+            }
+          } else {
+            val ret = builder.result
+            if (ret.size == 0) {
+              break(None)
+            } else {
+              break(Some(ret))
+            }
+          }
+        }
+        sys.error("Executed unreachable code.")
+    }
+  }
 
   def read: Option[ByteString] = {
     val results = Iterator.continually {
