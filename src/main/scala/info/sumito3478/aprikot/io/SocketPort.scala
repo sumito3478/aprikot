@@ -32,7 +32,17 @@ import scala.annotation.tailrec
 trait SocketPort extends BidirectionalPort with Disposable {
   /* protected[this]? */ def underlined: Socket
 
-  def read(n: Int): Option[ByteString] = {
+  def readByte: Option[Byte] = {
+    val in = underlined.getInputStream
+    val b = in.read
+    if (b < 0) {
+      None
+    } else {
+      Some(b.toByte)
+    }
+  }
+
+  override def read(n: Int): Option[ByteString] = {
     val buffer = new Array[Byte](n)
     val in = underlined.getInputStream
     val read = in.read(buffer, 0, n)

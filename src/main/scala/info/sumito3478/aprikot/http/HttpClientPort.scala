@@ -22,7 +22,7 @@ import java.net.Socket
 
 import akka.util._
 
-trait HttpClientPort extends BidirectionalPort {
+trait HttpClientPort extends SocketPort {
   def writeHeader(header: HttpRequestHeader): Unit = {
     write(ByteString(header.toBytes.array))
   }
@@ -31,12 +31,30 @@ trait HttpClientPort extends BidirectionalPort {
     val bytes = read(n).get
     HttpResponseHeaderParser(bytes)
   }
+
+  def readChunk: ByteString = {
+    Iterator.continually {
+      val r = readUntil('\n')
+      if (r.isEmpty) {
+        None
+      } else {
+        val s = r.get.utf8String
+        val num = java.lang.Integer.parseInt(s.slice(0, s.size - 2), 16)
+        val data = read(num)
+        read(2)
+        data
+      }
+    }.takeWhile(_.isDefined).map(_.get).foldLeft(ByteString.empty) {
+      (acc, elem) =>
+        acc ++ elem
+    }
+  }
 }
 
 object HttpClientPort {
   def apply(host: String, port: Int): HttpClientPort = {
     val socket = new Socket(host, port)
-    new HttpClientPort with SocketPort {
+    new HttpClientPort {
       def underlined = socket
     }
   }
