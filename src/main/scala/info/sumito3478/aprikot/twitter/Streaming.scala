@@ -43,13 +43,14 @@ trait Streaming extends Endpoint {
   def line(continuation: String => Unit): Unit = {
     val reader = connect
     @tailrec
-    def loop: Unit @generator.susp[String] = {
+    def loop: Unit = {
       val l = reader.readLine
       if (l != null) {
         continuation(l)
         loop
       }
     }
+    loop
   }
 
   def line: String @suspendable = callCC(line(_))

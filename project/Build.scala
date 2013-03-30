@@ -12,6 +12,7 @@ object build extends Build {
   ).settings(
     Seq(
       libraryDependencies ++= Seq(
+        "org.mongodb" %% "casbah" % "2.5.+",
         "org.scribe" % "scribe" % "1.3.+",
         "org.slf4j" % "slf4j-api" % "[1.7.5,1.7.1000]",
         "com.typesafe.akka" %% "akka-actor" % "[2.1.2,2.1.1000]",

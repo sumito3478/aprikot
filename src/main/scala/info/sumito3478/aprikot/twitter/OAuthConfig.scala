@@ -29,16 +29,16 @@ case class OAuthConfig(consumer: Consumer, token: Token)
 object OAuthConfig {
   def defaultConsumer = {
     import System._
-    val consumerToken = Option(getProperty(
+    val consumerKey = Option(getProperty(
       "org.sumito3478.aprikot.twitter.consumer.token.default",
-      getenv("TWITTER_CONSUMER_TOKEN_DEFAULT")))
+      getenv("TWITTER_CONSUMER_KEY_DEFAULT")))
     val consumerSecret = Option(getProperty(
       "org.sumito3478.aprikot.twitter.consumer.secret.default",
       getenv("TWITTER_CONSUMER_SECRET_DEFAULT")))
-    consumerToken match {
-      case Some(token) =>
+    consumerKey match {
+      case Some(key) =>
         consumerSecret match {
-          case Some(secret) => Some(Consumer(token, secret))
+          case Some(secret) => Some(Consumer(key, secret))
           case _ => None
         }
       case _ => None
@@ -48,11 +48,11 @@ object OAuthConfig {
   def defaultToken = {
     import System._
     val token = Option(getProperty(
-      "org.sumito3478.aprikot.twitter.token.default",
-      getenv("TWITTER_TOKEN_DEFAULT")))
+      "org.sumito3478.aprikot.twitter.access.token.default",
+      getenv("TWITTER_ACCESS_TOKEN_DEFAULT")))
     val tokenSecret = Option(getProperty(
-      "org.sumito3478.aprikot.twitter.token.secret.default",
-      getenv("TWITTER_TOKEN_SECRET_DEFAULT")))
+      "org.sumito3478.aprikot.twitter.access.token.secret.default",
+      getenv("TWITTER_ACCESS_TOKEN_SECRET_DEFAULT")))
     token match {
       case Some(token) =>
         tokenSecret match {
@@ -64,10 +64,11 @@ object OAuthConfig {
   }
 
   def default = {
+    println(s"defaultComsumer: ${defaultConsumer}; defaultToken: ${defaultToken}")
     defaultConsumer match {
       case Some(consumer) =>
         defaultToken match {
-          case Some(token) => OAuthConfig(consumer, token)
+          case Some(token) => Some(OAuthConfig(consumer, token))
           case _ => None
         }
       case _ => None
