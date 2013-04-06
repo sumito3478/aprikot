@@ -4,6 +4,16 @@ import Keys._
 import info.sumito3478.aprikot.sbt._
 
 object build extends Build {
+  lazy val simpleDist = TaskKey[Unit]("simple-dist")
+
+  def simpleDistTask = simpleDist <<= (update, crossTarget, scalaVersion) map {
+    (updateReport, out, scalaVer) =>
+      updateReport.allFiles foreach {
+        srcPath =>
+          val destPath = out / "dist" / srcPath.getName
+          IO.copyFile(srcPath, destPath, preserveLastModified = true)
+      }
+  }
 
   lazy val project = Project(
     id = "aprikot",
@@ -11,7 +21,10 @@ object build extends Build {
   ).settings(StandardProject.newSettings :_*
   ).settings(
     Seq(
+      simpleDistTask,
       libraryDependencies ++= Seq(
+        "org.mongodb" %% "casbah" % "2.5.+",
+        "org.scribe" % "scribe" % "1.3.+",
         "org.slf4j" % "slf4j-api" % "[1.7.5,1.7.1000]",
         "com.typesafe.akka" %% "akka-actor" % "[2.1.2,2.1.1000]",
         "org.json4s" %% "json4s-jackson" % "3.1.+",
