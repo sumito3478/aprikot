@@ -37,9 +37,8 @@ class UserStreamCrawler extends Actor {
     case Start => {
       future {
         val stream = UserStreams(OAuthConfig.default.get)
-        val it = stream.iterator
         val mongo = MongoConnection()("aprikot_twitter")("userstreams")
-        it foreach {
+        stream.line {
           line =>
             val obj = JSON.parse(line)
             obj += "aprikot_twitter" -> (MongoDBObject("captured_at" -> new java.util.Date()))
@@ -52,6 +51,8 @@ class UserStreamCrawler extends Actor {
     }
     case Complete => {
       println("complete!")
+      println("restarting...")
+      self ! Start
     }
     case Error(e) => {
       self ! Kill

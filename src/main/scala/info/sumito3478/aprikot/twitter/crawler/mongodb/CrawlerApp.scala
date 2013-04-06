@@ -19,7 +19,7 @@ package aprikot.twitter.crawler.mongodb
 
 import akka.actor._
 
-object CrawlerApp {
+object CrawlerApp extends App {
   val system = ActorSystem("twitter-crawler")
   val userstream = system.actorOf(Props[UserStreamCrawler], name = "userstream")
   userstream ! UserStreamCrawler.Start
