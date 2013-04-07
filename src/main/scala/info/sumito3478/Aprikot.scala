@@ -15,4 +15,11 @@
  */
 package info.sumito3478
 
-package object aprikot extends Aprikot
+/**
+ * Base trait for package object aprikot.
+ */
+trait Aprikot {
+  type JLocale = java.util.Locale
+
+  val NeutralJLocale = java.util.Locale.ENGLISH
+}
