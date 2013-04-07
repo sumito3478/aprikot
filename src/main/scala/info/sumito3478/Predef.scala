@@ -15,4 +15,16 @@
  */
 package info.sumito3478
 
-package object aprikot extends Aprikot with Predef
+/**
+ * Base trait for package object aprikot.
+ * 
+ * This trait contains definitions that should be imported by default inside
+ * the Aprikot library.
+ * Users of the Aprikot library can also import the definitions by:
+ * {{{
+ * import info.sumito3478.aprikot._
+ * }}}
+ */
+trait Predef {
+
+}
