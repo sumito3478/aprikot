@@ -35,7 +35,7 @@ object build extends Build {
         "ch.qos.logback" % "logback-classic" % "1.0.+",
         "com.nativelibs4java" % "bridj" % "0.6.2"
         ),
-      version := "0.5.0"
+      version := "0.6.0-SNAPSHOT"
     ): _*
   )
 
