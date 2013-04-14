@@ -22,4 +22,46 @@ trait Aprikot {
   type JLocale = java.util.Locale
 
   val NeutralJLocale = java.util.Locale.ENGLISH
+
+  /**
+   * A tag trait that is used in the Aprikot Library.
+   *
+   * Use this type as a tag that has no specific name.
+   * Because this trait is a universal trait (trait that extends Any),
+   * it can be used as a type parameter distinguished from AnyRef and AnyVal.
+   *
+   * Example Usage:
+   * {{{
+   * import aprikot.__
+   * object breakable {
+   *   class Dummy0
+   *   implicit object dummy0 extends Dummy0
+   *
+   *   def apply[A <: AnyRef](op: (A => Nothing) => A): A = {
+   *   op({
+   *     a: A =>
+   *       return a
+   *     })
+   *   }
+   *
+   *   def apply[A <: AnyVal](op: (A => Nothing) => A)(implicit dummy0: Dummy0): A = {
+   *     op({
+   *       a: A =>
+   *       return a
+   *     })
+   *   }
+   *
+   *   def apply[A <: __](op: (=> Nothing) => Unit): Unit = {
+   *     op({ return })
+   *   }
+   * }
+   *
+   * breakable[__] {
+   *   break =>
+   *     // type of break is `=> Nothing`.
+   *     // `break()` leads to compilation error.
+   * }
+   * }}}
+   */
+  trait __ extends Any
 }
